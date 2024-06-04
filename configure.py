@@ -256,6 +256,24 @@ config.libs = [
             Object(NonMatching, "Runtime.PPCEABI.H/global_destructor_chain.c"),
         ],
     },
+    {
+        "lib": "data",
+        "mw_version": config.linker_version,
+        "cflags": cflags_static,
+        "host": False,
+        "objects": [
+            Object(Matching, "data/item_data.c"),
+        ],
+    },
+    {
+        "lib": "effect",
+        "mw_version": config.linker_version,
+        "cflags": cflags_static,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "effect/eff_starstone.c"),
+        ],
+    },
     Rel('aaa',
         objects = [
             Object(NonMatching, "REL/aaa/aaa.c"),

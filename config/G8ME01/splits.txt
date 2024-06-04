@@ -455,7 +455,7 @@ evt_cam.o:
 	.rodata     start:0x802C43A8 end:0x802C4498
 	.sdata2     start:0x80421040 end:0x80421060
 
-item_data.o:
+data/item_data.c:
 	.rodata     start:0x802C4498 end:0x802C9048
 	.data       start:0x803108A8 end:0x80313DC8
 	.sdata2     start:0x80421060 end:0x80421070
@@ -2177,7 +2177,7 @@ ac_crane_timing.o:
 	.rodata     start:0x802FE680 end:0x802FE698
 	.sdata2     start:0x80427070 end:0x80427088
 
-eff_starstone.o:
+effect/eff_starstone.c:
 	.text       start:0x8020F0BC end:0x80211440
 	.rodata     start:0x802FE698 end:0x802FE6F0
 	.data       start:0x803AF148 end:0x803AFBD8
