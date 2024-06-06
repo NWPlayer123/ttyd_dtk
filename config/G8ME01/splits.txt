@@ -1004,7 +1004,7 @@ manager/arammgr.c:
 	.bss        start:0x803E5ED0 end:0x803E5F38
 	.sdata      start:0x80417E10 end:0x80417E18
 
-win_root.o:
+window/win_root.c:
 	.text       start:0x80152BDC end:0x80165B70
 	.rodata     start:0x802F47D8 end:0x802F4DD8
 	.data       start:0x80377218 end:0x803773D8
@@ -1012,26 +1012,26 @@ win_root.o:
 	.sdata      start:0x80417E18 end:0x80417F30
 	.sdata2     start:0x804231A8 end:0x804234B8
 
-win_party.o:
+window/win_party.c:
 	.text       start:0x80165B70 end:0x80167C44
 	.rodata     start:0x802F4DD8 end:0x802F5250
 	.data       start:0x803773D8 end:0x80377560
 	.sdata      start:0x80417F30 end:0x80417FA0
 	.sdata2     start:0x804234B8 end:0x80423608
 
-win_badge.o:
+window/win_badge.c:
 	.text       start:0x80167C44 end:0x80169CF0
 	.rodata     start:0x802F5250 end:0x802F5520
 	.sdata2     start:0x80423608 end:0x80423748
 
-win_item.o:
+window/win_item.c:
 	.text       start:0x80169CF0 end:0x8016D7C4
 	.rodata     start:0x802F5520 end:0x802F5E88
 	.data       start:0x80377560 end:0x803776F0
 	.sdata      start:0x80417FA0 end:0x80417FD8
 	.sdata2     start:0x80423748 end:0x80423888
 
-win_mario.o:
+window/win_mario.c:
 	.text       start:0x8016D7C4 end:0x80171034
 	.rodata     start:0x802F5E88 end:0x802F6708
 	.data       start:0x803776F0 end:0x80377918
@@ -1039,7 +1039,7 @@ win_mario.o:
 	.sdata      start:0x80417FD8 end:0x80418020
 	.sdata2     start:0x80423888 end:0x80423A50
 
-win_log.o:
+window/win_log.c:
 	.text       start:0x80171034 end:0x80177954
 	.rodata     start:0x802F6708 end:0x802F6D48
 	.data       start:0x80377918 end:0x80377E58
@@ -1056,7 +1056,7 @@ event/evt_win.c:
 	.sbss       start:0x8041EC18 end:0x8041EC30
 	.sdata2     start:0x80423CB0 end:0x80423F58
 
-win_main.o:
+window/win_main.c:
 	.text       start:0x8017B5B0 end:0x8017EBDC
 	.rodata     start:0x802F7150 end:0x802F73C8
 	.data       start:0x80377FE8 end:0x80378D68
