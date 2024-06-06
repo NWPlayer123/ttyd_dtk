@@ -26,13 +26,13 @@ system.o:
 seqdef.o:
 	.data       start:0x80304400 end:0x803044A0
 
-seq_game.o:
+sequence/seq_game.c:
 	.text       start:0x80007390 end:0x80007574
 	.sdata      start:0x80414F28 end:0x80414F58
 	.sbss       start:0x8041E5A0 end:0x8041E5A8
 	.sdata2     start:0x8041F498 end:0x8041F4A8
 
-seq_mapchange.o:
+sequence/seq_mapchange.c:
 	.text       start:0x80007574 end:0x80008888
 	.rodata     start:0x802BF284 end:0x802BF3F8
 	.bss        start:0x803C8460 end:0x803C9370
@@ -41,7 +41,7 @@ seq_mapchange.o:
 	.sdata2     start:0x8041F4A8 end:0x8041F558
 	.sbss2      start:0x80429500 end:0x80429508
 
-seq_title.o:
+sequence/seq_title.c:
 	.text       start:0x80008888 end:0x80009D98
 	.rodata     start:0x802BF3F8 end:0x802BF530
 	.bss        start:0x803C9370 end:0x803C93A8
@@ -297,7 +297,7 @@ driver/offscreendrv.c:
 event/evt_offscreen.c:
 	.text       start:0x80073450 end:0x800736EC
 
-seq_battle.o:
+sequence/seq_battle.c:
 	.text       start:0x800736EC end:0x80074018
 	.rodata     start:0x802C2AB0 end:0x802C2B30
 	.sbss       start:0x8041E968 end:0x8041E970
@@ -325,7 +325,7 @@ driver/arcdrv.c:
 	.text       start:0x800782E4 end:0x80078548
 	.bss        start:0x803DBFF0 end:0x803DC090
 
-seq_gameover.o:
+sequence/seq_gameover.c:
 	.text       start:0x80078548 end:0x80078A74
 	.rodata     start:0x802C2C00 end:0x802C2C48
 	.data       start:0x8030C410 end:0x8030CD78
@@ -372,7 +372,7 @@ database.o:
 driver/swdrv.c:
 	.text       start:0x80085744 end:0x800859F8
 
-seq_logo.o:
+sequence/seq_logo.c:
 	.text       start:0x800859F8 end:0x8008763C
 	.rodata     start:0x802C3B38 end:0x802C3B78
 	.sdata      start:0x80416108 end:0x80416110
@@ -642,7 +642,7 @@ cam_shift.o:
 	.sdata      start:0x804169C8 end:0x804169D0
 	.sdata2     start:0x80421FE8 end:0x80422010
 
-seq_load.o:
+sequence/seq_load.c:
 	.text       start:0x800F39DC end:0x800F7324
 	.rodata     start:0x802EDBA0 end:0x802EE018
 	.data       start:0x8034C3C0 end:0x8034CB48
@@ -2538,7 +2538,7 @@ romfont.o:
 unk_0x803b9540.o:
 	.data       start:0x803B9540 end:0x803B9578
 
-seq_e3.o:
+sequence/seq_e3.c:
 	.text       start:0x802518AC end:0x802530FC
 	.rodata     start:0x80302608 end:0x80302838
 	.bss        start:0x803E7840 end:0x803E78A8

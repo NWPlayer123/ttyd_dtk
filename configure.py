@@ -710,6 +710,22 @@ config.libs = [
         ],
     },
     {
+        "lib": "sequence",
+        "mw_version": config.linker_version,
+        "cflags": cflags_static,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "sequence/seq_battle.c"),
+            Object(NonMatching, "sequence/seq_e3.c"),
+            Object(NonMatching, "sequence/seq_game.c"),
+            Object(NonMatching, "sequence/seq_gameover.c"),
+            Object(NonMatching, "sequence/seq_load.c"),
+            Object(NonMatching, "sequence/seq_logo.c"),
+            Object(NonMatching, "sequence/seq_mapchange.c"),
+            Object(NonMatching, "sequence/seq_title.c"),
+        ],
+    },
+    {
         "lib": "window",
         "mw_version": config.linker_version,
         "cflags": cflags_static,
