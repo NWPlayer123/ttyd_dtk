@@ -149,32 +149,27 @@ config.ldflags = [
 # Base flags, common to most GC/Wii games.
 # Generally leave untouched, with overrides added below.
 cflags_base = [
-    #define the platform
+    # define the platform
     "-nodefaults",
     "-proc gekko",
     "-align powerpc",
     "-enum int",
-    
     # for multibyte
     "-multibyte",
     "-char unsigned",
-    
-    #platform specific
+    # platform specific
     "-fp hardware",
     "-Cpp_exceptions off",
     '-pragma "cats off"',
-    
-    #default compiler flags
+    # default compiler flags
     "-W all",
     "-O4,p",
     "-inline auto",
     '-pragma "warn_notinlined off"',
-    
-    #helpful linking stuff
+    # helpful linking stuff
     "-maxerrors 1",
     "-nosyspath",
-    
-    #dtk-specific includes
+    # dtk-specific includes
     "-i include",
     f"-i build/{config.version}/include",
     f"-DVERSION={version_num}",
@@ -257,6 +252,54 @@ config.libs = [
         ],
     },
     {
+        "lib": "battle",
+        "mw_version": config.linker_version,
+        "cflags": cflags_static,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "battle/battle.c"),
+            Object(NonMatching, "battle/battle_ac.c"),
+            Object(NonMatching, "battle/battle_ac_help.c"),
+            Object(NonMatching, "battle/battle_acrobat.c"),
+            Object(NonMatching, "battle/battle_actrecord.c"),
+            Object(NonMatching, "battle/battle_attack_audience.c"),
+            Object(NonMatching, "battle/battle_audience.c"),
+            Object(NonMatching, "battle/battle_audience_kind_data.c"),
+            Object(NonMatching, "battle/battle_audience_kinopio.c"),
+            Object(NonMatching, "battle/battle_break_slot.c"),
+            Object(NonMatching, "battle/battle_camera.c"),
+            Object(NonMatching, "battle/battle_damage.c"),
+            Object(NonMatching, "battle/battle_database_common.c"),
+            Object(NonMatching, "battle/battle_detect.c"),
+            Object(NonMatching, "battle/battle_disp.c"),
+            Object(NonMatching, "battle/battle_enemy_item.c"),
+            Object(NonMatching, "battle/battle_event_cmd.c"),
+            Object(NonMatching, "battle/battle_event_default.c"),
+            Object(NonMatching, "battle/battle_event_subset.c"),
+            Object(NonMatching, "battle/battle_evt_cmd.c"),
+            Object(NonMatching, "battle/battle_icon.c"),
+            Object(NonMatching, "battle/battle_information.c"),
+            Object(NonMatching, "battle/battle_item_data.c"),
+            Object(NonMatching, "battle/battle_mario.c"),
+            Object(NonMatching, "battle/battle_menu_disp.c"),
+            Object(NonMatching, "battle/battle_message.c"),
+            Object(NonMatching, "battle/battle_monosiri.c"),
+            Object(NonMatching, "battle/battle_pad.c"),
+            Object(NonMatching, "battle/battle_party.c"),
+            Object(NonMatching, "battle/battle_seq.c"),
+            Object(NonMatching, "battle/battle_seq_command.c"),
+            Object(NonMatching, "battle/battle_seq_end.c"),
+            Object(NonMatching, "battle/battle_stage.c"),
+            Object(NonMatching, "battle/battle_stage_object.c"),
+            Object(NonMatching, "battle/battle_status_effect.c"),
+            Object(NonMatching, "battle/battle_status_icon.c"),
+            Object(NonMatching, "battle/battle_sub.c"),
+            Object(NonMatching, "battle/battle_unit.c"),
+            Object(NonMatching, "battle/battle_unit_event.c"),
+            Object(NonMatching, "battle/battle_weapon_power.c"),
+        ],
+    },
+    {
         "lib": "data",
         "mw_version": config.linker_version,
         "cflags": cflags_static,
@@ -274,11 +317,12 @@ config.libs = [
             Object(NonMatching, "effect/eff_starstone.c"),
         ],
     },
-    Rel('aaa',
-        objects = [
+    Rel(
+        "aaa",
+        objects=[
             Object(NonMatching, "REL/aaa/aaa.c"),
             Object(NonMatching, "REL/aaa/aaa_00.c"),
-        ]
+        ],
     ),
 ]
 
