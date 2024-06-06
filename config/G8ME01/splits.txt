@@ -1326,7 +1326,7 @@ battle/battle_message.c:
 	.rodata     start:0x802FAA70 end:0x802FAA78
 	.sdata2     start:0x80424BB8 end:0x80424BD0
 
-eff_whirlwind_n64.o:
+effect/n64/eff_whirlwind_n64.c:
 	.text       start:0x801ABF80 end:0x801ACB9C
 	.rodata     start:0x802FAA78 end:0x802FAAA0
 	.data       start:0x8039D418 end:0x8039D5A8
@@ -1334,14 +1334,14 @@ eff_whirlwind_n64.o:
 	.sdata2     start:0x80424BD0 end:0x80424C20
 	.sbss2      start:0x80429630 end:0x80429638
 
-eff_akari_charge_n64.o:
+effect/n64/eff_akari_charge_n64.c:
 	.text       start:0x801ACB9C end:0x801AD84C
 	.rodata     start:0x802FAAA0 end:0x802FAAE0
 	.data       start:0x8039D5A8 end:0x8039D5E0
 	.sdata2     start:0x80424C20 end:0x80424C48
 	.sbss2      start:0x80429638 end:0x80429640
 
-eff_akari_pose_n64.o:
+effect/n64/eff_akari_pose_n64.c:
 	.text       start:0x801AD84C end:0x801AE0B4
 	.rodata     start:0x802FAAE0 end:0x802FAB08
 	.data       start:0x8039D5E0 end:0x8039D6D8
@@ -1349,44 +1349,44 @@ eff_akari_pose_n64.o:
 	.sdata2     start:0x80424C48 end:0x80424C78
 	.sbss2      start:0x80429640 end:0x80429648
 
-eff_akari_sflush_n64.o:
+effect/n64/eff_akari_sflush_n64.c:
 	.text       start:0x801AE0B4 end:0x801AE7FC
 	.rodata     start:0x802FAB08 end:0x802FAB30
 	.data       start:0x8039D6D8 end:0x8039D730
 	.sdata2     start:0x80424C78 end:0x80424CA0
 	.sbss2      start:0x80429648 end:0x80429650
 
-eff_balloon_heiho_n64.o:
+effect/n64/eff_balloon_heiho_n64.c:
 	.text       start:0x801AE7FC end:0x801AEC64
 	.rodata     start:0x802FAB30 end:0x802FAB50
 	.data       start:0x8039D730 end:0x8039D7A0
 	.sdata2     start:0x80424CA0 end:0x80424CB8
 
-eff_balloon_n64.o:
+effect/n64/eff_balloon_n64.c:
 	.text       start:0x801AEC64 end:0x801AF7D4
 	.rodata     start:0x802FAB50 end:0x802FAB78
 	.data       start:0x8039D7A0 end:0x8039D8D8
 	.sdata2     start:0x80424CB8 end:0x80424CF8
 
-eff_blow_n64.o:
+effect/n64/eff_blow_n64.c:
 	.text       start:0x801AF7D4 end:0x801B0488
 	.rodata     start:0x802FAB78 end:0x802FABB8
 	.data       start:0x8039D8D8 end:0x8039D910
 	.sdata2     start:0x80424CF8 end:0x80424D48
 
-eff_bomb_n64.o:
+effect/n64/eff_bomb_n64.c:
 	.text       start:0x801B0488 end:0x801B0CD8
 	.rodata     start:0x802FABB8 end:0x802FABD8
 	.data       start:0x8039D910 end:0x8039D948
 	.sdata2     start:0x80424D48 end:0x80424D98
 
-eff_bomhei_n64.o:
+effect/n64/eff_bomhei_n64.c:
 	.text       start:0x801B0CD8 end:0x801B13BC
 	.rodata     start:0x802FABD8 end:0x802FAC00
 	.data       start:0x8039D948 end:0x8039D988
 	.sdata2     start:0x80424D98 end:0x80424DD0
 
-eff_booboo_n64.o:
+effect/n64/eff_booboo_n64.c:
 	.text       start:0x801B13BC end:0x801B29E0
 	.rodata     start:0x802FAC00 end:0x802FAC18
 	.data       start:0x8039D988 end:0x8039E188
@@ -1394,46 +1394,46 @@ eff_booboo_n64.o:
 	.sdata2     start:0x80424DD0 end:0x80424DF8
 	.sbss2      start:0x80429650 end:0x80429658
 
-eff_breath_fire_n64.o:
+effect/n64/eff_breath_fire_n64.c:
 	.text       start:0x801B29E0 end:0x801B3544
 	.rodata     start:0x802FAC18 end:0x802FAC50
 	.data       start:0x8039E188 end:0x8039E218
 	.sdata2     start:0x80424DF8 end:0x80424E30
 	.sbss2      start:0x80429658 end:0x80429660
 
-eff_broken_barrier_n64.o:
+effect/n64/eff_broken_barrier_n64.c:
 	.text       start:0x801B3544 end:0x801B44B8
 	.rodata     start:0x802FAC50 end:0x802FACA0
 	.data       start:0x8039E218 end:0x8039E448
 	.sdata2     start:0x80424E30 end:0x80424E90
 	.sbss2      start:0x80429660 end:0x80429668
 
-eff_bush_n64.o:
+effect/n64/eff_bush_n64.c:
 	.text       start:0x801B44B8 end:0x801B4E38
 	.rodata     start:0x802FACA0 end:0x802FACC0
 	.data       start:0x8039E448 end:0x8039E4B8
 	.sdata2     start:0x80424E90 end:0x80424EE0
 
-eff_butterfly_n64.o:
+effect/n64/eff_butterfly_n64.c:
 	.text       start:0x801B4E38 end:0x801B5610
 	.rodata     start:0x802FACC0 end:0x802FAD00
 	.data       start:0x8039E4B8 end:0x8039EE90
 	.sdata      start:0x804196E8 end:0x80419708
 	.sdata2     start:0x80424EE0 end:0x80424F10
 
-eff_cloud_n64.o:
+effect/n64/eff_cloud_n64.c:
 	.text       start:0x801B5610 end:0x801B6648
 	.rodata     start:0x802FAD00 end:0x802FAD40
 	.sdata2     start:0x80424F10 end:0x80424F48
 	.sbss2      start:0x80429668 end:0x80429670
 
-eff_coin_n64.o:
+effect/n64/eff_coin_n64.c:
 	.text       start:0x801B6648 end:0x801B6BF8
 	.rodata     start:0x802FAD40 end:0x802FAD60
 	.data       start:0x8039EE90 end:0x8039EF18
 	.sdata2     start:0x80424F48 end:0x80424F68
 
-eff_confetti_n64.o:
+effect/n64/eff_confetti_n64.c:
 	.text       start:0x801B6BF8 end:0x801B7A30
 	.rodata     start:0x802FAD60 end:0x802FAD88
 	.data       start:0x8039EF18 end:0x8039F050
@@ -1441,20 +1441,20 @@ eff_confetti_n64.o:
 	.sdata2     start:0x80424F68 end:0x80424FC8
 	.sbss2      start:0x80429670 end:0x80429678
 
-eff_cool_leaf_n64.o:
+effect/n64/eff_cool_leaf_n64.c:
 	.text       start:0x801B7A30 end:0x801B8A38
 	.rodata     start:0x802FAD88 end:0x802FADB0
 	.data       start:0x8039F050 end:0x8039F130
 	.sdata2     start:0x80424FC8 end:0x80425040
 
-eff_crystal_n64.o:
+effect/n64/eff_crystal_n64.c:
 	.text       start:0x801B8A38 end:0x801B964C
 	.rodata     start:0x802FADB0 end:0x802FADD8
 	.data       start:0x8039F130 end:0x8039F1E8
 	.sdata2     start:0x80425040 end:0x80425068
 	.sbss2      start:0x80429678 end:0x80429680
 
-eff_dogabon_attack_n64.o:
+effect/n64/eff_dogabon_attack_n64.c:
 	.text       start:0x801B964C end:0x801BA3B4
 	.rodata     start:0x802FADD8 end:0x802FAE10
 	.data       start:0x8039F1E8 end:0x8039F2E0
@@ -1462,54 +1462,54 @@ eff_dogabon_attack_n64.o:
 	.sdata2     start:0x80425068 end:0x804250A8
 	.sbss2      start:0x80429680 end:0x80429688
 
-eff_expbom_n64.o:
+effect/n64/eff_expbom_n64.c:
 	.text       start:0x801BA3B4 end:0x801BADE4
 	.rodata     start:0x802FAE10 end:0x802FAE38
 	.sdata      start:0x80419788 end:0x80419828
 	.sdata2     start:0x804250A8 end:0x804250D8
 	.sbss2      start:0x80429688 end:0x80429690
 
-eff_explosion_n64.o:
+effect/n64/eff_explosion_n64.c:
 	.text       start:0x801BADE4 end:0x801BB838
 	.rodata     start:0x802FAE38 end:0x802FAE60
 	.data       start:0x8039F2E0 end:0x8039F318
 	.sdata2     start:0x804250D8 end:0x80425128
 	.sbss2      start:0x80429690 end:0x804296A0
 
-eff_fall_leaf_n64.o:
+effect/n64/eff_fall_leaf_n64.c:
 	.text       start:0x801BB838 end:0x801BC464
 	.rodata     start:0x802FAE60 end:0x802FAE88
 	.data       start:0x8039F318 end:0x8039F388
 	.sdata2     start:0x80425128 end:0x80425188
 
-eff_fire_dust_n64.o:
+effect/n64/eff_fire_dust_n64.c:
 	.text       start:0x801BC464 end:0x801BD05C
 	.rodata     start:0x802FAE88 end:0x802FAEB0
 	.data       start:0x8039F388 end:0x8039F5B8
 	.sdata2     start:0x80425188 end:0x804251D8
 	.sbss2      start:0x804296A0 end:0x804296A8
 
-eff_fire_ring_n64.o:
+effect/n64/eff_fire_ring_n64.c:
 	.text       start:0x801BD05C end:0x801BDA08
 	.rodata     start:0x802FAEB0 end:0x802FAED8
 	.data       start:0x8039F5B8 end:0x8039F900
 	.sdata2     start:0x804251D8 end:0x80425210
 
-eff_fire_spark_n64.o:
+effect/n64/eff_fire_spark_n64.c:
 	.text       start:0x801BDA08 end:0x801BE644
 	.rodata     start:0x802FAED8 end:0x802FAF00
 	.data       start:0x8039F900 end:0x8039F9B8
 	.sdata2     start:0x80425210 end:0x80425240
 	.sbss2      start:0x804296A8 end:0x804296B0
 
-eff_fireflower_n64.o:
+effect/n64/eff_fireflower_n64.c:
 	.text       start:0x801BE644 end:0x801BF37C
 	.rodata     start:0x802FAF00 end:0x802FAF28
 	.data       start:0x8039F9B8 end:0x8039FAB8
 	.sdata      start:0x80419828 end:0x80419838
 	.sdata2     start:0x80425240 end:0x804252A0
 
-eff_fireworks_n64.o:
+effect/n64/eff_fireworks_n64.c:
 	.text       start:0x801BF37C end:0x801C0090
 	.rodata     start:0x802FAF28 end:0x802FAF88
 	.data       start:0x8039FAB8 end:0x8039FD50
@@ -1518,47 +1518,47 @@ eff_fireworks_n64.o:
 	.sdata2     start:0x804252A0 end:0x804252E0
 	.sbss2      start:0x804296B0 end:0x804296B8
 
-eff_flame_n64.o:
+effect/n64/eff_flame_n64.c:
 	.text       start:0x801C0090 end:0x801C25DC
 	.rodata     start:0x802FAF88 end:0x802FAFB0
 	.data       start:0x8039FD50 end:0x8039FED8
 	.sdata2     start:0x804252E0 end:0x80425340
 	.sbss2      start:0x804296B8 end:0x804296C0
 
-eff_flower_n64.o:
+effect/n64/eff_flower_n64.c:
 	.text       start:0x801C25DC end:0x801C2EAC
 	.rodata     start:0x802FAFB0 end:0x802FAFD0
 	.sbss       start:0x8041ECC8 end:0x8041ECD0
 	.sdata2     start:0x80425340 end:0x80425378
 
-eff_freeze_n64.o:
+effect/n64/eff_freeze_n64.c:
 	.text       start:0x801C2EAC end:0x801C3808
 	.rodata     start:0x802FAFD0 end:0x802FAFF8
 	.data       start:0x8039FED8 end:0x8039FFB8
 	.sdata2     start:0x80425378 end:0x804253B0
 	.sbss2      start:0x804296C0 end:0x804296C8
 
-eff_gareki_n64.o:
+effect/n64/eff_gareki_n64.c:
 	.text       start:0x801C3808 end:0x801C4334
 	.rodata     start:0x802FAFF8 end:0x802FB020
 	.data       start:0x8039FFB8 end:0x803A0368
 	.sdata      start:0x80419850 end:0x80419870
 	.sdata2     start:0x804253B0 end:0x804253F8
 
-eff_glass_n64.o:
+effect/n64/eff_glass_n64.c:
 	.text       start:0x801C4334 end:0x801C4F04
 	.rodata     start:0x802FB020 end:0x802FB048
 	.data       start:0x803A0368 end:0x803A03E8
 	.sdata2     start:0x804253F8 end:0x80425420
 	.sbss2      start:0x804296C8 end:0x804296D8
 
-eff_guruguru_n64.o:
+effect/n64/eff_guruguru_n64.c:
 	.text       start:0x801C4F04 end:0x801C5674
 	.rodata     start:0x802FB048 end:0x802FB070
 	.data       start:0x803A03E8 end:0x803A0420
 	.sdata2     start:0x80425420 end:0x80425440
 
-eff_hagetaka_flush_n64.o:
+effect/n64/eff_hagetaka_flush_n64.c:
 	.text       start:0x801C5674 end:0x801C5B58
 	.rodata     start:0x802FB070 end:0x802FB0A0
 	.data       start:0x803A0420 end:0x803A0458
@@ -1566,7 +1566,7 @@ eff_hagetaka_flush_n64.o:
 	.sdata2     start:0x80425440 end:0x80425458
 	.sbss2      start:0x804296D8 end:0x804296E0
 
-eff_hit_n64.o:
+effect/n64/eff_hit_n64.c:
 	.text       start:0x801C5B58 end:0x801C65B4
 	.rodata     start:0x802FB0A0 end:0x802FB0D0
 	.data       start:0x803A0458 end:0x803A0578
@@ -1574,14 +1574,14 @@ eff_hit_n64.o:
 	.sdata2     start:0x80425458 end:0x80425480
 	.sbss2      start:0x804296E0 end:0x804296E8
 
-eff_hokori_n64.o:
+effect/n64/eff_hokori_n64.c:
 	.text       start:0x801C65B4 end:0x801C6E24
 	.rodata     start:0x802FB0D0 end:0x802FB0F8
 	.data       start:0x803A0578 end:0x803A0658
 	.sdata2     start:0x80425480 end:0x804254B0
 	.sbss2      start:0x804296E8 end:0x804296F0
 
-eff_holography_n64.o:
+effect/n64/eff_holography_n64.c:
 	.text       start:0x801C6E24 end:0x801C767C
 	.rodata     start:0x802FB0F8 end:0x802FB120
 	.data       start:0x803A0658 end:0x803A48B0
@@ -1589,7 +1589,7 @@ eff_holography_n64.o:
 	.sdata2     start:0x804254B0 end:0x804254D0
 	.sbss2      start:0x804296F0 end:0x804296F8
 
-eff_horao_spell_n64.o:
+effect/n64/eff_horao_spell_n64.c:
 	.text       start:0x801C767C end:0x801C8174
 	.rodata     start:0x802FB120 end:0x802FB148
 	.data       start:0x803A48B0 end:0x803A4A70
@@ -1597,99 +1597,99 @@ eff_horao_spell_n64.o:
 	.sdata2     start:0x804254D0 end:0x80425510
 	.sbss2      start:0x804296F8 end:0x80429708
 
-eff_ice_n64.o:
+effect/n64/eff_ice_n64.c:
 	.text       start:0x801C8174 end:0x801C89FC
 	.rodata     start:0x802FB148 end:0x802FB168
 	.data       start:0x803A4A70 end:0x803A4AE0
 	.sdata2     start:0x80425510 end:0x80425550
 
-eff_kameki_tornade_n64.o:
+effect/n64/eff_kameki_tornade_n64.c:
 	.text       start:0x801C89FC end:0x801C9A74
 	.rodata     start:0x802FB168 end:0x802FB1B0
 	.sdata2     start:0x80425550 end:0x804255A8
 	.sbss2      start:0x80429708 end:0x80429710
 
-eff_kemuri1_n64.o:
+effect/n64/eff_kemuri1_n64.c:
 	.text       start:0x801C9A74 end:0x801CA964
 	.rodata     start:0x802FB1B0 end:0x802FB1D8
 	.sdata2     start:0x804255A8 end:0x80425628
 	.sbss2      start:0x80429710 end:0x80429718
 
-eff_kemuri2_n64.o:
+effect/n64/eff_kemuri2_n64.c:
 	.text       start:0x801CA964 end:0x801CB294
 	.rodata     start:0x802FB1D8 end:0x802FB200
 	.sdata      start:0x80419910 end:0x80419940
 	.sdata2     start:0x80425628 end:0x80425660
 
-eff_kemuri3_n64.o:
+effect/n64/eff_kemuri3_n64.c:
 	.text       start:0x801CB294 end:0x801CBA5C
 	.rodata     start:0x802FB200 end:0x802FB220
 	.sdata2     start:0x80425660 end:0x804256A0
 
-eff_kemuri4_n64.o:
+effect/n64/eff_kemuri4_n64.c:
 	.text       start:0x801CBA5C end:0x801CC1B8
 	.rodata     start:0x802FB220 end:0x802FB240
 	.data       start:0x803A4AE0 end:0x803A4D20
 	.sdata2     start:0x804256A0 end:0x804256D0
 
-eff_kemuri5_n64.o:
+effect/n64/eff_kemuri5_n64.c:
 	.text       start:0x801CC1B8 end:0x801CC958
 	.rodata     start:0x802FB240 end:0x802FB260
 	.data       start:0x803A4D20 end:0x803A4D58
 	.sdata2     start:0x804256D0 end:0x80425720
 
-eff_kemuri6_n64.o:
+effect/n64/eff_kemuri6_n64.c:
 	.text       start:0x801CC958 end:0x801CD04C
 	.rodata     start:0x802FB260 end:0x802FB280
 	.data       start:0x803A4D58 end:0x803A4D90
 	.sdata2     start:0x80425720 end:0x80425760
 
-eff_kemuri7_n64.o:
+effect/n64/eff_kemuri7_n64.c:
 	.text       start:0x801CD04C end:0x801CD5AC
 	.rodata     start:0x802FB280 end:0x802FB298
 	.data       start:0x803A4D90 end:0x803A4DC8
 	.sdata2     start:0x80425760 end:0x80425798
 
-eff_kemuri8_n64.o:
+effect/n64/eff_kemuri8_n64.c:
 	.text       start:0x801CD5AC end:0x801CE130
 	.rodata     start:0x802FB298 end:0x802FB2C0
 	.sdata2     start:0x80425798 end:0x804257F0
 	.sbss2      start:0x80429718 end:0x80429720
 
-eff_kemuri9_n64.o:
+effect/n64/eff_kemuri9_n64.c:
 	.text       start:0x801CE130 end:0x801CEA88
 	.rodata     start:0x802FB2C0 end:0x802FB2E8
 	.sdata2     start:0x804257F0 end:0x80425828
 
-eff_kemuri10_n64.o:
+effect/n64/eff_kemuri10_n64.c:
 	.text       start:0x801CEA88 end:0x801CF934
 	.rodata     start:0x802FB2E8 end:0x802FB328
 	.data       start:0x803A4DC8 end:0x803A4FC0
 	.sdata2     start:0x80425828 end:0x80425860
 	.sbss2      start:0x80429720 end:0x80429728
 
-eff_kemuri11_n64.o:
+effect/n64/eff_kemuri11_n64.c:
 	.text       start:0x801CF934 end:0x801D0A0C
 	.rodata     start:0x802FB328 end:0x802FB350
 	.data       start:0x803A4FC0 end:0x803A50F8
 	.sdata2     start:0x80425860 end:0x804258C0
 	.sbss2      start:0x80429728 end:0x80429738
 
-eff_kemuri12_n64.o:
+effect/n64/eff_kemuri12_n64.c:
 	.text       start:0x801D0A0C end:0x801D1264
 	.rodata     start:0x802FB350 end:0x802FB378
 	.data       start:0x803A50F8 end:0x803A51D8
 	.sdata2     start:0x804258C0 end:0x804258E0
 	.sbss2      start:0x80429738 end:0x80429740
 
-eff_kumokumo_chip_n64.o:
+effect/n64/eff_kumokumo_chip_n64.c:
 	.text       start:0x801D1264 end:0x801D19A8
 	.rodata     start:0x802FB378 end:0x802FB3B8
 	.data       start:0x803A51D8 end:0x803A5228
 	.sdata2     start:0x804258E0 end:0x804258F0
 	.sbss2      start:0x80429740 end:0x80429748
 
-eff_kumokumo_n64.o:
+effect/n64/eff_kumokumo_n64.c:
 	.text       start:0x801D19A8 end:0x801D3388
 	.rodata     start:0x802FB3B8 end:0x802FB3F0
 	.data       start:0x803A5228 end:0x803A59A0
@@ -1697,20 +1697,20 @@ eff_kumokumo_n64.o:
 	.sdata2     start:0x804258F0 end:0x80425948
 	.sbss2      start:0x80429748 end:0x80429750
 
-eff_lensflare_n64.o:
+effect/n64/eff_lensflare_n64.c:
 	.text       start:0x801D3388 end:0x801D4194
 	.rodata     start:0x802FB3F0 end:0x802FB418
 	.data       start:0x803A59A0 end:0x803A5AB8
 	.sdata2     start:0x80425948 end:0x804259C8
 
-eff_magic1_n64.o:
+effect/n64/eff_magic1_n64.c:
 	.text       start:0x801D4194 end:0x801D4FC0
 	.rodata     start:0x802FB418 end:0x802FB440
 	.sdata      start:0x80419A10 end:0x80419A20
 	.sdata2     start:0x804259C8 end:0x80425A28
 	.sbss2      start:0x80429750 end:0x80429758
 
-eff_magic2_n64.o:
+effect/n64/eff_magic2_n64.c:
 	.text       start:0x801D4FC0 end:0x801D6120
 	.rodata     start:0x802FB440 end:0x802FB470
 	.data       start:0x803A5AB8 end:0x803A5D90
@@ -1718,20 +1718,20 @@ eff_magic2_n64.o:
 	.sdata2     start:0x80425A28 end:0x80425A78
 	.sbss2      start:0x80429758 end:0x80429760
 
-eff_magic3_n64.o:
+effect/n64/eff_magic3_n64.c:
 	.text       start:0x801D6120 end:0x801D6B84
 	.rodata     start:0x802FB470 end:0x802FB4B8
 	.data       start:0x803A5D90 end:0x803A5DC8
 	.sdata2     start:0x80425A78 end:0x80425AC8
 
-eff_magic_horao_n64.o:
+effect/n64/eff_magic_horao_n64.c:
 	.text       start:0x801D6B84 end:0x801D76A0
 	.rodata     start:0x802FB4B8 end:0x802FB4E0
 	.data       start:0x803A5DC8 end:0x803A5E00
 	.sdata2     start:0x80425AC8 end:0x80425B08
 	.sbss2      start:0x80429760 end:0x80429768
 
-eff_n64.o:
+effect/n64/eff_n64.c:
 	.text       start:0x801D76A0 end:0x801D7AA0
 	.rodata     start:0x802FB4E0 end:0x802FBB28
 	.data       start:0x803A5E00 end:0x803A6340
@@ -1739,7 +1739,7 @@ eff_n64.o:
 	.sbss       start:0x8041ECD0 end:0x8041ECD8
 	.sdata2     start:0x80425B08 end:0x80425B10
 
-eff_onpu_n64.o:
+effect/n64/eff_onpu_n64.c:
 	.text       start:0x801D7AA0 end:0x801D82B8
 	.rodata     start:0x802FBB28 end:0x802FBB48
 	.data       start:0x803A6340 end:0x803A6380
@@ -1747,7 +1747,7 @@ eff_onpu_n64.o:
 	.sdata2     start:0x80425B10 end:0x80425B40
 	.sbss2      start:0x80429768 end:0x80429770
 
-eff_opuku_jetw_n64.o:
+effect/n64/eff_opuku_jetw_n64.c:
 	.text       start:0x801D82B8 end:0x801D8A48
 	.rodata     start:0x802FBB48 end:0x802FBB70
 	.data       start:0x803A6380 end:0x803A67D0
@@ -1755,55 +1755,55 @@ eff_opuku_jetw_n64.o:
 	.sdata2     start:0x80425B40 end:0x80425B58
 	.sbss2      start:0x80429770 end:0x80429780
 
-eff_opuku_jetwrain_n64.o:
+effect/n64/eff_opuku_jetwrain_n64.c:
 	.text       start:0x801D8A48 end:0x801D9748
 	.rodata     start:0x802FBB70 end:0x802FBBC0
 	.data       start:0x803A67D0 end:0x803A68B0
 	.sdata2     start:0x80425B58 end:0x80425B98
 	.sbss2      start:0x80429780 end:0x80429788
 
-eff_opuku_wcurtain_n64.o:
+effect/n64/eff_opuku_wcurtain_n64.c:
 	.text       start:0x801D9748 end:0x801D9F44
 	.rodata     start:0x802FBBC0 end:0x802FBBE8
 	.sdata2     start:0x80425B98 end:0x80425BC0
 	.sbss2      start:0x80429788 end:0x80429790
 
-eff_opuku_wgun_n64.o:
+effect/n64/eff_opuku_wgun_n64.c:
 	.text       start:0x801D9F44 end:0x801DADF0
 	.rodata     start:0x802FBBE8 end:0x802FBC10
 	.sdata      start:0x80419AB0 end:0x80419AC0
 	.sdata2     start:0x80425BC0 end:0x80425C08
 	.sbss2      start:0x80429790 end:0x80429798
 
-eff_opuku_wprotect_n64.o:
+effect/n64/eff_opuku_wprotect_n64.c:
 	.text       start:0x801DADF0 end:0x801DBDD4
 	.rodata     start:0x802FBC10 end:0x802FBC40
 	.data       start:0x803A68B0 end:0x803A6AC8
 	.sdata2     start:0x80425C08 end:0x80425C68
 	.sbss2      start:0x80429798 end:0x804297A0
 
-eff_packn_bfire_n64.o:
+effect/n64/eff_packn_bfire_n64.c:
 	.text       start:0x801DBDD4 end:0x801DCC60
 	.rodata     start:0x802FBC40 end:0x802FBC68
 	.data       start:0x803A6AC8 end:0x803A6B00
 	.sdata2     start:0x80425C68 end:0x80425CC8
 	.sbss2      start:0x804297A0 end:0x804297A8
 
-eff_peach_dust_n64.o:
+effect/n64/eff_peach_dust_n64.c:
 	.text       start:0x801DCC60 end:0x801DD5E8
 	.rodata     start:0x802FBC68 end:0x802FBC98
 	.data       start:0x803A6B00 end:0x803A6FE0
 	.sdata      start:0x80419AC0 end:0x80419B00
 	.sdata2     start:0x80425CC8 end:0x80425D00
 
-eff_pikkyolo_n64.o:
+effect/n64/eff_pikkyolo_n64.c:
 	.text       start:0x801DD5E8 end:0x801DDE44
 	.rodata     start:0x802FBC98 end:0x802FBCC0
 	.data       start:0x803A6FE0 end:0x803A70C0
 	.sdata2     start:0x80425D00 end:0x80425D20
 	.sbss2      start:0x804297A8 end:0x804297B0
 
-eff_pokopi_pcharge_n64.o:
+effect/n64/eff_pokopi_pcharge_n64.c:
 	.text       start:0x801DDE44 end:0x801DEF1C
 	.rodata     start:0x802FBCC0 end:0x802FBCF8
 	.data       start:0x803A70C0 end:0x803A74E8
@@ -1811,7 +1811,7 @@ eff_pokopi_pcharge_n64.o:
 	.sdata2     start:0x80425D20 end:0x80425D68
 	.sbss2      start:0x804297B0 end:0x804297C0
 
-eff_pokopi_pipo_n64.o:
+effect/n64/eff_pokopi_pipo_n64.c:
 	.text       start:0x801DEF1C end:0x801DF670
 	.rodata     start:0x802FBCF8 end:0x802FBD28
 	.data       start:0x803A74E8 end:0x803A7520
@@ -1819,7 +1819,7 @@ eff_pokopi_pipo_n64.o:
 	.sdata2     start:0x80425D68 end:0x80425DA0
 	.sbss2      start:0x804297C0 end:0x804297C8
 
-eff_pokopi_thunder_n64.o:
+effect/n64/eff_pokopi_thunder_n64.c:
 	.text       start:0x801DF670 end:0x801E04AC
 	.rodata     start:0x802FBD28 end:0x802FBD78
 	.data       start:0x803A7520 end:0x803A7738
@@ -1827,7 +1827,7 @@ eff_pokopi_thunder_n64.o:
 	.sdata2     start:0x80425DA0 end:0x80425DE0
 	.sbss2      start:0x804297C8 end:0x804297D0
 
-eff_pturn_n64.o:
+effect/n64/eff_pturn_n64.c:
 	.text       start:0x801E04AC end:0x801E1280
 	.rodata     start:0x802FBD78 end:0x802FBDA0
 	.data       start:0x803A7738 end:0x803A7850
@@ -1835,14 +1835,14 @@ eff_pturn_n64.o:
 	.sdata2     start:0x80425DE0 end:0x80425E10
 	.sbss2      start:0x804297D0 end:0x804297D8
 
-eff_radiation_n64.o:
+effect/n64/eff_radiation_n64.c:
 	.text       start:0x801E1280 end:0x801E21CC
 	.rodata     start:0x802FBDA0 end:0x802FBDC8
 	.data       start:0x803A7850 end:0x803A79C8
 	.sdata      start:0x80419B60 end:0x80419B90
 	.sdata2     start:0x80425E10 end:0x80425E58
 
-eff_rappa_n64.o:
+effect/n64/eff_rappa_n64.c:
 	.text       start:0x801E21CC end:0x801E2980
 	.rodata     start:0x802FBDC8 end:0x802FBDF0
 	.data       start:0x803A79C8 end:0x803A7A08
@@ -1850,7 +1850,7 @@ eff_rappa_n64.o:
 	.sdata2     start:0x80425E58 end:0x80425E88
 	.sbss2      start:0x804297D8 end:0x804297E0
 
-eff_recover_heart_n64.o:
+effect/n64/eff_recover_heart_n64.c:
 	.text       start:0x801E2980 end:0x801E3524
 	.rodata     start:0x802FBDF0 end:0x802FBE18
 	.data       start:0x803A7A08 end:0x803A7C08
@@ -1858,47 +1858,47 @@ eff_recover_heart_n64.o:
 	.sdata2     start:0x80425E88 end:0x80425EB8
 	.sbss2      start:0x804297E0 end:0x804297E8
 
-eff_release_n64.o:
+effect/n64/eff_release_n64.c:
 	.text       start:0x801E3524 end:0x801E461C
 	.rodata     start:0x802FBE18 end:0x802FBE48
 	.data       start:0x803A7C08 end:0x803A8008
 	.sdata2     start:0x80425EB8 end:0x80425F18
 	.sbss2      start:0x804297E8 end:0x804297F0
 
-eff_ripple_n64.o:
+effect/n64/eff_ripple_n64.c:
 	.text       start:0x801E461C end:0x801E4D28
 	.rodata     start:0x802FBE48 end:0x802FBE70
 	.data       start:0x803A8008 end:0x803A80C0
 	.sdata2     start:0x80425F18 end:0x80425F48
 	.sbss2      start:0x804297F0 end:0x804297F8
 
-eff_rothammer_fail_n64.o:
+effect/n64/eff_rothammer_fail_n64.c:
 	.text       start:0x801E4D28 end:0x801E54D8
 	.rodata     start:0x802FBE70 end:0x802FBEA0
 	.data       start:0x803A80C0 end:0x803A80F8
 	.sdata2     start:0x80425F48 end:0x80425F80
 	.sbss2      start:0x804297F8 end:0x80429800
 
-eff_rothammer_success_n64.o:
+effect/n64/eff_rothammer_success_n64.c:
 	.text       start:0x801E54D8 end:0x801E5AC8
 	.rodata     start:0x802FBEA0 end:0x802FBEC8
 	.data       start:0x803A80F8 end:0x803A8130
 	.sdata2     start:0x80425F80 end:0x80425FB0
 
-eff_rubble_n64.o:
+effect/n64/eff_rubble_n64.c:
 	.text       start:0x801E5AC8 end:0x801E62F8
 	.rodata     start:0x802FBEC8 end:0x802FBEF0
 	.data       start:0x803A8130 end:0x803A8460
 	.sdata2     start:0x80425FB0 end:0x80425FD0
 
-eff_shock_n64.o:
+effect/n64/eff_shock_n64.c:
 	.text       start:0x801E62F8 end:0x801E7080
 	.rodata     start:0x802FBEF0 end:0x802FBF18
 	.data       start:0x803A8460 end:0x803A89A0
 	.sdata2     start:0x80425FD0 end:0x80426000
 	.sbss2      start:0x80429800 end:0x80429808
 
-eff_small_star_n64.o:
+effect/n64/eff_small_star_n64.c:
 	.text       start:0x801E7080 end:0x801E7F0C
 	.rodata     start:0x802FBF18 end:0x802FBF78
 	.data       start:0x803A89A0 end:0x803A89D8
@@ -1907,60 +1907,60 @@ eff_small_star_n64.o:
 	.sdata2     start:0x80426000 end:0x80426058
 	.sbss2      start:0x80429808 end:0x80429810
 
-eff_snow_n64.o:
+effect/n64/eff_snow_n64.c:
 	.text       start:0x801E7F0C end:0x801E84CC
 	.rodata     start:0x802FBF78 end:0x802FBF90
 	.sbss       start:0x8041ECE0 end:0x8041ECE8
 	.sdata2     start:0x80426058 end:0x80426090
 
-eff_snowfall_n64.o:
+effect/n64/eff_snowfall_n64.c:
 	.text       start:0x801E84CC end:0x801E904C
 	.rodata     start:0x802FBF90 end:0x802FBFB0
 	.data       start:0x803A89D8 end:0x803A8B98
 	.sdata2     start:0x80426090 end:0x804260C0
 	.sbss2      start:0x80429810 end:0x80429818
 
-eff_snowman_n64.o:
+effect/n64/eff_snowman_n64.c:
 	.text       start:0x801E904C end:0x801E9834
 	.rodata     start:0x802FBFB0 end:0x802FBFE0
 	.data       start:0x803A8B98 end:0x803A8C38
 	.sdata      start:0x80419C18 end:0x80419C48
 	.sdata2     start:0x804260C0 end:0x804260F8
 
-eff_sstar_n64.o:
+effect/n64/eff_sstar_n64.c:
 	.text       start:0x801E9834 end:0x801EA9EC
 	.rodata     start:0x802FBFE0 end:0x802FC018
 	.data       start:0x803A8C38 end:0x803A8D80
 	.sdata2     start:0x804260F8 end:0x804261A8
 
-eff_stamp_n64.o:
+effect/n64/eff_stamp_n64.c:
 	.text       start:0x801EA9EC end:0x801EB1F8
 	.rodata     start:0x802FC018 end:0x802FC040
 	.data       start:0x803A8D80 end:0x803A8DB8
 	.sbss2      start:0x80429818 end:0x80429820
 
-eff_star_power_n64.o:
+effect/n64/eff_star_power_n64.c:
 	.text       start:0x801EB1F8 end:0x801EC284
 	.rodata     start:0x802FC040 end:0x802FC068
 	.data       start:0x803A8DB8 end:0x803A8FE8
 	.sdata2     start:0x804261A8 end:0x80426208
 	.sbss2      start:0x80429820 end:0x80429830
 
-eff_stardust2_n64.o:
+effect/n64/eff_stardust2_n64.c:
 	.text       start:0x801EC284 end:0x801ED1DC
 	.rodata     start:0x802FC068 end:0x802FC098
 	.data       start:0x803A8FE8 end:0x803A91C8
 	.sdata      start:0x80419C48 end:0x80419C90
 	.sdata2     start:0x80426208 end:0x80426270
 
-eff_stardust_n64.o:
+effect/n64/eff_stardust_n64.c:
 	.text       start:0x801ED1DC end:0x801EE0C8
 	.rodata     start:0x802FC098 end:0x802FC0C8
 	.data       start:0x803A91C8 end:0x803A93A8
 	.sdata      start:0x80419C90 end:0x80419CC8
 	.sdata2     start:0x80426270 end:0x804262D0
 
-eff_stone_smoke_n64.o:
+effect/n64/eff_stone_smoke_n64.c:
 	.text       start:0x801EE0C8 end:0x801EE5D0
 	.rodata     start:0x802FC0C8 end:0x802FC0F0
 	.data       start:0x803A93A8 end:0x803A93E0
@@ -1968,39 +1968,39 @@ eff_stone_smoke_n64.o:
 	.sdata2     start:0x804262D0 end:0x804262E0
 	.sbss2      start:0x80429830 end:0x80429838
 
-eff_sunlight_n64.o:
+effect/n64/eff_sunlight_n64.c:
 	.text       start:0x801EE5D0 end:0x801EF080
 	.rodata     start:0x802FC0F0 end:0x802FC138
 	.data       start:0x803A93E0 end:0x803A9568
 	.sdata2     start:0x804262E0 end:0x80426328
 	.sbss2      start:0x80429838 end:0x80429840
 
-eff_sweat_n64.o:
+effect/n64/eff_sweat_n64.c:
 	.text       start:0x801EF080 end:0x801EF8D4
 	.rodata     start:0x802FC138 end:0x802FC168
 	.sdata2     start:0x80426328 end:0x80426360
 
-eff_thruhammer_n64.o:
+effect/n64/eff_thruhammer_n64.c:
 	.text       start:0x801EF8D4 end:0x801F03C4
 	.rodata     start:0x802FC168 end:0x802FC190
 	.data       start:0x803A9568 end:0x803A9680
 	.sdata2     start:0x80426360 end:0x804263A8
 	.sbss2      start:0x80429840 end:0x80429850
 
-eff_thunder_n64.o:
+effect/n64/eff_thunder_n64.c:
 	.text       start:0x801F03C4 end:0x801F2500
 	.rodata     start:0x802FC190 end:0x802FC1B8
 	.data       start:0x803A9680 end:0x803AB4B0
 	.sdata2     start:0x804263A8 end:0x80426400
 
-eff_thunderflare_n64.o:
+effect/n64/eff_thunderflare_n64.c:
 	.text       start:0x801F2500 end:0x801F2E70
 	.rodata     start:0x802FC1B8 end:0x802FC1E0
 	.data       start:0x803AB4B0 end:0x803AB520
 	.sdata2     start:0x80426400 end:0x80426430
 	.sbss2      start:0x80429850 end:0x80429858
 
-eff_timestamp_n64.o:
+effect/n64/eff_timestamp_n64.c:
 	.text       start:0x801F2E70 end:0x801F389C
 	.rodata     start:0x802FC1E0 end:0x802FC210
 	.data       start:0x803AB520 end:0x803AB5A0
@@ -2008,14 +2008,14 @@ eff_timestamp_n64.o:
 	.sdata2     start:0x80426430 end:0x80426458
 	.sbss2      start:0x80429858 end:0x80429860
 
-eff_vapor_n64.o:
+effect/n64/eff_vapor_n64.c:
 	.text       start:0x801F389C end:0x801F4338
 	.rodata     start:0x802FC210 end:0x802FC240
 	.data       start:0x803AB5A0 end:0x803AB860
 	.sdata2     start:0x80426458 end:0x80426490
 	.sbss2      start:0x80429860 end:0x80429868
 
-eff_wangflush_n64.o:
+effect/n64/eff_wangflush_n64.c:
 	.text       start:0x801F4338 end:0x801F49FC
 	.rodata     start:0x802FC240 end:0x802FC268
 	.data       start:0x803AB860 end:0x803AB8A0
@@ -2023,13 +2023,13 @@ eff_wangflush_n64.o:
 	.sdata2     start:0x80426490 end:0x804264D0
 	.sbss2      start:0x80429868 end:0x80429870
 
-eff_water_damage_n64.o:
+effect/n64/eff_water_damage_n64.c:
 	.text       start:0x801F49FC end:0x801F5F34
 	.rodata     start:0x802FC268 end:0x802FC290
 	.data       start:0x803AB8A0 end:0x803ABA48
 	.sdata2     start:0x804264D0 end:0x80426530
 
-eff_snow_dust_n64.o:
+effect/n64/eff_snow_dust_n64.c:
 	.text       start:0x801F5F34 end:0x801F7A24
 	.rodata     start:0x802FC290 end:0x802FC2C0
 	.data       start:0x803ABA48 end:0x803ABBA8
