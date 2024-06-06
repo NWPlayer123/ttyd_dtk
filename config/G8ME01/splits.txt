@@ -955,7 +955,7 @@ manager/dvdmgr.c:
 	.bss        start:0x803E1BB8 end:0x803E5ED0
 	.sbss       start:0x8041EBF0 end:0x8041EC00
 
-unit_mario.o:
+unit/unit_mario.c:
 	.text       start:0x801453B0 end:0x801458A4
 	.rodata     start:0x802F3F70 end:0x802F4280
 	.data       start:0x803728B8 end:0x80373CFC
@@ -1071,21 +1071,21 @@ event/evt_cloud.c:
 	.sbss       start:0x8041EC40 end:0x8041EC48
 	.sdata2     start:0x80424040 end:0x80424060
 
-unit_party_clauda.o:
+unit/party/unit_party_clauda.c:
 	.text       start:0x8017F5D8 end:0x8017FF98
 	.rodata     start:0x802F7438 end:0x802F77D8
 	.data       start:0x80378D68 end:0x8037C448
 	.sdata      start:0x80418108 end:0x80418180
 	.sdata2     start:0x80424060 end:0x80424090
 
-unit_party_yoshi.o:
+unit/party/unit_party_yoshi.c:
 	.text       start:0x8017FF98 end:0x80181370
 	.rodata     start:0x802F77D8 end:0x802F7D30
 	.data       start:0x8037C448 end:0x80381658
 	.sdata      start:0x80418180 end:0x80418230
 	.sdata2     start:0x80424090 end:0x80424110
 
-unit_party_chuchurina.o:
+unit/party/unit_party_chuchurina.c:
 	.text       start:0x80181370 end:0x801820E0
 	.rodata     start:0x802F7D30 end:0x802F81E0
 	.data       start:0x80381658 end:0x803875D8
@@ -1093,14 +1093,14 @@ unit_party_chuchurina.o:
 	.sbss       start:0x8041EC48 end:0x8041EC50
 	.sdata2     start:0x80424110 end:0x80424148
 
-unit_party_sanders.o:
+unit/party/unit_party_sanders.c:
 	.text       start:0x801820E0 end:0x80182930
 	.rodata     start:0x802F81E0 end:0x802F84D0
 	.data       start:0x803875D8 end:0x8038B6B8
 	.sdata      start:0x80418288 end:0x80418310
 	.sdata2     start:0x80424148 end:0x804241E8
 
-unit_party_vivian.o:
+unit/party/unit_party_vivian.c:
 	.text       start:0x80182930 end:0x801839C0
 	.rodata     start:0x802F84D0 end:0x802F8908
 	.data       start:0x8038B6B8 end:0x8038E910
@@ -1131,14 +1131,14 @@ party/party_chuchu.c:
 	.data       start:0x8038E910 end:0x8038ED20
 	.sdata2     start:0x80424368 end:0x80424390
 
-unit_party_nokotarou.o:
+unit/party/unit_party_nokotarou.c:
 	.text       start:0x80188D44 end:0x80189374
 	.rodata     start:0x802F8CA8 end:0x802F90B8
 	.data       start:0x8038ED20 end:0x80393A60
 	.sdata      start:0x804183A8 end:0x80418450
 	.sdata2     start:0x80424390 end:0x804243B0
 
-unit_party_christine.o:
+unit/party/unit_party_christine.c:
 	.text       start:0x80189374 end:0x80189A28
 	.rodata     start:0x802F90B8 end:0x802F9470
 	.data       start:0x80393A60 end:0x80397670
@@ -1236,7 +1236,7 @@ effect/eff_bomb.c:
 	.data       start:0x8039AFB0 end:0x8039B088
 	.sdata2     start:0x804247C0 end:0x80424800
 
-unit_bomzou.o:
+unit/unit_bomzou.c:
 	.rodata     start:0x802F9AC0 end:0x802F9B68
 	.data       start:0x8039B088 end:0x8039B868
 	.sdata      start:0x80418858 end:0x80418958
@@ -1264,7 +1264,7 @@ driver/envdrv.c:
 	.sbss       start:0x8041EC90 end:0x8041ECB0
 	.sdata2     start:0x80424880 end:0x80424940
 
-unit_koura.o:
+unit/unit_koura.c:
 	.rodata     start:0x802F9C90 end:0x802F9D90
 	.data       start:0x8039BC20 end:0x8039C848
 	.sdata      start:0x80418958 end:0x80418A40
@@ -1289,14 +1289,14 @@ mario/mario_cam.c:
 	.rodata     start:0x802FA748 end:0x802FA780
 	.sdata2     start:0x80424A90 end:0x80424AF0
 
-unit_object_tree.o:
+unit/unit_object_tree.c:
 	.text       start:0x801A9604 end:0x801A97A0
 	.rodata     start:0x802FA780 end:0x802FA7F8
 	.data       start:0x8039CF00 end:0x8039D138
 	.sdata      start:0x80418B00 end:0x80418B70
 	.sdata2     start:0x80424AF0 end:0x80424B08
 
-unit_object_switch.o:
+unit/unit_object_switch.c:
 	.text       start:0x801A97A0 end:0x801A9888
 	.rodata     start:0x802FA7F8 end:0x802FA880
 	.data       start:0x8039D138 end:0x8039D390
@@ -2085,7 +2085,7 @@ effect/eff_batfukidashi.c:
 	.data       start:0x803ADDE8 end:0x803ADE28
 	.sdata2     start:0x804267C8 end:0x804267F8
 
-unit_system.o:
+unit/unit_system.c:
 	.rodata     start:0x802FDDD8 end:0x802FDE40
 	.data       start:0x803ADE28 end:0x803ADFC0
 	.sdata      start:0x80419EC8 end:0x80419F10
