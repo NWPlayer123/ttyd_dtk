@@ -49,7 +49,7 @@ seq_title.o:
 	.sdata2     start:0x8041F558 end:0x8041F5F0
 	.sbss2      start:0x80429508 end:0x80429510
 
-bgdrv.o:
+driver/bgdrv.c:
 	.text       start:0x80009D98 end:0x8000A8EC
 	.rodata     start:0x802BF530 end:0x802BF540
 	.bss        start:0x803C93A8 end:0x803C93E8
@@ -62,7 +62,7 @@ cam_road.o:
 	.sdata      start:0x80414FA8 end:0x80414FB0
 	.sdata2     start:0x8041F628 end:0x8041F6B0
 
-camdrv.o:
+driver/camdrv.c:
 	.text       start:0x8000E388 end:0x80010864
 	.rodata     start:0x802BF5D8 end:0x802BF668
 	.bss        start:0x803C95F8 end:0x803C9630
@@ -71,13 +71,13 @@ camdrv.o:
 	.sdata2     start:0x8041F6B0 end:0x8041F760
 	.sbss2      start:0x80429510 end:0x80429518
 
-dispdrv.o:
+driver/dispdrv.c:
 	.text       start:0x80010864 end:0x80010CD4
 	.sdata      start:0x80414FD8 end:0x80415020
 	.sbss       start:0x8041E610 end:0x8041E620
 	.sdata2     start:0x8041F760 end:0x8041F778
 
-fadedrv.o:
+driver/fadedrv.c:
 	.text       start:0x80010CD4 end:0x80013CEC
 	.rodata     start:0x802BF668 end:0x802BF7B8
 	.data       start:0x803044A0 end:0x803048A0
@@ -86,27 +86,27 @@ fadedrv.o:
 	.sdata2     start:0x8041F778 end:0x8041F838
 	.sbss2      start:0x80429518 end:0x80429520
 
-hitdrv.o:
+driver/hitdrv.c:
 	.text       start:0x80013CEC end:0x80018E9C
 	.rodata     start:0x802BF7B8 end:0x802BF818
 	.sbss       start:0x8041E628 end:0x8041E630
 	.sdata2     start:0x8041F838 end:0x8041F858
 
-icondrv.o:
+driver/icondrv.c:
 	.text       start:0x80018E9C end:0x8001B87C
 	.rodata     start:0x802BF818 end:0x802BF870
 	.sdata      start:0x80415040 end:0x804150B0
 	.sbss       start:0x8041E630 end:0x8041E650
 	.sdata2     start:0x8041F858 end:0x8041F8B0
 
-lightdrv.o:
+driver/lightdrv.c:
 	.text       start:0x8001B87C end:0x8001C450
 	.rodata     start:0x802BF870 end:0x802BF958
 	.bss        start:0x803C9630 end:0x803C97B0
 	.sbss       start:0x8041E650 end:0x8041E660
 	.sdata2     start:0x8041F8B0 end:0x8041F8E0
 
-mapdrv.o:
+driver/mapdrv.c:
 	.text       start:0x8001C450 end:0x8002B4D8
 	.rodata     start:0x802BF958 end:0x802BFD10
 	.data       start:0x803048A0 end:0x80304A28
@@ -116,7 +116,7 @@ mapdrv.o:
 	.sdata2     start:0x8041F8E0 end:0x8041F9C0
 	.sbss2      start:0x80429520 end:0x80429538
 
-shadowdrv.o:
+driver/shadowdrv.c:
 	.text       start:0x8002B4D8 end:0x8002E1E4
 	.rodata     start:0x802BFD10 end:0x802BFE68
 	.data       start:0x80304A28 end:0x803051B0
@@ -126,7 +126,7 @@ shadowdrv.o:
 	.sdata2     start:0x8041F9C0 end:0x8041FA10
 	.sbss2      start:0x80429538 end:0x80429548
 
-seqdrv.o:
+driver/seqdrv.c:
 	.text       start:0x8002E1E4 end:0x8002E340
 	.sdata      start:0x80415190 end:0x804151A0
 	.sbss       start:0x8041E778 end:0x8041E7A0
@@ -183,7 +183,7 @@ mapdata.o:
 	.sdata      start:0x804151F0 end:0x80415DA0
 	.sdata2     start:0x8041FA60 end:0x8041FB08
 
-animdrv.o:
+driver/animdrv.c:
 	.text       start:0x800393C4 end:0x80042F38
 	.rodata     start:0x802C0D18 end:0x802C11F8
 	.data       start:0x80305900 end:0x803066F8
@@ -192,7 +192,7 @@ animdrv.o:
 	.sbss       start:0x8041E868 end:0x8041E8A8
 	.sdata2     start:0x8041FB08 end:0x8041FBB8
 
-npcdrv.o:
+driver/npcdrv.c:
 	.text       start:0x80042F38 end:0x8004CF88
 	.rodata     start:0x802C11F8 end:0x802C1470
 	.data       start:0x803066F8 end:0x80306A60
@@ -224,7 +224,7 @@ mario.o:
 	.sbss       start:0x8041E8F0 end:0x8041E908
 	.sdata2     start:0x8041FE88 end:0x804200E8
 
-effdrv.o:
+driver/effdrv.c:
 	.text       start:0x8005E0C8 end:0x8005EFF0
 	.rodata     start:0x802C1C80 end:0x802C1F58
 	.data       start:0x803097A8 end:0x80309A38
@@ -232,7 +232,7 @@ effdrv.o:
 	.sbss       start:0x8041E908 end:0x8041E920
 	.sdata2     start:0x804200E8 end:0x804201B8
 
-mobjdrv.o:
+driver/mobjdrv.c:
 	.text       start:0x8005EFF0 end:0x800617F8
 	.rodata     start:0x802C1F58 end:0x802C2058
 	.data       start:0x80309A38 end:0x8030B360
@@ -257,7 +257,7 @@ event/evt_eff.c:
 event/evt_paper.c:
 	.text       start:0x8006E37C end:0x8006E440
 
-casedrv.o:
+driver/casedrv.c:
 	.text       start:0x8006E440 end:0x8006EDBC
 	.sdata      start:0x80415FC8 end:0x80415FD0
 	.sbss       start:0x8041E930 end:0x8041E938
@@ -281,7 +281,7 @@ event/evt_img.c:
 	.sdata2     start:0x80420360 end:0x80420368
 	.sbss2      start:0x80429570 end:0x80429578
 
-imgdrv.o:
+driver/imgdrv.c:
 	.text       start:0x80070C78 end:0x80072BF8
 	.rodata     start:0x802C2A98 end:0x802C2AB0
 	.data       start:0x8030C360 end:0x8030C410
@@ -289,7 +289,7 @@ imgdrv.o:
 	.sbss       start:0x8041E950 end:0x8041E958
 	.sdata2     start:0x80420368 end:0x804203A8
 
-offscreendrv.o:
+driver/offscreendrv.c:
 	.text       start:0x80072BF8 end:0x80073450
 	.sbss       start:0x8041E958 end:0x8041E968
 	.sdata2     start:0x804203A8 end:0x804203B0
@@ -321,7 +321,7 @@ arc.o:
 	.rodata     start:0x802C2BD8 end:0x802C2C00
 	.sdata2     start:0x80420440 end:0x80420448
 
-arcdrv.o:
+driver/arcdrv.c:
 	.text       start:0x800782E4 end:0x80078548
 	.bss        start:0x803DBFF0 end:0x803DC090
 
@@ -342,13 +342,13 @@ event/evt_bero.c:
 	.sbss       start:0x8041E9C8 end:0x8041EA18
 	.sdata2     start:0x804204C0 end:0x80420528
 
-windowdrv.o:
+driver/windowdrv.c:
 	.text       start:0x8007AD30 end:0x8007FDF4
 	.rodata     start:0x802C3078 end:0x802C30A8
 	.sbss       start:0x8041EA18 end:0x8041EA30
 	.sdata2     start:0x80420528 end:0x804205A8
 
-msgdrv.o:
+driver/msgdrv.c:
 	.text       start:0x8007FDF4 end:0x800849F4
 	.rodata     start:0x802C30A8 end:0x802C3450
 	.data       start:0x8030F4B0 end:0x8030F668
@@ -369,7 +369,7 @@ database.o:
 	.sbss       start:0x8041EA60 end:0x8041EA68
 	.sdata2     start:0x804207A8 end:0x804207C0
 
-swdrv.o:
+driver/swdrv.c:
 	.text       start:0x80085744 end:0x800859F8
 
 seq_logo.o:
@@ -465,7 +465,7 @@ event/evt_item.c:
 	.rodata     start:0x802C9048 end:0x802C9050
 	.sdata2     start:0x80421070 end:0x804210A8
 
-itemdrv.o:
+driver/itemdrv.c:
 	.text       start:0x800AA4FC end:0x800AECB0
 	.rodata     start:0x802C9050 end:0x802C92E0
 	.data       start:0x80313DC8 end:0x80314040
@@ -549,7 +549,7 @@ mario_pouch.o:
 	.sbss       start:0x8041EB00 end:0x8041EB08
 	.sdata2     start:0x80421878 end:0x80421880
 
-extdrv.o:
+driver/extdrv.c:
 	.text       start:0x800D5EB8 end:0x800D7370
 	.rodata     start:0x802CC738 end:0x802CC740
 	.data       start:0x803153C0 end:0x80315AC8
@@ -1256,7 +1256,7 @@ effect/eff_ripple.c:
 event/evt_env.c:
 	.text       start:0x80199098 end:0x80199178
 
-envdrv.o:
+driver/envdrv.c:
 	.text       start:0x80199178 end:0x8019E130
 	.rodata     start:0x802F9BE8 end:0x802F9C90
 	.data       start:0x8039B868 end:0x8039BC20
