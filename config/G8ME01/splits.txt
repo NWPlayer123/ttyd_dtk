@@ -131,7 +131,7 @@ driver/seqdrv.c:
 	.sdata      start:0x80415190 end:0x804151A0
 	.sbss       start:0x8041E778 end:0x8041E7A0
 
-DEMOInit.c:
+sdk/DEMOInit.c:
 	.text       start:0x8002E340 end:0x8002F03C
 	.rodata     start:0x802BFE68 end:0x802BFFB0
 	.bss        start:0x803C9F58 end:0x803CA398
@@ -140,7 +140,7 @@ DEMOInit.c:
 	.sdata2     start:0x8041FA10 end:0x8041FA18
 	.sbss2      start:0x80429548 end:0x80429550
 
-DEMOPad.c:
+sdk/DEMOPad.c:
 	.text       start:0x8002F03C end:0x8002F33C
 	.bss        start:0x803CA398 end:0x803CA410
 	.sdata      start:0x804151A8 end:0x804151B8
@@ -165,7 +165,7 @@ manager/evtmgr.c:
 	.sbss       start:0x8041E858 end:0x8041E868
 	.sdata2     start:0x8041FA30 end:0x8041FA38
 
-texPalette.c:
+sdk/texPalette.c:
 	.text       start:0x80037A80 end:0x80037C8C
 	.rodata     start:0x802C0140 end:0x802C0188
 
@@ -316,7 +316,7 @@ manager/fontmgr.c:
 	.sdata2     start:0x804203D8 end:0x80420440
 	.sbss2      start:0x80429578 end:0x80429580
 
-arc.c:
+sdk/arc.c:
 	.text       start:0x80077C0C end:0x800782E4
 	.rodata     start:0x802C2BD8 end:0x802C2C00
 	.sdata2     start:0x80420440 end:0x80420448
@@ -651,12 +651,12 @@ sequence/seq_load.c:
 	.sdata2     start:0x80422010 end:0x80422170
 	.sbss2      start:0x80429588 end:0x80429590
 
-battle/battle_evt_cmd.c:
-	.data       start:0x8034CB48 end:0x8034CC60
-
 event/evt_bg.c:
 	.text       start:0x800F7324 end:0x800F74B4
 	.sbss2      start:0x80429590 end:0x80429598
+
+battle/battle_evt_cmd.c:
+	.data       start:0x8034CB48 end:0x8034CC60
 
 battle/battle.c:
 	.text       start:0x800F74B4 end:0x800F9094
@@ -757,11 +757,11 @@ battle/battle_unit.c:
 	.data       start:0x80364180 end:0x80364348
 	.sdata2     start:0x804226A0 end:0x804226D0
 
-action/ac_table.c:
-	.data       start:0x80364348 end:0x803644F0
-
 battle/battle_unit_event.c:
 	.text       start:0x801296E0 end:0x80129A10
+
+action/ac_table.c:
+	.data       start:0x80364348 end:0x803644F0
 
 action/ac_stick_keep_left.c:
 	.text       start:0x80129A10 end:0x8012A6B0
@@ -2810,6 +2810,9 @@ Runtime.PPCEABI.H/runtime.c:
 	.text       start:0x80264860 end:0x80265090
 	.rodata     start:0x80303A20 end:0x80303A38
 
+Runtime.PPCEABI.H/__mem.c:
+	.init       start:0x800050B4 end:0x800051EC
+
 Runtime.PPCEABI.H/GCN_mem_alloc.c:
 	.text       start:0x80265090 end:0x80265148
 	.rodata     start:0x80303A38 end:0x80303AB0
@@ -3297,16 +3300,13 @@ os/OSThread.c:
 	.sdata      start:0x8041E450 end:0x8041E458
 	.sbss       start:0x8041F0F0 end:0x8041F100
 
-os/OSTime.c:
-	.text       start:0x8029D84C end:0x8029DC70
-	.data       start:0x803C2BD8 end:0x803C2C38
-
-Runtime.PPCEABI.H/__mem.c:
-	.init       start:0x800050B4 end:0x800051EC
-
 os/__start.c:
 	.init       start:0x800051EC end:0x800054EC
 	.sbss       start:0x8041F100 end:0x8041F108
+
+os/OSTime.c:
+	.text       start:0x8029D84C end:0x8029DC70
+	.data       start:0x803C2BD8 end:0x803C2C38
 
 os/__ppc_eabi_init.cpp:
 	.init       start:0x800054EC end:0x80005544
