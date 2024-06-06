@@ -2064,7 +2064,7 @@ peach.o:
 	.rodata     start:0x802FD210 end:0x802FD238
 	.sdata2     start:0x804265B0 end:0x80426718
 
-koopa.o:
+bowser/koopa.c:
 	.text       start:0x801FCC5C end:0x801FF1F4
 	.rodata     start:0x802FD238 end:0x802FD330
 	.data       start:0x803AD820 end:0x803AD930
@@ -2204,20 +2204,20 @@ battle/battle_ac_help.c:
 	.rodata     start:0x802FEB30 end:0x802FEB58
 	.sdata2     start:0x804272A0 end:0x804272C0
 
-kpa_act.o:
+bowser/kpa_act.c:
 	.text       start:0x80216964 end:0x8021740C
 	.rodata     start:0x802FEB58 end:0x802FEB70
 	.sdata      start:0x8041B960 end:0x8041B988
 	.sbss       start:0x8041ED10 end:0x8041ED18
 	.sdata2     start:0x804272C0 end:0x804272E0
 
-koopa_motion.o:
+bowser/koopa_motion.c:
 	.text       start:0x8021740C end:0x80219618
 	.rodata     start:0x802FEB70 end:0x802FEC78
 	.sdata      start:0x8041B988 end:0x8041BA30
 	.sdata2     start:0x804272E0 end:0x804273B0
 
-koopa_hit.o:
+bowser/koopa_hit.c:
 	.text       start:0x80219618 end:0x8021AC94
 	.rodata     start:0x802FEC78 end:0x802FECE8
 	.data       start:0x803B0D68 end:0x803B0F50

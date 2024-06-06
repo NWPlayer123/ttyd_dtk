@@ -345,6 +345,18 @@ config.libs = [
         ],
     },
     {
+        "lib": "bowser",
+        "mw_version": config.linker_version,
+        "cflags": cflags_static,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "bowser/koopa.c"),
+            Object(NonMatching, "bowser/koopa_hit.c"),
+            Object(NonMatching, "bowser/koopa_motion.c"),
+            Object(NonMatching, "bowser/kpa_act.c"),
+        ],
+    },
+    {
         "lib": "data",
         "mw_version": config.linker_version,
         "cflags": cflags_static,
