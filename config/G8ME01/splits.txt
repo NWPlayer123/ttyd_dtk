@@ -757,19 +757,19 @@ battle/battle_unit.c:
 	.data       start:0x80364180 end:0x80364348
 	.sdata2     start:0x804226A0 end:0x804226D0
 
-ac_table.o:
+action/ac_table.c:
 	.data       start:0x80364348 end:0x803644F0
 
 battle/battle_unit_event.c:
 	.text       start:0x801296E0 end:0x80129A10
 
-ac_stick_keep_left.o:
+action/ac_stick_keep_left.c:
 	.text       start:0x80129A10 end:0x8012A6B0
 	.rodata     start:0x802F00D8 end:0x802F01C8
 	.sdata      start:0x80416DF8 end:0x80416E18
 	.sdata2     start:0x804226D0 end:0x80422710
 
-ac_timing_a.o:
+action/ac_timing_a.c:
 	.text       start:0x8012A6B0 end:0x8012ABE4
 	.rodata     start:0x802F01C8 end:0x802F01E0
 	.data       start:0x803644F0 end:0x803646E8
@@ -850,7 +850,7 @@ event/evt_light.c:
 	.text       start:0x80136158 end:0x801364E0
 	.rodata     start:0x802F3748 end:0x802F3760
 
-ac_repeatedly.o:
+action/ac_repeatedly.c:
 	.text       start:0x801364E0 end:0x80137278
 	.rodata     start:0x802F3760 end:0x802F37A8
 	.sdata      start:0x80417570 end:0x804175A0
@@ -1242,7 +1242,7 @@ unit_bomzou.o:
 	.sdata      start:0x80418858 end:0x80418958
 	.sdata2     start:0x80424800 end:0x80424818
 
-ac_shot.o:
+action/ac_shot.c:
 	.text       start:0x80197EA8 end:0x80198FCC
 	.rodata     start:0x802F9B68 end:0x802F9BD8
 	.sdata2     start:0x80424818 end:0x80424878
@@ -1270,7 +1270,7 @@ unit_koura.o:
 	.sdata      start:0x80418958 end:0x80418A40
 	.sdata2     start:0x80424940 end:0x80424948
 
-ac_lst_rc_keep.o:
+action/ac_lst_rc_keep.c:
 	.text       start:0x8019E130 end:0x8019EB14
 	.rodata     start:0x802F9D90 end:0x802F9E28
 	.sdata      start:0x80418A40 end:0x80418A70
@@ -1316,7 +1316,7 @@ event/evt_telop.c:
 	.sbss       start:0x8041ECB0 end:0x8041ECC0
 	.sdata2     start:0x80424B28 end:0x80424B68
 
-ac_repeatedly_lv.o:
+action/ac_repeatedly_lv.c:
 	.text       start:0x801AACD4 end:0x801ABC10
 	.rodata     start:0x802FAA10 end:0x802FAA70
 	.sdata2     start:0x80424B68 end:0x80424BB8
@@ -2096,18 +2096,18 @@ countdown.o:
 	.sbss       start:0x8041ECF8 end:0x8041ED00
 	.sdata2     start:0x804267F8 end:0x80426830
 
-ac_stick_rotate.o:
+action/ac_stick_rotate.c:
 	.text       start:0x80200F74 end:0x80201D7C
 	.rodata     start:0x802FDE78 end:0x802FDEE8
 	.sdata2     start:0x80426830 end:0x80426848
 
-ac_button_down.o:
+action/ac_button_down.c:
 	.text       start:0x80201D7C end:0x8020271C
 	.rodata     start:0x802FDEE8 end:0x802FDF48
 	.sdata      start:0x80419F10 end:0x80419F30
 	.sdata2     start:0x80426848 end:0x80426868
 
-ac_timing_wide.o:
+action/ac_timing_wide.c:
 	.text       start:0x8020271C end:0x80203284
 	.rodata     start:0x802FDF48 end:0x802FDFD8
 	.sdata2     start:0x80426868 end:0x80426880
@@ -2138,7 +2138,7 @@ event/evt_window.c:
 	.sbss       start:0x8041ED08 end:0x8041ED10
 	.sdata2     start:0x80426E98 end:0x80426EB8
 
-ac_pendulum_crane_timing.o:
+action/ac_pendulum_crane_timing.c:
 	.text       start:0x8020A43C end:0x8020AE8C
 	.rodata     start:0x802FE4E8 end:0x802FE528
 	.sdata      start:0x8041A070 end:0x8041A090
@@ -2159,7 +2159,7 @@ effect/eff_peach_fukidashi.c:
 	.rodata     start:0x802FE570 end:0x802FE5B0
 	.sdata2     start:0x80426F68 end:0x80426FB0
 
-ac_air_gauge.o:
+action/ac_air_gauge.c:
 	.text       start:0x8020C67C end:0x8020CF08
 	.rodata     start:0x802FE5B0 end:0x802FE5D0
 	.data       start:0x803AEDC0 end:0x803AF148
@@ -2172,7 +2172,7 @@ effect/eff_kemutest.c:
 	.sdata2     start:0x80426FF0 end:0x80427070
 	.sbss2      start:0x80429880 end:0x80429888
 
-ac_crane_timing.o:
+action/ac_crane_timing.c:
 	.text       start:0x8020EC70 end:0x8020F0BC
 	.rodata     start:0x802FE680 end:0x802FE698
 	.sdata2     start:0x80427070 end:0x80427088
@@ -2338,23 +2338,23 @@ effect/eff_teresa.c:
 	.sdata2     start:0x80427AA0 end:0x80427AE0
 	.sbss2      start:0x804298D0 end:0x804298D8
 
-ac_power_gauge.o:
+action/ac_power_gauge.c:
 	.text       start:0x8022B704 end:0x8022C624
 	.rodata     start:0x802FF260 end:0x802FF340
 	.sdata2     start:0x80427AE0 end:0x80427B28
 
-ac_power_gauge_lv.o:
+action/ac_power_gauge_lv.c:
 	.text       start:0x8022C624 end:0x8022CDF4
 	.rodata     start:0x802FF340 end:0x802FF3A0
 	.sdata2     start:0x80427B28 end:0x80427B58
 
-sac_bakugame.o:
+action/star/sac_bakugame.c:
 	.text       start:0x8022CDF4 end:0x8022FE40
 	.rodata     start:0x802FF3A0 end:0x802FF6D0
 	.data       start:0x803B3D60 end:0x803B4550
 	.sdata2     start:0x80427B58 end:0x80427C30
 
-ac_signal_timing.o:
+action/ac_signal_timing.c:
 	.text       start:0x8022FE40 end:0x80231218
 	.rodata     start:0x802FF6D0 end:0x802FF7C8
 	.sdata      start:0x8041C5E0 end:0x8041C638
@@ -2369,20 +2369,20 @@ mail_data.o:
 	.rodata     start:0x802FF7C8 end:0x802FFE78
 	.data       start:0x803B4F88 end:0x803B52F8
 
-sac_scissor.o:
+action/star/sac_scissor.c:
 	.text       start:0x8023127C end:0x80233C40
 	.rodata     start:0x802FFE78 end:0x802FFF70
 	.data       start:0x803B52F8 end:0x803B5980
 	.sdata2     start:0x80427C78 end:0x80427D18
 
-sac_zubastar.o:
+action/star/sac_zubastar.c:
 	.text       start:0x80233C40 end:0x80236068
 	.rodata     start:0x802FFF70 end:0x80300168
 	.data       start:0x803B5980 end:0x803B5EF4
 	.sdata      start:0x8041DB20 end:0x8041DB40
 	.sdata2     start:0x80427D18 end:0x80427DD0
 
-ac_gauge_timing.o:
+action/ac_gauge_timing.c:
 	.text       start:0x80236068 end:0x802372A8
 	.rodata     start:0x80300168 end:0x80300248
 	.sdata2     start:0x80427DD0 end:0x80427E38
@@ -2392,7 +2392,7 @@ event/evt_urouro.c:
 	.rodata     start:0x80300248 end:0x80300258
 	.sdata2     start:0x80427E38 end:0x80427E58
 
-ac_shot_target.o:
+action/ac_shot_target.c:
 	.text       start:0x802379D4 end:0x802384D0
 	.rodata     start:0x80300258 end:0x803002F0
 	.sdata2     start:0x80427E58 end:0x80427EA8
@@ -2416,7 +2416,7 @@ manager/winmgr.c:
 	.sdata2     start:0x80427F18 end:0x80428070
 	.sbss2      start:0x804298D8 end:0x804298E0
 
-ac_gauge_timing2.o:
+action/ac_gauge_timing2.c:
 	.text       start:0x8023F9D8 end:0x802407C8
 	.rodata     start:0x80300908 end:0x803009D0
 	.sdata2     start:0x80428070 end:0x804280E0
@@ -2445,7 +2445,7 @@ effect/eff_irekaeru.c:
 	.sdata      start:0x8041DBD8 end:0x8041DBF0
 	.sdata2     start:0x80428198 end:0x804281B8
 
-ac_power_gauge_lv2.o:
+action/ac_power_gauge_lv2.c:
 	.text       start:0x80242B14 end:0x80243524
 	.rodata     start:0x80300B60 end:0x80300BA8
 	.sdata      start:0x8041DBF0 end:0x8041DC40
@@ -2478,14 +2478,14 @@ effect/eff_particle.c:
 	.sbss       start:0x8041ED48 end:0x8041ED50
 	.sdata2     start:0x80428278 end:0x804282B8
 
-sac_genki.o:
+action/star/sac_genki.c:
 	.text       start:0x8024595C end:0x80248978
 	.rodata     start:0x80300C50 end:0x80300E40
 	.data       start:0x803B68B8 end:0x803B7160
 	.sdata      start:0x8041DE08 end:0x8041DE40
 	.sdata2     start:0x804282B8 end:0x804283C8
 
-sac_common.o:
+action/star/sac_common.c:
 	.text       start:0x80248978 end:0x80248DEC
 	.rodata     start:0x80300E40 end:0x80300E98
 	.data       start:0x803B7160 end:0x803B7530
@@ -2493,7 +2493,7 @@ sac_common.o:
 	.sbss       start:0x8041ED50 end:0x8041ED68
 	.sdata2     start:0x804283C8 end:0x804283D8
 
-sac_deka.o:
+action/star/sac_deka.c:
 	.text       start:0x80248DEC end:0x8024BBEC
 	.rodata     start:0x80300E98 end:0x80301060
 	.data       start:0x803B7530 end:0x803B7D68
@@ -2507,20 +2507,20 @@ effect/eff_ibuki.c:
 	.sdata      start:0x8041DE80 end:0x8041DEC8
 	.sdata2     start:0x80428498 end:0x804284E8
 
-sac_muki.o:
+action/star/sac_muki.c:
 	.text       start:0x8024CBC0 end:0x8024EF78
 	.rodata     start:0x80301078 end:0x80301220
 	.data       start:0x803B7F80 end:0x803B84C8
 	.sdata      start:0x8041DEC8 end:0x8041DEE8
 	.sdata2     start:0x804284E8 end:0x804285F0
 
-ac_monosiri_target.o:
+action/ac_monosiri_target.c:
 	.text       start:0x8024EF78 end:0x8024F714
 	.rodata     start:0x80301220 end:0x803012D0
 	.sdata      start:0x8041DEE8 end:0x8041DF08
 	.sdata2     start:0x804285F0 end:0x80428630
 
-sac_suki.o:
+action/star/sac_suki.c:
 	.text       start:0x8024F714 end:0x80250DEC
 	.rodata     start:0x803012D0 end:0x80301590
 	.data       start:0x803B84C8 end:0x803B9340
