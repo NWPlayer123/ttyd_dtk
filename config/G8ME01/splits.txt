@@ -480,7 +480,7 @@ manager/cardmgr.c:
 	.sbss       start:0x8041EAB8 end:0x8041EAC0
 	.sdata2     start:0x80421130 end:0x80421138
 
-party_yoshi.o:
+party/party_yoshi.c:
 	.text       start:0x800B33F0 end:0x800B713C
 	.rodata     start:0x802CB118 end:0x802CB178
 	.data       start:0x80314040 end:0x80314280
@@ -488,48 +488,48 @@ party_yoshi.o:
 	.sbss       start:0x8041EAC0 end:0x8041EAD0
 	.sdata2     start:0x80421138 end:0x804211F0
 
-party.o:
+party/party.c:
 	.text       start:0x800B713C end:0x800BF1D4
 	.rodata     start:0x802CB178 end:0x802CB398
 	.sdata      start:0x80416310 end:0x80416330
 	.sbss       start:0x8041EAD0 end:0x8041EAE0
 	.sdata2     start:0x804211F0 end:0x804212D8
 
-party_bomhei.o:
+party/party_bomhei.c:
 	.text       start:0x800BF1D4 end:0x800C2010
 	.rodata     start:0x802CB398 end:0x802CB470
 	.data       start:0x80314280 end:0x803143E8
 	.sdata      start:0x80416330 end:0x80416370
 	.sdata2     start:0x804212D8 end:0x804213E0
 
-party_data.o:
+party/party_data.c:
 	.rodata     start:0x802CB470 end:0x802CB770
 	.data       start:0x803143E8 end:0x80314F40
 	.sdata2     start:0x804213E0 end:0x80421500
 
-party_hit.o:
+party/party_hit.c:
 	.text       start:0x800C2010 end:0x800C4B80
 	.rodata     start:0x802CB770 end:0x802CB8E8
 	.sdata2     start:0x80421500 end:0x80421570
 
-party_kuribo.o:
+party/party_kuribo.c:
 	.text       start:0x800C4B80 end:0x800C5794
 	.rodata     start:0x802CB8E8 end:0x802CBFC0
 	.data       start:0x80314F40 end:0x80315380
 	.sbss       start:0x8041EAE0 end:0x8041EAE8
 	.sdata2     start:0x80421570 end:0x80421590
 
-party_2.o:
+party/party_2.c:
 	.text       start:0x800C5794 end:0x800C7FF8
 
-party_move.o:
+party/party_move.c:
 	.text       start:0x800C7FF8 end:0x800CD21C
 	.rodata     start:0x802CBFC0 end:0x802CC5D8
 	.bss        start:0x803DC2C8 end:0x803DCCC8
 	.sbss       start:0x8041EAE8 end:0x8041EAF8
 	.sdata2     start:0x80421590 end:0x80421638
 
-party_nokonoko.o:
+party/party_nokonoko.c:
 	.text       start:0x800CD21C end:0x800D0998
 	.rodata     start:0x802CC5D8 end:0x802CC608
 	.sbss       start:0x8041EAF8 end:0x8041EB00
@@ -990,7 +990,7 @@ mot_dokan.o:
 	.rodata     start:0x802F4548 end:0x802F4628
 	.sdata2     start:0x80423040 end:0x80423090
 
-party_motion.o:
+party/party_motion.c:
 	.text       start:0x8014B1A8 end:0x80151D2C
 	.rodata     start:0x802F4628 end:0x802F47D8
 	.sbss       start:0x8041EC08 end:0x8041EC18
@@ -1113,19 +1113,19 @@ himo.o:
 	.sdata      start:0x80418360 end:0x804183A8
 	.sdata2     start:0x80424230 end:0x80424270
 
-party_vivian.o:
+party/party_vivian.c:
 	.text       start:0x801843C8 end:0x801868F0
 	.rodata     start:0x802F8948 end:0x802F89C0
 	.sbss       start:0x8041EC50 end:0x8041EC58
 	.sdata2     start:0x80424270 end:0x804242E0
 
-party_cloud.o:
+party/party_cloud.c:
 	.text       start:0x801868F0 end:0x80188260
 	.rodata     start:0x802F89C0 end:0x802F8A08
 	.sbss       start:0x8041EC58 end:0x8041EC68
 	.sdata2     start:0x804242E0 end:0x80424368
 
-party_chuchu.o:
+party/party_chuchu.c:
 	.text       start:0x80188260 end:0x80188D44
 	.rodata     start:0x802F8A08 end:0x802F8CA8
 	.data       start:0x8038E910 end:0x8038ED20
