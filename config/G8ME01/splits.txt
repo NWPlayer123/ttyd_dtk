@@ -215,7 +215,7 @@ event/evt_sub.c:
 	.sbss       start:0x8041E8E8 end:0x8041E8F0
 	.sdata2     start:0x8041FE10 end:0x8041FE88
 
-mario.o:
+mario/mario.c:
 	.text       start:0x800561B8 end:0x8005E0C8
 	.rodata     start:0x802C18A0 end:0x802C1C80
 	.data       start:0x80309748 end:0x803097A8
@@ -262,7 +262,7 @@ driver/casedrv.c:
 	.sdata      start:0x80415FC8 end:0x80415FD0
 	.sbss       start:0x8041E930 end:0x8041E938
 
-mariost.o:
+mario/mariost.c:
 	.text       start:0x8006EDBC end:0x8006FE84
 	.rodata     start:0x802C2A70 end:0x802C2A88
 	.data       start:0x8030C230 end:0x8030C360
@@ -383,19 +383,19 @@ mot_walk.o:
 	.text       start:0x8008763C end:0x80087FF8
 	.sdata2     start:0x80420870 end:0x804208A8
 
-mario_hit.o:
+mario/mario_hit.c:
 	.text       start:0x80087FF8 end:0x800917A0
 	.rodata     start:0x802C3B78 end:0x802C3E38
 	.sdata2     start:0x804208A8 end:0x804209A0
 
-mario_motion.o:
+mario/mario_motion.c:
 	.text       start:0x800917A0 end:0x800951A0
 	.rodata     start:0x802C3E38 end:0x802C3EA8
 	.data       start:0x80310030 end:0x80310428
 	.sdata      start:0x80416110 end:0x80416138
 	.sdata2     start:0x804209A0 end:0x80420A60
 
-mario_sbr.o:
+mario/mario_sbr.c:
 	.text       start:0x800951A0 end:0x80096F88
 	.rodata     start:0x802C3EA8 end:0x802C3EC8
 	.bss        start:0x803DC228 end:0x803DC290
@@ -542,7 +542,7 @@ event/evt_msg.c:
 	.sdata      start:0x80416370 end:0x80416460
 	.sdata2     start:0x80421710 end:0x80421878
 
-mario_pouch.o:
+mario/mario_pouch.c:
 	.text       start:0x800D2DB4 end:0x800D5EB8
 	.rodata     start:0x802CC728 end:0x802CC738
 	.data       start:0x80315380 end:0x803153C0
@@ -801,7 +801,7 @@ battle/battle_monosiri.c:
 	.sdata      start:0x80416F50 end:0x80417180
 	.sdata2     start:0x80422828 end:0x80422850
 
-mario_balloon.o:
+mario/mario_balloon.c:
 	.text       start:0x8012EF34 end:0x8012F580
 	.rodata     start:0x802F35D0 end:0x802F35F8
 
@@ -834,7 +834,7 @@ effect/eff_confetti.c:
 	.text       start:0x80134F14 end:0x80134F38
 	.sdata2     start:0x80422A18 end:0x80422A20
 
-mario_kemuri.o:
+mario/mario_kemuri.c:
 	.text       start:0x80134F38 end:0x80135B44
 	.rodata     start:0x802F3730 end:0x802F3740
 	.sdata      start:0x80417558 end:0x80417570
@@ -924,7 +924,7 @@ effect/eff_mugi.c:
 	.rodata     start:0x802F3AB0 end:0x802F3B20
 	.sdata2     start:0x80422D58 end:0x80422DB0
 
-mario_party.o:
+mario/mario_party.c:
 	.text       start:0x80140E60 end:0x80141808
 
 effect/eff_stardust.c:
@@ -1284,7 +1284,7 @@ battle/battle_audience.c:
 	.sdata2     start:0x80424978 end:0x80424A90
 	.sbss2      start:0x80429628 end:0x80429630
 
-mario_cam.o:
+mario/mario_cam.c:
 	.text       start:0x801A86F0 end:0x801A9604
 	.rodata     start:0x802FA748 end:0x802FA780
 	.sdata2     start:0x80424A90 end:0x80424AF0

@@ -648,6 +648,24 @@ config.libs = [
             Object(NonMatching, "manager/winmgr.c"),
         ],
     },
+    {
+        "lib": "manager",
+        "mw_version": config.linker_version,
+        "cflags": cflags_static,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "mario/mario.c"),
+            Object(NonMatching, "mario/mario_balloon.c"),
+            Object(NonMatching, "mario/mario_cam.c"),
+            Object(NonMatching, "mario/mario_hit.c"),
+            Object(NonMatching, "mario/mario_kemuri.c"),
+            Object(NonMatching, "mario/mario_motion.c"),
+            Object(NonMatching, "mario/mario_party.c"),
+            Object(NonMatching, "mario/mario_pouch.c"),
+            Object(NonMatching, "mario/mario_sbr.c"),
+            Object(NonMatching, "mario/mariost.c"),
+        ],
+    },
     Rel(
         "aaa",
         objects=[
