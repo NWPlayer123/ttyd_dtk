@@ -379,7 +379,7 @@ seq_logo.o:
 	.sbss       start:0x8041EA68 end:0x8041EAA0
 	.sdata2     start:0x804207C0 end:0x80420870
 
-mot_walk.o:
+motion/mot_walk.c:
 	.text       start:0x8008763C end:0x80087FF8
 	.sdata2     start:0x80420870 end:0x804208A8
 
@@ -401,51 +401,51 @@ mario/mario_sbr.c:
 	.bss        start:0x803DC228 end:0x803DC290
 	.sdata2     start:0x80420A60 end:0x80420AB0
 
-mot_hammer.o:
+motion/mot_hammer.c:
 	.text       start:0x80096F88 end:0x80098A8C
 	.rodata     start:0x802C3EC8 end:0x802C3FD0
 	.sdata      start:0x80416138 end:0x804161C0
 	.sdata2     start:0x80420AB0 end:0x80420BD0
 
-mot_jabara.o:
+motion/mot_jabara.c:
 	.text       start:0x80098A8C end:0x8009ADE8
 	.rodata     start:0x802C3FD0 end:0x802C4088
 	.sdata      start:0x804161C0 end:0x804161E0
 	.sdata2     start:0x80420BD0 end:0x80420CC8
 
-mot_jump.o:
+motion/mot_jump.c:
 	.text       start:0x8009ADE8 end:0x8009C328
 	.rodata     start:0x802C4088 end:0x802C40D8
 	.sdata      start:0x804161E0 end:0x80416228
 	.sdata2     start:0x80420CC8 end:0x80420D10
 
-mot_plane.o:
+motion/mot_plane.c:
 	.text       start:0x8009C328 end:0x8009E7C0
 	.rodata     start:0x802C40D8 end:0x802C41B0
 	.data       start:0x80310428 end:0x80310628
 	.sdata      start:0x80416228 end:0x80416238
 	.sdata2     start:0x80420D10 end:0x80420DD0
 
-mot_roll.o:
+motion/mot_roll.c:
 	.text       start:0x8009E7C0 end:0x800A17EC
 	.rodata     start:0x802C41B0 end:0x802C4270
 	.sdata      start:0x80416238 end:0x80416268
 	.sbss       start:0x8041EAA0 end:0x8041EAB0
 	.sdata2     start:0x80420DD0 end:0x80420EB0
 
-mot_ship.o:
+motion/mot_ship.c:
 	.text       start:0x800A17EC end:0x800A42F8
 	.rodata     start:0x802C4270 end:0x802C42E8
 	.data       start:0x80310628 end:0x803108A8
 	.sdata      start:0x80416268 end:0x80416290
 	.sdata2     start:0x80420EB0 end:0x80420F98
 
-mot_slit.o:
+motion/mot_slit.c:
 	.text       start:0x800A42F8 end:0x800A6B10
 	.rodata     start:0x802C42E8 end:0x802C4398
 	.sdata2     start:0x80420F98 end:0x80421008
 
-mot_stay.o:
+motion/mot_stay.c:
 	.text       start:0x800A6B10 end:0x800A74E4
 	.rodata     start:0x802C4398 end:0x802C43A8
 	.sdata2     start:0x80421008 end:0x80421040
@@ -869,13 +869,13 @@ event/evt_audience.c:
 	.rodata     start:0x802F3830 end:0x802F3838
 	.sdata2     start:0x80422B50 end:0x80422B60
 
-mot_damage.o:
+motion/mot_damage.c:
 	.text       start:0x8013A898 end:0x8013B7A4
 	.rodata     start:0x802F3838 end:0x802F38E0
 	.sdata      start:0x80417600 end:0x80417658
 	.sdata2     start:0x80422B60 end:0x80422BC0
 
-mot_yoshi.o:
+motion/mot_yoshi.c:
 	.text       start:0x8013B7A4 end:0x8013B8EC
 	.rodata     start:0x802F38E0 end:0x802F38F8
 	.sdata2     start:0x80422BC0 end:0x80422BC8
@@ -985,7 +985,7 @@ battle/battle_stage_object.c:
 	.sdata      start:0x80417CA0 end:0x80417E10
 	.sdata2     start:0x80422FB8 end:0x80423040
 
-mot_dokan.o:
+motion/mot_dokan.c:
 	.text       start:0x8014A564 end:0x8014B1A8
 	.rodata     start:0x802F4548 end:0x802F4628
 	.sdata2     start:0x80423040 end:0x80423090
@@ -1155,7 +1155,7 @@ manager/filemgr.c:
 	.sdata      start:0x80418498 end:0x804184A0
 	.sbss       start:0x8041EC68 end:0x8041EC80
 
-mot_hip.o:
+motion/mot_hip.c:
 	.text       start:0x8018B7B0 end:0x8018C194
 	.rodata     start:0x802F94A8 end:0x802F94C0
 	.sdata      start:0x804184A0 end:0x804184E0
