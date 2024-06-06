@@ -152,13 +152,13 @@ memory.o:
 	.sdata      start:0x804151B8 end:0x804151E8
 	.sbss       start:0x8041E808 end:0x8041E858
 
-evtmgr_cmd.o:
+manager/evtmgr_cmd.c:
 	.text       start:0x800304BC end:0x80035A28
 	.rodata     start:0x802BFFB0 end:0x802C0140
 	.bss        start:0x803D8430 end:0x803D8530
 	.sdata2     start:0x8041FA18 end:0x8041FA30
 
-evtmgr.o:
+manager/evtmgr.c:
 	.text       start:0x80035A28 end:0x80037A80
 	.bss        start:0x803D8530 end:0x803D8E70
 	.sdata      start:0x804151E8 end:0x804151F0
@@ -308,7 +308,7 @@ event/evt_hit.c:
 	.sbss       start:0x8041E970 end:0x8041E978
 	.sdata2     start:0x804203D0 end:0x804203D8
 
-fontmgr.o:
+manager/fontmgr.c:
 	.text       start:0x80074720 end:0x80077C0C
 	.rodata     start:0x802C2B30 end:0x802C2BD8
 	.sdata      start:0x80416010 end:0x80416058
@@ -473,7 +473,7 @@ driver/itemdrv.c:
 	.sbss       start:0x8041EAB0 end:0x8041EAB8
 	.sdata2     start:0x804210A8 end:0x80421130
 
-cardmgr.o:
+manager/cardmgr.c:
 	.text       start:0x800AECB0 end:0x800B33F0
 	.rodata     start:0x802C92E0 end:0x802CB118
 	.sdata      start:0x80416290 end:0x80416298
@@ -950,7 +950,7 @@ effect/eff_nice.c:
 	.sdata      start:0x80417A50 end:0x80417BA0
 	.sdata2     start:0x80422E80 end:0x80422ED8
 
-dvdmgr.o:
+manager/dvdmgr.c:
 	.text       start:0x80144DC4 end:0x801453B0
 	.bss        start:0x803E1BB8 end:0x803E5ED0
 	.sbss       start:0x8041EBF0 end:0x8041EC00
@@ -999,7 +999,7 @@ party_motion.o:
 event/evt_snd.c:
 	.text       start:0x80151D2C end:0x801525D4
 
-arammgr.o:
+manager/arammgr.c:
 	.text       start:0x801525D4 end:0x80152BDC
 	.bss        start:0x803E5ED0 end:0x803E5F38
 	.sdata      start:0x80417E10 end:0x80417E18
@@ -1148,7 +1148,7 @@ unit_party_christine.o:
 battle/battle_weapon_power.c:
 	.text       start:0x80189A28 end:0x80189D38
 
-filemgr.o:
+manager/filemgr.c:
 	.text       start:0x80189D38 end:0x8018B7B0
 	.rodata     start:0x802F9470 end:0x802F94A8
 	.bss        start:0x803E6E78 end:0x803E7278
@@ -2407,7 +2407,7 @@ effect/eff_batten.c:
 	.rodata     start:0x80300358 end:0x803003A0
 	.sdata2     start:0x80427EE0 end:0x80427F18
 
-winmgr.o:
+manager/winmgr.c:
 	.text       start:0x8023976C end:0x8023F9D8
 	.rodata     start:0x803003A0 end:0x80300908
 	.data       start:0x803B5EF4 end:0x803B63F8

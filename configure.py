@@ -587,6 +587,23 @@ config.libs = [
             Object(NonMatching, "event/evt_yuugijou.c"),
         ],
     },
+    
+    {
+        "lib": "manager",
+        "mw_version": config.linker_version,
+        "cflags": cflags_static,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "manager/arammgr.c"),
+            Object(NonMatching, "manager/cardmgr.c"),
+            Object(NonMatching, "manager/dvdmgr.c"),
+            Object(NonMatching, "manager/evtmgr.c"),
+            Object(NonMatching, "manager/evtmgr_cmd.c"),
+            Object(NonMatching, "manager/filemgr.c"),
+            Object(NonMatching, "manager/fontmgr.c"),
+            Object(NonMatching, "manager/winmgr.c"),
+        ],
+    },
     Rel(
         "aaa",
         objects=[
