@@ -16,7 +16,7 @@ BraceWrapping:
   BeforeWhile: true
 BreakBeforeBinaryOperators: NonAssignment
 BreakBeforeBraces: Custom
-ColumnLimit: 1000
+ColumnLimit: 100
 DeriveLineEnding: false
 IncludeBlocks: Regroup
 IndentCaseBlocks: true

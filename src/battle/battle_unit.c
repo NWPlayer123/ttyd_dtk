@@ -3,8 +3,19 @@
 #include "battle/battle.h"
 #include "battle/battle_status_effect.h"
 #include "battle/battle_status_icon.h"
-
 #include "mario/mario_pouch.h"
+
+//.data
+s32 _enemy_can_use_item_table[33] = {
+    ITEM_THUNDER_BOLT,  ITEM_FIRE_FLOWER,   ITEM_POW_BLOCK,   ITEM_THUNDER_RAGE,
+    ITEM_SHOOTING_STAR, ITEM_ICE_STORM,     ITEM_EARTH_QUAKE, ITEM_HP_DRAIN_ITEM,
+    ITEM_SLEEPY_SHEEP,  ITEM_STOPWATCH,     ITEM_DIZZY_DIAL,  ITEM_MINI_MR_MINI,
+    ITEM_MR_SOFTENER,   ITEM_RUIN_POWDER,   ITEM_POWER_PUNCH, ITEM_COURAGE_SHELL,
+    ITEM_BOOS_SHEET,    ITEM_VOLT_SHROOM,   ITEM_REPEL_CAPE,  ITEM_MUSHROOM,
+    ITEM_SUPER_SHROOM,  ITEM_ULTRA_SHROOM,  ITEM_LIFE_SHROOM, ITEM_DRIED_SHROOM,
+    ITEM_TASTY_TONIC,   ITEM_HONEY_SYRUP,   ITEM_MAPLE_SYRUP, ITEM_JAMMIN_JELLY,
+    ITEM_SLOW_SHROOM,   ITEM_GRADUAL_SYRUP, ITEM_HOT_DOG,     ITEM_CAKE,
+    ITEM_NULL};
 
 #pragma optimize_for_size on
 BOOL BtlUnit_Init(void) {
@@ -42,7 +53,7 @@ BattleWorkUnit* BtlUnit_Entry(BattleUnitSetup* setup) {
     if (unit == NULL) {
         return NULL;
     }
-    
+
     memset(unit, 0, sizeof(BattleWorkUnit));
     BattleSetUnitPtr(wp, i, unit);
     unit->unitId = i;
@@ -63,15 +74,31 @@ BattleWorkUnit* BtlUnit_Entry(BattleUnitSetup* setup) {
     unit->attackPhase = setup->attackPhase;
 }
 
+s32 BtlUnit_EnemyItemCanUseCheck(ItemType type) {
+    s32 item;
+    s32* table;
 
+    table = _enemy_can_use_item_table;
+    // If we're just using a badge, return it
+    if (type >= BADGE_MIN && type < BADGE_MAX) {
+        return type;
+    }
 
-
+    // Otherwise, check the item table to see if it's allowed
+    while (item = *table) {
+        if (item == type) {
+            return type;
+        }
+        table++;
+    }
+    return 0;
+}
 
 BOOL BtlUnit_CheckShadowGuard(BattleWorkUnit* unit) {
     if (unit->attributes & ATTRIBUTE_VEILED) {
         return TRUE;
     }
-    
+
     if (unit->currentType == UNIT_VIVIAN && unit->work[4] > 0) {
         return TRUE;
     }
