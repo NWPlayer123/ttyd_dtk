@@ -126,9 +126,9 @@ if args.no_asm:
 # Tool versions
 config.binutils_tag = "2.42-1"
 config.compilers_tag = "20231018"
-config.dtk_tag = "v0.7.6"
+config.dtk_tag = "v0.9.2"
 config.sjiswrap_tag = "v1.1.1"
-config.wibo_tag = "0.6.13"
+config.wibo_tag = "0.6.14"
 
 # Project
 config.config_path = Path("config") / config.version / "config.yml"
@@ -207,8 +207,15 @@ cflags_static = [
 # REL flags
 cflags_rel = [
     *cflags_base,
+    "-fp_contract on",
+    "-use_lmw_stmw on",
+    "-rostr",
+    "-inline auto,deferred",
     "-sdata 0",
     "-sdata2 0",
+    "-w nonotused",
+    "-once",
+    "-i include/rel",
 ]
 
 config.linker_version = "GC/2.6"
@@ -226,12 +233,13 @@ def DolphinLib(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
 
 
 # Helper function for REL script objects
-def Rel(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
+def Rel(lib_name: str, src_dir: str, objects: List[Object]) -> Dict[str, Any]:
     return {
         "lib": lib_name,
         "mw_version": "GC/2.6",
         "cflags": cflags_rel,
-        "host": True,
+        "host": False,
+        "src_dir": src_dir,
         "objects": objects,
     }
 
@@ -828,9 +836,17 @@ config.libs = [
     },
     Rel(
         "aaa",
+        "src/rel/aaa",
         objects=[
-            Object(NonMatching, "rel/aaa/aaa.c"),
-            Object(NonMatching, "rel/aaa/aaa_00.c"),
+            Object(NonMatching, "aaa.c"),
+            Object(NonMatching, "aaa_00.c"),
+        ],
+    ),
+    Rel(
+        "gon",
+        "src/rel/gon",
+        objects=[
+            Object(NonMatching, "unit_boss_gonbaba.c"),
         ],
     ),
 ]
