@@ -8,6 +8,7 @@ typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned long u32;
 typedef unsigned long long u64;
+typedef __typeof__(sizeof(0)) size_t;
 
 typedef float f32;
 typedef double f64;
@@ -35,3 +36,8 @@ typedef int BOOL;
 #endif
 
 #define ATTRIBUTE_ALIGN(num) __attribute((aligned(num)))
+
+//TODO: move these somewhere better
+void* memset(void* dest, int ch, size_t count);
+#define STATIC_ASSERT_SIZEOF(type, size) \
+    typedef char static_assert_##type##_size[(sizeof(type) == (size)) ? 1 : -1]
