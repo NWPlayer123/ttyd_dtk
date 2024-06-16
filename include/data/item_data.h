@@ -30,3 +30,4 @@ typedef struct ItemData {
     s16 padding; //0x22, ???
     BattleWeapon* weapon_params; //0x24
 } ItemData;
+STATIC_ASSERT_SIZEOF(ItemData, 0x28);

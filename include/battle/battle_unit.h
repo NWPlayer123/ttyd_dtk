@@ -24,6 +24,7 @@ typedef enum BattleUnitAttribute {
 typedef struct BattleDataEntry {
     u8 unk0[0x8 - 0x0]; //0x0
 } BattleDataEntry;
+STATIC_ASSERT_SIZEOF(BattleDataEntry, 0x8);
 
 typedef struct BattleUnitData {
     BattleUnitType type; //0x0
@@ -41,7 +42,7 @@ typedef struct BattleWorkUnit {
     s8 alliance; //0xC
     s8 level; //0xD
     s8 groupId; //0xE, used when determining if Ms Mowz can steal an item from this unit
-    u8 paddingF; //0xF
+    u8 alignF; //0xF
     BattleUnitData* data; //0x10
     u8 unk14[0x18 - 0x14]; //0x14
     BattleDataEntry* dataTable; //0x18
@@ -52,7 +53,9 @@ typedef struct BattleWorkUnit {
     BattleUnitAttribute attributes; //0x104
     u8 unk108[0x218 - 0x108]; //0x108
     s32 work[16]; //0x218
-    u8 unk258[0xB34 - 0x258]; //0x258
+    u8 unk258[0x2B4 - 0x258]; //0x258
+    s32 damageEventId; //0x2B4
+    u8 unk2B8[0xB34 - 0x2B8]; //0x2B8
 } BattleWorkUnit;
 STATIC_ASSERT_SIZEOF(BattleWorkUnit, 0xB34);
 
@@ -61,3 +64,6 @@ BOOL BtlUnit_Init(void);
 BOOL BtlUnit_Delete(BattleWorkUnit* unit);
 
 void BtlUnit_SetPos(BattleWorkUnit* unit, f32 x, f32 y, f32 z);
+
+
+void BtlUnit_ClearStatus(BattleWorkUnit* unit);

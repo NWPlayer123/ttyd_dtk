@@ -4,6 +4,7 @@
 
 #include "battle/battle_audience.h"
 #include "battle/battle_break_slot.h"
+#include "battle/battle_camera.h"
 #include "battle/battle_information.h"
 #include "battle/battle_seq_command.h"
 #include "battle/battle_unit.h"
@@ -52,7 +53,8 @@ typedef struct BattleWork {
     BattleWorkCommand commandMenu; //0x171C
     u8 unk1C90[0x2738 - 0x1C90]; //0x1C90
     FieldBattleInfo* info; //0x2738, TODO: rename if other info?
-    u8 unk273C[0x2858 - 0x273C]; //0x273C
+    u8 unk273C[0x2754 - 0x273C]; //0x273C
+    BattleWorkCamera camera; //0x2754
     BattleWorkAudience audience; //0x2858
     BattleWorkBreakSlot bingoSlots; //0x1616C, Match 3 BINGO! data
     BattleWorkPartyInfo partyInfo[7]; //0x162A0

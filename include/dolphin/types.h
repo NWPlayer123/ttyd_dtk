@@ -26,18 +26,19 @@ typedef volatile f32 vf32;
 typedef volatile f64 vf64;
 
 typedef int BOOL;
-#define TRUE 1
+#define TRUE  1
 #define FALSE 0
 
 #ifdef __cplusplus
-#define NULL 0
+    #define NULL 0
 #else
-#define NULL ((void*)0)
+    #define NULL ((void*)0)
 #endif
 
 #define ATTRIBUTE_ALIGN(num) __attribute((aligned(num)))
 
 //TODO: move these somewhere better
 void* memset(void* dest, int ch, size_t count);
-#define STATIC_ASSERT_SIZEOF(type, size) \
+double sqrt(double);
+#define STATIC_ASSERT_SIZEOF(type, size)                                                           \
     typedef char static_assert_##type##_size[(sizeof(type) == (size)) ? 1 : -1]

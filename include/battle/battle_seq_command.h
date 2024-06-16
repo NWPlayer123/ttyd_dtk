@@ -18,6 +18,7 @@ typedef struct BattleWorkCommandCursor {
     s32 relativePos;
     s32 numOptions;
 } BattleWorkCommandCursor;
+STATIC_ASSERT_SIZEOF(BattleWorkCommandCursor, 0xC);
 
 typedef struct BattleWorkCommand {
     s32 state; //0x0

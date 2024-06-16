@@ -360,5 +360,6 @@ typedef struct PouchData {
     s16 level; //0x8A
     u8 unk8C[0x5D4 - 0x8C]; //0x8C
 } PouchData;
+STATIC_ASSERT_SIZEOF(PouchData, 0x5D4);
 
 PouchData* pouchGetPtr(void);

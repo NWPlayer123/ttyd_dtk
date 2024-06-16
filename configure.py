@@ -273,7 +273,7 @@ config.libs = [
             Object(NonMatching, "gxsub.c"),
             Object(NonMatching, "himo.c"),
             Object(NonMatching, "mail_data.c"),
-            Object(NonMatching, "main.c"),
+            Object(Matching, "main.c"),
             Object(NonMatching, "mapdata.c"),
             Object(NonMatching, "memory.c"),
             Object(NonMatching, "nameent.c"),
@@ -425,7 +425,7 @@ config.libs = [
         "host": False,
         "objects": [
             Object(NonMatching, "driver/animdrv.c"),
-            Object(NonMatching, "driver/arcdrv.c"),
+            Object(Matching, "driver/arcdrv.c"),
             Object(NonMatching, "driver/bgdrv.c"),
             Object(NonMatching, "driver/camdrv.c"),
             Object(NonMatching, "driver/casedrv.c"),
