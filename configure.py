@@ -163,8 +163,7 @@ cflags_base = [
     '-pragma "cats off"',
     # default compiler flags
     "-W all",
-    "-O4,p",
-    "-inline auto",
+    "-O4,s",
     '-pragma "warn_notinlined off"',
     # helpful linking stuff
     "-maxerrors 1",
@@ -197,7 +196,7 @@ cflags_static = [
     "-fp_contract on",
     "-use_lmw_stmw on",
     "-rostr",
-    "-inline auto,deferred",
+    "-inline deferred",
     "-sdata 48",
     "-sdata2 6",
     "-w nonotused",

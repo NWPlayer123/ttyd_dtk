@@ -2,7 +2,6 @@
 
 #include "battle/battle.h"
 
-#pragma optimize_for_size on
 void battleCameraInit(void) {
     BattleWork* wp = _battleWorkPointer;
     BattleWorkCamera* camera = &wp->camera;
@@ -34,9 +33,7 @@ void battleCameraInit(void) {
     camera->offset = (Vec) {0.0f, 0.0f, 0.0f};
     camera->counter = 0;
 }
-#pragma optimize_for_size off
 
-#pragma dont_inline on
 f32 battleCameraGetPosMoveSpeed(void) {
     f32 x, y, z;
 
@@ -46,11 +43,9 @@ f32 battleCameraGetPosMoveSpeed(void) {
     return (f32)sqrt((x * x) + (y * y) + (z * z));
 }
 
-#pragma dont_inline on
 void btl_camera_set_prilimit(s32 limit) {
     _battleWorkPointer->camera.priorityLimit = limit;
 }
-#pragma dont_inline reset
 
 USER_FUNC(evt_btl_camera_set_prilimit) {
     s32 limit;

@@ -10,7 +10,6 @@
 // local prototypes
 USER_FUNC(_wait_damage_event_end);
 
-#pragma optimize_for_size on
 USER_FUNC(_wait_damage_event_end) {
     s32* args = event->args;
     BattleWork* wp = _battleWorkPointer;
@@ -31,7 +30,6 @@ USER_FUNC(_wait_damage_event_end) {
 
     return EVT_RETURN_DONE;
 }
-#pragma optimize_for_size off
 
 USER_FUNC(_set_gonbaba_light) {
     LightEntry* light;

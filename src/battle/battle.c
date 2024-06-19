@@ -41,8 +41,6 @@ BOOL battleSeqEndCheck(void) {
 }
 
 // This function only matches with -O4,s and the 0-9 loop unrolled
-#pragma optimize_for_size on
-#pragma dont_inline on
 void BattleInit(FieldBattleInfo* info) {
     BattleWork* wp;
     int i;
@@ -100,7 +98,6 @@ void BattleInit(FieldBattleInfo* info) {
     BattleAudience_Init();
     BattleBreakSlot_Init();
 }
-#pragma optimize_for_size off
 
 BOOL BattleMain(void) {
     BattleWork* wp = _battleWorkPointer;
@@ -131,7 +128,6 @@ BOOL BattleMain(void) {
     return TRUE;
 }
 
-#pragma optimize_for_size on
 void BattleEnd(void) {
     BattleWork* wp = _battleWorkPointer;
     BattleWorkUnit* unit;
@@ -156,8 +152,6 @@ void BattleEnd(void) {
     BattleFree(wp);
     _battleWorkPointer = NULL;
 }
-#pragma optimize_for_size off
 
 BOOL Btl_UnitSetup(BattleWork* wp) {
-
 }
