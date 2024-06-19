@@ -1,0 +1,12 @@
+Things To Consider:
+1. Did you use struct* wp = work; instead of &work[i]?
+2. Did you use &work[i] instead of struct* wp = work;?
+3. Is this really a for loop?
+4. Is this really a while loop?
+5. Have you tried a switch statement instead of if/else?
+6. Have you tried different scopes for variable declaration?
+7. Have you tried doing a (type) C-style cast to signed/unsigned?
+8. Two branches in a row? It's either the same check twice, or a switch statement.
+9. If you need a stw instead of a stwx, check logic flow, you might need a break/return.
+10. Have you tried sticking that weird constant in a variable? This compiler is dumb 
+11. Very weird copying block using u32s? It's probably a raw struct copy, check for ptr=offset-4;copy ptr+4

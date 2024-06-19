@@ -22,7 +22,12 @@ typedef enum BattleSequence {
 } BattleSequence;
 
 typedef struct BattleWorkPartyInfo {
-    u8 unk0[0x2C - 0x0]; //0x0
+    f32 sizeMultiplier; //0x0
+    BattleWorkStatus statusEffects; //0x4
+    u8 unk22[0x24 - 0x22]; //0x22
+    s32 statusFlags; //0x24
+    u16 unk28; //0x28
+    u16 unk2A; //0x2A
 } BattleWorkPartyInfo;
 STATIC_ASSERT_SIZEOF(BattleWorkPartyInfo, 0x2C);
 

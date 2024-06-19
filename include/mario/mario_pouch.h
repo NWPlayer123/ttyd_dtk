@@ -355,10 +355,25 @@ typedef enum ItemType {
 #define BADGE_MIN    ITEM_POWER_JUMP
 #define BADGE_MAX    ITEM_SUPER_CHARGE_P + 1
 
+typedef struct PouchPartyData {
+    s16 flags;        //0x0
+    s16 currentMaxHP; //0x2
+    s16 baseMaxHP;    //0x4
+    s16 currentHP;    //0x6
+    s16 hpLevel;      //0x8
+    s16 attackLevel;  //0xA
+    s16 techLevel;    //0xC
+} PouchPartyData;
+
 typedef struct PouchData {
-    u8 unk0[0x8A - 0x0];    //0x0
-    s16 level;              //0x8A
-    u8 unk8C[0x5D4 - 0x8C]; //0x8C
+    PouchPartyData partyData[8]; //0x0
+    s16 currentHP;               //0x70
+    s16 maxHP;                   //0x72
+    s16 currentFP;               //0x74
+    s16 maxFP;                   //0x76
+    u8 unk78[0x8A - 0x78];       //0x78
+    s16 level;                   //0x8A
+    u8 unk8C[0x5D4 - 0x8C];      //0x8C
 } PouchData;
 STATIC_ASSERT_SIZEOF(PouchData, 0x5D4);
 

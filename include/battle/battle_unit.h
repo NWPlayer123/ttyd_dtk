@@ -54,23 +54,35 @@ typedef enum StatusEffectType {
 } StatusEffectType;
 #pragma enumalwaysint on
 
-typedef enum BattleDataEntryType {
+typedef enum BattleDataType {
     DATA_MAKE_TECH_MENU = 1,
     DATA_APPEAL_EVENT = 5,
     DATA_AUDIENCE_EVENT = 6,
-} BattleDataEntryType;
+} BattleDataType;
+
+typedef enum BattlePoseType {
+    POSE_UNK1 = 1,
+} BattlePoseType;
 
 typedef struct BattleDataEntry {
-    BattleDataEntryType type; //0x0
-    void* event;              //0x4
+    BattleDataType type; //0x0
+    void* event;         //0x4
 } BattleDataEntry;
 STATIC_ASSERT_SIZEOF(BattleDataEntry, 0x8);
+
+typedef struct BattlePoseEntry {
+    BattlePoseType type; //0x0
+    const char* name;    //0x4
+} BattlePoseEntry;
+STATIC_ASSERT_SIZEOF(BattlePoseEntry, 0x8);
 
 typedef struct BattleUnitData {
     BattleUnitType type;        //0x0
     u8 unk4[0xE - 0x4];         //0x4
     s8 level;                   //0xE
-    u8 unkF[0xC0 - 0xF];        //0xF
+    u8 unkF[0x30 - 0xF];        //0xF
+    Vec togeBaseOffset;         //0x30
+    u8 unk3C[0xC0 - 0x3C];      //0x3C
     BattleDataEntry* dataTable; //0xC0
 } BattleUnitData;
 STATIC_ASSERT_SIZEOF(BattleUnitData, 0xC4);
@@ -109,7 +121,11 @@ typedef struct BattleWorkUnitPart {
     Vec hitCursorOffset;                 //0x194
     u8 unk1A0[0x1AC - 0x1A0];            //0x1A0
     s32 attributes;                      //0x1AC, TODO: enum
-    u8 unk1B0[0x4EC - 0x1B0];            //0x1B0
+    u8 unk1B0[0x1BC - 0x1B0];            //0x1B0
+    BattlePoseEntry* poseTable;          //0x1BC
+    u8 unk1C0[0x204 - 0x1C0];            //0x1C0
+    s32 animFlags;                       //0x204
+    u8 unk208[0x4EC - 0x208];            //0x208
     struct BattleWorkUnit* owner;        //0x4EC
     u8 unk4F0[0x500 - 0x4F0];            //0x4F0
 } BattleWorkUnitPart;
@@ -170,8 +186,8 @@ typedef struct BattleWorkStatus {
 } BattleWorkStatus;
 
 typedef struct BattleWorkBadges {
-    u8 unk0[0x17 - 0x0]; //0x0
-    u8 zapTap; //0x17
+    u8 unk0[0x17 - 0x0];   //0x0
+    u8 zapTap;             //0x17
     u8 unk18[0x28 - 0x18]; //0x18
 } BattleWorkBadges;
 
@@ -203,7 +219,8 @@ typedef struct BattleWorkUnit {
     u8 unk84[0x90 - 0x84];           //0x84
     Vec scale;                       //0x90
     Vec baseScale;                   //0x9C
-    u8 unkA8[0xCC - 0xA8];           //0xA8
+    Vec togeOffset;                  //0xA8
+    u8 unkB4[0xCC - 0xB4];           //0xB4
     s16 width;                       //0xCC
     s16 height;                      //0xCE
     u8 unkD0[0x104 - 0xD0];          //0xD0
@@ -216,7 +233,11 @@ typedef struct BattleWorkUnit {
     s16 currentFP;                   //0x112
     f32 sizeMultiplier;              //0x114
     BattleWorkStatus statusEffects;  //0x118
-    u8 unk136[0x148 - 0x136];        //0x136
+    u8 unk136[0x138 - 0x136];        //0x136
+    s32 statusFlags;                 //0x138
+    s16 unk13C; //0x13C
+    s16 unk13E; //0x13E
+    u8 unk140[0x148 - 0x140];        //0x140
     Vec moveStartPosition;           //0x148
     Vec moveCurrentPosition;         //0x154
     Vec moveTargetPosition;          //0x160
@@ -229,11 +250,20 @@ typedef struct BattleWorkUnit {
     u8 unk18A[0x1FC - 0x18A];        //0x18A
     BattleWorkUnitHP healthGauge;    //0x1FC
     s32 work[16];                    //0x218
-    u8 unk258[0x27C - 0x258];        //0x258
+    u8 unk258[0x264 - 0x258];        //0x258
+    s32 totalHpDamageTaken;          //0x264
+    s32 totalFpDamageTaken;          //0x268
+    s32 totalFpLost;                 //0x26C
+    s8 hpDamageTaken;                //0x270
+    s8 fpDamageTaken;                //0x271
+    u8 unk272[0x27C - 0x272];        //0x272
     s32 tokenFlags;                  //0x27C
     u8 unk280[0x2B4 - 0x280];        //0x280
     s32 damageEventId;               //0x2B4
-    u8 unk2B8[0x2E0 - 0x2B8];        //0x2B8
+    u8 unk2B8[0x2D4 - 0x2B8];        //0x2B8
+    s32 talkPartId;                  //0x2D4
+    const char* talkPoseName;        //0x2D8
+    const char* stayPoseName;        //0x2DC
     BattleWorkBadges badgesEquipped; //0x2E0
     u8 unk308[0xB34 - 0x308];        //0x308
 } BattleWorkUnit;
@@ -253,6 +283,11 @@ void BtlUnit_ResetMoveStatus(BattleWorkUnit* unit);
 void BtlUnit_GetStatus(BattleWorkUnit* unit, StatusEffectType type, s8* turns, s8* strength);
 void BtlUnit_ClearStatus(BattleWorkUnit* unit);
 BOOL BtlUnit_CheckStatus(BattleWorkUnit* unit, StatusEffectType type);
+
+BOOL BtlUnit_CanActStatus(BattleWorkUnit *unit);
+
+void BtlUnit_ReviseHpFp(BattleWorkUnit *unit);
+s32 BattleTransPartyId(BattleUnitType type);
 
 u32 BtlUnit_snd_se(BattleWorkUnit* unit, s32 lookup, s32 volume, s16 add_pitch);
 s32 BtlUnit_snd_se_pos(BattleWorkUnit* unit, s32 lookup, s32 volume, s16 add_pitch, Vec* position);

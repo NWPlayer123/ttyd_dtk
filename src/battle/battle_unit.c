@@ -1,6 +1,7 @@
 #include "battle/battle_unit.h"
 
 #include "battle/battle.h"
+#include "battle/battle_disp.h"
 #include "battle/battle_status_effect.h"
 #include "battle/battle_status_icon.h"
 #include "mario/mario_pouch.h"
@@ -1244,7 +1245,7 @@ BOOL BtlUnit_CheckStatus(BattleWorkUnit* unit, StatusEffectType type) {
     if (!unit) {
         return FALSE;
     }
-    
+
     BtlUnit_GetStatus(unit, type, &turns, &strength);
 
     if (turns) {
@@ -1253,8 +1254,255 @@ BOOL BtlUnit_CheckStatus(BattleWorkUnit* unit, StatusEffectType type) {
 
     if ((s8)type == STATUS_ELECTRIC && unit->badgesEquipped.zapTap) {
         return TRUE;
-    } else {
+    }
+    else {
         return FALSE;
+    }
+}
+
+s32 BtlUnit_CheckStatusFlag(BattleWorkUnit* unit, s32 flags) {
+    if (unit) {
+        return unit->statusFlags & flags;
+    }
+
+    return 0;
+}
+
+void BtlUnit_OnStatusFlag(BattleWorkUnit* unit, s32 flags) {
+    unit->statusFlags |= flags;
+}
+
+void BtlUnit_OffStatusFlag(BattleWorkUnit* unit, s32 flags) {
+    unit->statusFlags &= ~flags;
+}
+
+s32 BtlUnit_CheckUnitFlag(BattleWorkUnit* unit, s32 flags) {
+    return unit->flags & flags;
+}
+
+void BtlUnit_OnUnitFlag(BattleWorkUnit* unit, s32 flags) {
+    unit->flags |= flags;
+}
+
+void BtlUnit_OffUnitFlag(BattleWorkUnit* unit, s32 flags) {
+    unit->flags &= ~flags;
+}
+
+const char* BtlUnit_GetPoseNameFromType(BattleWorkUnitPart* part, BattlePoseType type) {
+    BattlePoseEntry* pose = part->poseTable;
+    s32 bound;
+
+    if (type <= 28) {
+        bound = 28;
+    }
+    else if (type < 40) {
+        bound = 39;
+    }
+    else if (type < 70) {
+        bound = 69;
+    }
+    else {
+        return NULL;
+    }
+
+    while (pose) {
+        if (pose->type >= 70) {
+            return NULL;
+        }
+
+        if (pose->type != type && pose->type != bound) {
+            pose++;
+        }
+        else {
+            return pose->name;
+        }
+    };
+
+    return NULL;
+}
+
+void BtlUnit_SetAnimType(BattleWorkUnitPart* part, BattlePoseType type) {
+    const char* name;
+
+    name = BtlUnit_GetPoseNameFromType(part, type);
+    if (type >= 29 && type < 40) {
+        btlDispChangeAnime(part, name, TRUE);
+    }
+    else {
+        btlDispChangeAnime(part, name, FALSE);
+    }
+
+    switch (type) {
+    case 29:
+    case 30:
+        part->animFlags |= 0x10;
+        break;
+    }
+}
+
+void BtlUnit_SetAnim(BattleWorkUnitPart* part, const char* name) {
+    btlDispChangeAnime(part, name, FALSE);
+}
+
+void BtlUnit_SetBodyAnim(BattleWorkUnit* unit, const char* name) {
+    BattleWorkUnitPart* part;
+    s32 partId;
+
+    partId = BtlUnit_GetBodyPartsId(unit);
+    part = BtlUnit_GetPartsPtr(unit, partId);
+    btlDispChangeAnime(part, name, FALSE);
+}
+
+void BtlUnit_SetBodyAnimType(BattleWorkUnit* unit, BattlePoseType type) {
+    BattleWorkUnitPart* part;
+    s32 partId;
+
+    partId = BtlUnit_GetBodyPartsId(unit);
+    part = BtlUnit_GetPartsPtr(unit, partId);
+    BtlUnit_SetAnimType(part, type);
+}
+
+void BtlUnit_ChangeTalkAnim(s32 index) {
+    BattleWorkUnit* unit;
+    BattleWorkUnitPart* part;
+
+    unit = BattleGetUnitPtr(_battleWorkPointer, index);
+    part = BtlUnit_GetPartsPtr(unit, unit->talkPartId);
+    btlDispChangeAnime(part, unit->talkPoseName, 0);
+}
+
+void BtlUnit_ChangeStayAnim(s32 index) {
+    BattleWorkUnit* unit;
+    BattleWorkUnitPart* part;
+
+    unit = BattleGetUnitPtr(_battleWorkPointer, index);
+    part = BtlUnit_GetPartsPtr(unit, unit->talkPartId);
+    btlDispChangeAnime(part, unit->stayPoseName, 0);
+}
+
+void BtlUnit_GetTalkTogePos(s32 index, f32* x, f32* y, f32* z) {
+    BattleWorkUnit* unit;
+    f32 pos_x, pos_y, pos_z;
+
+    unit = BattleGetUnitPtr(_battleWorkPointer, index);
+    BtlUnit_GetPos(unit, &pos_x, &pos_y, &pos_z);
+    pos_x += (f32)unit->faceDirection * (unit->data->togeBaseOffset.x + unit->togeOffset.x);
+    pos_y += unit->data->togeBaseOffset.y + unit->togeOffset.y;
+    pos_z += unit->data->togeBaseOffset.z + unit->togeOffset.z;
+    *x = pos_x;
+    *y = pos_y;
+    *z = pos_z;
+}
+
+s32 BtlUnit_GetEnemyBelong(BattleWorkUnit* unit) {
+    s32 alliance = unit->alliance;
+    switch (alliance) {
+    case 0:
+        return 1;
+    case 1:
+        return 0;
+    default:
+        return alliance;
+    }
+}
+
+s32 BtlUnit_GetHitDamage(BattleWorkUnit* unit) {
+    return unit->hpDamageTaken;
+}
+
+s32 BtlUnit_GetTotalHitDamage(BattleWorkUnit* unit) {
+    return unit->totalHpDamageTaken;
+}
+
+void BtlUnit_SetTotalHitDamage(BattleWorkUnit* unit, s16 damage) {
+    unit->totalHpDamageTaken = damage;
+}
+
+BOOL BtlUnit_GetACPossibility(BattleWorkUnit* unit) {
+    if (unit->alliance) {
+        return FALSE;
+    }
+    if (unit->currentType == 223) {
+        return FALSE;
+    }
+    if (BtlUnit_CheckStatus(unit, STATUS_SLEEP) || BtlUnit_CheckStatus(unit, STATUS_STOPPED)
+        || BtlUnit_CheckStatus(unit, STATUS_FROZEN) || BtlUnit_CheckStatus(unit, STATUS_INSTAKILL)) {
+        return FALSE;
+    }
+    return BtlUnit_CheckStatusFlag(unit, 1) == 0;
+}
+
+void* BtlUnit_GetData(BattleWorkUnit* unit, BattleDataType type) {
+    BattleDataEntry* entry;
+
+    entry = unit->dataTable;
+    if (!entry) {
+        return NULL;
+    }
+
+    while (entry->type) {
+        if (entry->type == type) {
+            return entry->event;
+        }
+        entry++;
+    }
+
+    return NULL;
+}
+
+BOOL BtlUnit_CheckData(BattleWorkUnit* unit, BattleDataType type) {
+    BattleDataEntry* entry;
+
+    entry = unit->dataTable;
+    if (!entry) {
+        return FALSE;
+    }
+    while (entry->type) {
+        if (entry->type == type) {
+            return TRUE;
+        }
+        entry++;
+    }
+    return FALSE;
+}
+
+BOOL BtlUnit_CanGuardStatus(BattleWorkUnit* unit) {
+    return BtlUnit_CanActStatus(unit);
+}
+
+BOOL BtlUnit_CanActStatus(BattleWorkUnit* unit) {
+    if (BtlUnit_CheckStatus(unit, STATUS_SLEEP) || BtlUnit_CheckStatus(unit, STATUS_STOPPED)
+        || BtlUnit_CheckStatus(unit, STATUS_FROZEN) || BtlUnit_CheckStatus(unit, STATUS_INSTAKILL)) {
+        return FALSE;
+    }
+    return BtlUnit_CheckStatusFlag(unit, 1) == 0;
+}
+
+void BtlUnit_SetParamFromPouch(BattleWorkUnit* unit) {
+    BattleWork* wp = _battleWorkPointer;
+    BattleWorkPartyInfo* info;
+    PouchData* pouch;
+
+    pouch = pouchGetPtr();
+    if (unit->currentType == UNIT_MARIO) {
+        unit->currentHP = pouch->currentHP;
+        unit->currentFP = pouch->currentFP;
+        BtlUnit_ReviseHpFp(unit);
+    }
+    else if ((unit->currentType >= UNIT_PARTNER_MIN) && (unit->currentType < UNIT_PARTNER_MAX)) {
+        s32 index = BattleTransPartyId(unit->currentType);
+        PouchPartyData* data = &pouch->partyData[index];
+        unit->currentHP = data->currentHP;
+        BtlUnit_ReviseHpFp(unit);
+        info = &wp->partyInfo[unit->currentType - UNIT_PARTNER_MIN];
+        unit->sizeMultiplier = info->sizeMultiplier;
+        unit->statusFlags = info->statusFlags;
+        unit->statusEffects = info->statusEffects;
+        unit->unk13C = info->unk28;
+        unit->unk13E = info->unk2A;
+        if (unit->currentHP <= 0) {
+            BtlUnit_SetStatus(unit, STATUS_INSTAKILL, 1, 1);
+        }
     }
 }
 
