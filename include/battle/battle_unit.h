@@ -78,7 +78,11 @@ STATIC_ASSERT_SIZEOF(BattlePoseEntry, 0x8);
 
 typedef struct BattleUnitData {
     BattleUnitType type;        //0x0
-    u8 unk4[0xE - 0x4];         //0x4
+    u8 unk4[0x8 - 0x4];         //0x4
+    s16 maxHP;                  //0x8
+    s16 maxFP;                  //0xA
+    u8 dangerHP;                //0xC
+    u8 perilHP;                 //0xD
     s8 level;                   //0xE
     u8 unkF[0x30 - 0xF];        //0xF
     Vec togeBaseOffset;         //0x30
@@ -151,6 +155,7 @@ typedef struct BattleWorkAlliance {
     s8 unk3;               //0x3
     s32 clearConditionMet; //0x4
 } BattleWorkAlliance;
+STATIC_ASSERT_SIZEOF(BattleWorkAlliance, 0x8);
 
 typedef struct BattleWorkStatus {
     s8 sleepTurns;            //0x0
@@ -184,12 +189,18 @@ typedef struct BattleWorkStatus {
     s8 fpRegenStrength;       //0x1C
     s8 instakillStrength;     //0x1D
 } BattleWorkStatus;
+STATIC_ASSERT_SIZEOF(BattleWorkStatus, 0x1E);
 
 typedef struct BattleWorkBadges {
-    u8 unk0[0x17 - 0x0];   //0x0
+    u8 unk0[0x10 - 0x0];   //0x0
+    u8 returnPostage;      //0x10
+    u8 hpPlus;             //0x11
+    u8 fpPlus;             //0x12
+    u8 unk13[0x17 - 0x13]; //0x13
     u8 zapTap;             //0x17
     u8 unk18[0x28 - 0x18]; //0x18
 } BattleWorkBadges;
+STATIC_ASSERT_SIZEOF(BattleWorkBadges, 0x28);
 
 typedef struct BattleWorkUnit {
     s32 unitId;                      //0x0
@@ -235,8 +246,8 @@ typedef struct BattleWorkUnit {
     BattleWorkStatus statusEffects;  //0x118
     u8 unk136[0x138 - 0x136];        //0x136
     s32 statusFlags;                 //0x138
-    s16 unk13C; //0x13C
-    s16 unk13E; //0x13E
+    u16 unk13C;                      //0x13C
+    u16 unk13E;                      //0x13E
     u8 unk140[0x148 - 0x140];        //0x140
     Vec moveStartPosition;           //0x148
     Vec moveCurrentPosition;         //0x154
@@ -284,9 +295,9 @@ void BtlUnit_GetStatus(BattleWorkUnit* unit, StatusEffectType type, s8* turns, s
 void BtlUnit_ClearStatus(BattleWorkUnit* unit);
 BOOL BtlUnit_CheckStatus(BattleWorkUnit* unit, StatusEffectType type);
 
-BOOL BtlUnit_CanActStatus(BattleWorkUnit *unit);
+BOOL BtlUnit_CanActStatus(BattleWorkUnit* unit);
 
-void BtlUnit_ReviseHpFp(BattleWorkUnit *unit);
+void BtlUnit_ReviseHpFp(BattleWorkUnit* unit);
 s32 BattleTransPartyId(BattleUnitType type);
 
 u32 BtlUnit_snd_se(BattleWorkUnit* unit, s32 lookup, s32 volume, s16 add_pitch);

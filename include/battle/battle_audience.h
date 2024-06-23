@@ -10,3 +10,6 @@ STATIC_ASSERT_SIZEOF(BattleWorkAudience, 0x13914);
 void BattleAudience_Init(void);
 void BattleAudience_Main(void);
 void BattleAudience_End(void);
+
+void BattleAudience_Case_MarioDanger(void);
+void BattleAudience_Case_MarioPinch(void);

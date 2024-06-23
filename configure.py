@@ -420,7 +420,7 @@ config.libs = [
     {
         "lib": "driver",
         "mw_version": config.linker_version,
-        "cflags": cflags_static,
+        "cflags": [*cflags_static, "-O4,p"],  # ???
         "host": False,
         "objects": [
             Object(NonMatching, "driver/animdrv.c"),

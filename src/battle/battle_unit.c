@@ -1506,6 +1506,101 @@ void BtlUnit_SetParamFromPouch(BattleWorkUnit* unit) {
     }
 }
 
+void BtlUnit_ReviseHpFp(BattleWorkUnit* unit) {
+    PouchData* pouch;
+    PouchPartyData* data;
+
+    pouch = pouchGetPtr();
+    if (unit->currentType == UNIT_MARIO) {
+        unit->baseMaxHP = pouch->baseMaxHP;
+        unit->currentMaxHP = pouch->baseMaxHP + (unit->badgesEquipped.hpPlus * 5);
+        unit->baseMaxFP = pouch->baseMaxFP;
+        unit->currentMaxFP = pouch->baseMaxFP + (unit->badgesEquipped.fpPlus * 5);
+        if (unit->currentHP > unit->currentMaxHP) {
+            unit->currentHP = unit->currentMaxHP;
+        }
+        if (unit->currentFP > unit->currentMaxFP) {
+            unit->currentFP = unit->currentMaxFP;
+        }
+    }
+    else if ((unit->currentType >= UNIT_PARTNER_MIN) && (unit->currentType < UNIT_PARTNER_MAX)) {
+        data = &pouch->partyData[BattleTransPartyId(unit->currentType)];
+        unit->baseMaxHP = data->baseMaxHP;
+        unit->currentMaxHP = data->baseMaxHP + (unit->badgesEquipped.hpPlus * 5);
+        unit->currentHP = data->currentHP;
+        if (unit->currentHP > unit->currentMaxHP) {
+            unit->currentHP = unit->currentMaxHP;
+        }
+    }
+    else {
+        unit->currentMaxHP = unit->baseMaxHP + (unit->badgesEquipped.hpPlus * 5);
+        if (unit->currentHP > unit->currentMaxHP) {
+            unit->currentHP = unit->currentMaxHP;
+        }
+        unit->currentMaxFP = unit->baseMaxFP + (unit->badgesEquipped.fpPlus * 5);
+        if (unit->currentFP > unit->currentMaxFP) {
+            unit->currentFP = unit->currentMaxFP;
+        }
+    }
+}
+
+void BtlUnit_SetParamToPouch(BattleWorkUnit* unit) {
+    BattleWork* wp = _battleWorkPointer;
+    BattleWorkPartyInfo* info;
+    PouchData* pouch;
+
+    pouch = pouchGetPtr();
+    if (unit->currentType == UNIT_MARIO) {
+        pouch->currentHP = unit->currentHP;
+        pouch->currentFP = unit->currentFP;
+    }
+    else if ((unit->currentType >= UNIT_PARTNER_MIN) && (unit->currentType < UNIT_PARTNER_MAX)) {
+        s32 index = BattleTransPartyId(unit->currentType);
+        PouchPartyData* data = &pouch->partyData[index];
+        data->currentHP = unit->currentHP;
+        info = &wp->partyInfo[unit->currentType - UNIT_PARTNER_MIN];
+        info->sizeMultiplier = unit->sizeMultiplier;
+        info->statusFlags = unit->statusFlags;
+        info->statusEffects = unit->statusEffects;
+        info->unk28 = unit->unk13C;
+        info->unk2A = unit->unk13E;
+    }
+}
+
+void BtlUnit_CheckPinchStatus(BattleWorkUnit* unit, BOOL a2) {
+    if (unit->currentHP <= unit->data->perilHP && unit->currentHP < unit->currentMaxHP) {
+        if ((unit->statusFlags & 0x20000000) == 0) {
+            unit->statusFlags |= 0x20000000;
+            if (!a2 && unit->currentType == UNIT_MARIO) {
+                BattleAudience_Case_MarioDanger();
+            }
+        }
+    }
+    else {
+        if ((unit->statusFlags & 0x20000000) != 0) {
+            unit->statusFlags &= ~0x20000000;
+        }
+    }
+
+    if (unit->currentHP <= unit->data->dangerHP && unit->currentHP < unit->currentMaxHP) {
+        if ((unit->statusFlags & 0x10000000) == 0) {
+            unit->statusFlags |= 0x10000000;
+            if ((unit->statusFlags & 0x20000000) == 0 && !a2 && unit->currentType == UNIT_MARIO) {
+                BattleAudience_Case_MarioPinch();
+            }
+        }
+    }
+    else {
+        if ((unit->statusFlags & 0x10000000) != 0) {
+            unit->statusFlags &= ~0x10000000;
+        }
+    }
+}
+
+s32 BtlUnit_GetExp(BattleWorkUnit *unit) {
+    
+}
+
 u32 BtlUnit_snd_se(BattleWorkUnit* unit, s32 lookup, s32 volume, s16 add_pitch) {
     Vec position;
 

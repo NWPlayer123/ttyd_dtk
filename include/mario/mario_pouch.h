@@ -373,7 +373,10 @@ typedef struct PouchData {
     s16 maxFP;                   //0x76
     u8 unk78[0x8A - 0x78];       //0x78
     s16 level;                   //0x8A
-    u8 unk8C[0x5D4 - 0x8C];      //0x8C
+    u8 unk8C[0x8E - 0x8C];       //0x8C
+    s16 baseMaxHP;               //0x8E
+    s16 baseMaxFP;               //0x90
+    u8 unk92[0x5D4 - 0x92];      //0x92
 } PouchData;
 STATIC_ASSERT_SIZEOF(PouchData, 0x5D4);
 
