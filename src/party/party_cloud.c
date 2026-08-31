@@ -1,1 +1,880 @@
 #include "party/party_cloud.h"
+
+#include "driver/effdrv.h"
+#include "driver/hitdrv.h"
+#include "memory.h"
+#include "party/party_move.h"
+#include "system.h"
+
+extern f32 float_0_804242e0;
+extern f32 float_neg1_80424318;
+extern f32 float_24_804242f8;
+extern f32 float_38_80424348;
+extern f32 float_4p25_8042434c;
+extern f32 float_180_804242e8;
+extern f32 float_18_804242fc;
+extern f32 float_0p01_80424320;
+extern f32 float_100_80424324;
+extern f32 float_10_80424334;
+extern f32 float_3p1416_80424350;
+extern f32 float_3_80424354;
+extern f32 float_0p5_80424358;
+extern f32 float_30_8042435c;
+extern f32 float_330_80424360;
+extern char str_PWD_Z_1_802f89f8[];
+extern char str_PWD_S_1_802f8a00[];
+extern f32 cloud_at[3];
+
+void* partyGetPtr(s32 id);
+s32 marioGetPartyId(void);
+void partyChgPose(void* party, void* pose);
+f32 toMovedir(f32 angle);
+extern void* marioGetPtr(void);
+extern void* camGetPtr(s32 cameraId);
+extern void marioAdjustMoveDir(void);
+extern f32 revise360(f32 angle);
+extern f64 sin(f64 x);
+extern void psndSFXOff(s32 soundId);
+extern void partyChgRunMode(void* party, s32 mode);
+extern f32 float_90_80424304;
+extern f32 float_270_80424308;
+extern void marioChgMot(s32 mot);
+
+
+u8 mot_cloud(void) {
+
+    void* mario = marioGetPtr();
+    u32 flags = *(u32*)((s32)mario + 0xC);
+    if (flags & 1) {
+        *(u32*)((s32)mario + 0xC) = flags & ~1;
+        *(u32*)mario &= ~0xF0000;
+        *(s32*)((s32)mario + 0x48) = 0;
+        *(s16*)((s32)mario + 0x50) = 0;
+        *(s32*)((s32)mario + 0x44) = 0;
+    }
+}
+u8 cloudResetAt(void) {
+    extern void marioCamZoomOffReq2(s32 frames);
+    void* mario;
+    void* party;
+    void* cam;
+    f32 small;
+    f32 zero;
+
+    mario = marioGetPtr();
+    party = partyGetPtr(marioGetPartyId());
+    if (party != 0 && *(s8*)((s32)party + 0x31) == 5) {
+        cam = camGetPtr(4);
+        cloud_at[0] = *(f32*)((s32)cam + 0x18);
+        cam = camGetPtr(4);
+        cloud_at[1] = *(f32*)((s32)cam + 0x1C);
+        cam = camGetPtr(4);
+        cloud_at[2] = *(f32*)((s32)cam + 0x20);
+        marioCamZoomOffReq2(0x258);
+    }
+    *(u32*)((s32)mario + 4) &= ~0x100;
+    *(u32*)((s32)mario + 4) &= ~4;
+    marioAdjustMoveDir();
+    small = float_0p01_80424320;
+    zero = float_0_804242e0;
+    *(f32*)((s32)mario + 0x150) = small;
+    *(f32*)((s32)mario + 0x138) = zero;
+}
+
+s32 cloudGetStatus(void) {
+    void* party = partyGetPtr(marioGetPartyId());
+    s32 ret = 2;
+    u8 status;
+
+    if (party == 0) {
+        goto fail;
+    }
+    if (*(s8*)((s32)party + 0x31) != 5) {
+        goto check_status;
+    }
+    if (*(u32*)party & 0x100) {
+        goto check_status;
+    }
+fail:
+    return 0;
+check_status:
+    status = *(u8*)((s32)party + 0x39);
+    if (status == 10 && status < 20) {
+        ret = 1;
+    }
+    return ret;
+}
+
+f32 cloudGetBreathDir(void) {
+    void* party = partyGetPtr(0);
+    if (party == 0) {
+        return float_0_804242e0;
+    }
+    if ((*(u32*)party & 0x100) != 0 && *(u8*)((s32)party + 0x39) < 10) {
+        return float_neg1_80424318;
+    }
+    party = *(void**)((s32)party + 0x170);
+    if (party == 0) {
+        return float_0_804242e0;
+    }
+    return toMovedir(*(f32*)((s32)party + 4));
+}
+
+
+#pragma no_register_save_helpers on
+#pragma use_lmw_stmw off
+f32 cloudGetBreathPower(void* pos, f32 radius) {
+    extern f32 distABf(f32 x1, f32 z1, f32 x2, f32 z2);
+    extern f32 angleABf(f32 x1, f32 z1, f32 x2, f32 z2);
+    extern f64 cos(f64 x);
+    extern f32 __fabsf(f32 value);
+    void* party;
+    void* work;
+    f32 ret;
+    f32 dir;
+    f32 angle;
+
+    party = partyGetPtr(0);
+    ret = float_0_804242e0;
+    if (party == 0) {
+        return ret;
+    }
+    if (*(s8*)((s32)party + 0x31) == 5 &&
+        (*(u32*)party & 0x100) &&
+        *(u8*)((s32)party + 0x39) >= 10 &&
+        __fabsf((*(f32*)((s32)party + 0x5C) - *(f32*)((s32)pos + 4)) - float_18_804242fc) <= float_10_80424334) {
+        work = *(void**)((s32)party + 0x170);
+        if (distABf(*(f32*)((s32)party + 0x58), *(f32*)((s32)party + 0x60),
+                    *(f32*)pos, *(f32*)((s32)pos + 8)) - float_0p5_80424358 * radius <= *(f32*)((s32)work + 8)) {
+            dir = toMovedir(*(f32*)((s32)work + 4));
+            angle = revise360(angleABf(*(f32*)((s32)party + 0x58), *(f32*)((s32)party + 0x60),
+                                       *(f32*)pos, *(f32*)((s32)pos + 8)) - dir);
+            if (angle <= float_30_8042435c || angle >= float_330_80424360) {
+                ret = float_100_80424324 *
+                      __fabsf((f32)cos((float_3p1416_80424350 * angle) / float_180_804242e8));
+            }
+        }
+    }
+    return ret;
+}
+#pragma no_register_save_helpers off
+#pragma use_lmw_stmw on
+
+f32 cloud_at[3];
+s32 cloudGetHitBreathout(int param_1) {
+    void* party;
+    s32 ret;
+
+    party = partyGetPtr(marioGetPartyId());
+    if (party == 0) {
+        return 0;
+    }
+    if (*(s8*)((s32)party + 0x31) != 5 || !(*(u32*)party & 0x100) ||
+        *(u8*)((s32)party + 0x39) < 10) {
+        return 0;
+    }
+    ret = 0;
+    if (param_1 == 0) {
+        ret = *(s32*)(*(s32*)((s32)party + 0x170) + 0x20);
+    } else if (param_1 == 1) {
+        ret = *(s32*)(*(s32*)((s32)party + 0x170) + 0x24);
+    } else if (param_1 == 2) {
+        ret = *(s32*)(*(s32*)((s32)party + 0x170) + 0x28);
+    } else if (param_1 == 3) {
+        ret = *(s32*)(*(s32*)((s32)party + 0x170) + 0x2C);
+    }
+    return ret;
+}
+
+f32 cloudGetBreathDist(void) {
+    void* party = partyGetPtr(marioGetPartyId());
+    if (party == 0) {
+        return float_0_804242e0;
+    }
+    if (*(s8*)((s32)party + 0x31) != 5) {
+        goto fail;
+    }
+    if ((*(u32*)party & 0x100) == 0) {
+        goto fail;
+    }
+    if (*(u8*)((s32)party + 0x39) >= 10) {
+        goto success;
+    }
+fail:
+    return float_0_804242e0;
+success:
+    return *(f32*)(*(s32*)((s32)party + 0x170) + 8);
+}
+
+void N_cloudLockAnimationsOff(void* party) {
+    *(s32*)((s32)party + 0x184) = 0;
+    partyChgPose(party, str_PWD_S_1_802f8a00);
+}
+
+void N_cloudLockAnimationsOn(void* party) {
+    *(s32*)((s32)party + 0x184) = 1;
+    partyChgPose(party, str_PWD_Z_1_802f89f8);
+}
+
+void unk_80187d74(void* party) {
+    f32 zero = float_0_804242e0;
+    f32 dist = float_4p25_8042434c;
+    *(f32*)((s32)party + 0x17C) = zero;
+    *(f32*)((s32)party + 0x180) = dist;
+}
+
+void unk_80187d10(void* party) {
+    f32 angle;
+    f32 s;
+    f32 three;
+
+    angle = revise360(*(f32*)((s32)party + 0x17C) - *(f32*)((s32)party + 0x180));
+    *(f32*)((s32)party + 0x17C) = angle;
+    angle = *(f32*)((s32)party + 0x17C);
+    s = (f32)sin((float_3p1416_80424350 * angle) / float_180_804242e8);
+    three = float_3_80424354;
+    *(f32*)((s32)party + 0x80) = (three * s) + three;
+}
+u8 cloud_move(void* pParty) {
+    extern void partyMoveFlyInit(void* party, s32 param);
+    extern void partyFlyMain(void* party);
+    f32 angle;
+    f32 value;
+    f32 zero;
+    f32 dist;
+
+    if (*(u32*)((s32)pParty + 8) & 8) {
+        *(u32*)((s32)pParty + 8) &= ~8;
+        partyMoveFlyInit(pParty, 1);
+        zero = float_0_804242e0;
+        dist = float_4p25_8042434c;
+        *(f32*)((s32)pParty + 0x17C) = zero;
+        *(f32*)((s32)pParty + 0x180) = dist;
+    }
+    if (*(s32*)((s32)pParty + 0x184) == 0) {
+        partyFlyMain(pParty);
+        angle = revise360(*(f32*)((s32)pParty + 0x17C) - *(f32*)((s32)pParty + 0x180));
+        *(f32*)((s32)pParty + 0x17C) = angle;
+        value = (f32)sin((float_3p1416_80424350 * *(f32*)((s32)pParty + 0x17C)) / float_180_804242e8);
+        *(f32*)((s32)pParty + 0x80) = float_3_80424354 * value + float_3_80424354;
+        if (*(u8*)((s32)pParty + 0x3B) != 2) {
+            *(u32*)((s32)pParty + 8) &= ~0x40000;
+        }
+    }
+}
+
+void cloud_init(void* party) {
+    f32 y;
+    f32 x;
+    s32 zero;
+
+    *(u8*)((s32)party + 0x33) = 5;
+    zero = 0;
+    x = float_38_80424348;
+    *(u8*)((s32)party + 0x32) = 1;
+    y = float_24_804242f8;
+    *(f32*)((s32)party + 0xF0) = x;
+    *(f32*)((s32)party + 0xF4) = y;
+    *(s32*)((s32)party + 0x174) = zero;
+    *(s32*)((s32)party + 0x178) = zero;
+    *(s32*)((s32)party + 0x17C) = zero;
+    *(s32*)((s32)party + 0x180) = zero;
+    *(s32*)((s32)party + 0x184) = zero;
+    *(s32*)((s32)party + 0x170) = zero;
+    *(s32*)((s32)party + 0x178) = zero;
+}
+u8 cloud_use(void* pParty) {
+    extern s32 partyChgPoseId(void* party, s32 poseId);
+    extern void partyChgPose(void* party, s32 pose);
+    extern f32 float_neg90_8042432c;
+    extern f32 float_3p3_80424330;
+    void* mario;
+    void* work;
+    u16 state;
+    f32 dir;
+    s32 useNeg;
+
+    mario = *(void**)((s32)pParty + 0x160);
+    N_cloud_use(pParty);
+    state = *(u16*)((s32)mario + 0x2E);
+    if (state == 0x1B || state <= 1 || state == 2) {
+        return;
+    }
+
+    *(u32*)pParty &= ~0x100;
+    work = *(void**)((s32)pParty + 0x170);
+    if (work != 0 && (u32)(*(s32*)((s32)work + 0x34) + 0x10000) != 0xFFFF) {
+        psndSFXOff(*(s32*)((s32)work + 0x34));
+        *(s32*)((s32)*(void**)((s32)pParty + 0x170) + 0x34) = -1;
+    }
+    if (*(void**)((s32)pParty + 0x178) != 0) {
+        effSoftDelete(*(void**)((s32)pParty + 0x178));
+        *(s32*)((s32)pParty + 0x178) = 0;
+    }
+
+    *(s32*)((s32)pParty + 0x94) = *(s32*)((s32)mario + 0x8C);
+    *(s32*)((s32)pParty + 0x98) = *(s32*)((s32)mario + 0x90);
+    *(s32*)((s32)pParty + 0x9C) = *(s32*)((s32)mario + 0x94);
+    dir = *(f32*)((s32)mario + 0x1B0);
+    useNeg = 0;
+    if (dir < float_90_80424304 || dir >= float_270_80424308) {
+        useNeg = 1;
+    }
+    if (useNeg != 0) {
+        dir += float_neg90_8042432c;
+    } else {
+        dir += float_90_80424304;
+    }
+    movePos((f32*)((s32)pParty + 0x94), (f32*)((s32)pParty + 0x9C), float_3p3_80424330, toMovedir(dir));
+    *(f32*)((s32)pParty + 0x98) += float_10_80424334;
+    *(s32*)((s32)pParty + 0x58) = *(s32*)((s32)pParty + 0x94);
+    *(s32*)((s32)pParty + 0x5C) = *(s32*)((s32)pParty + 0x98);
+    *(s32*)((s32)pParty + 0x60) = *(s32*)((s32)pParty + 0x9C);
+    *(u32*)((s32)pParty + 4) |= 0x10;
+    *(u32*)pParty &= 0x7FFFFFFF;
+    if (*(void**)((s32)pParty + 0x170) != 0) {
+        __memFree(0, *(void**)((s32)pParty + 0x170));
+        *(s32*)((s32)pParty + 0x170) = 0;
+    }
+    state = *(u16*)((s32)mario + 0x2E);
+    if (state == 0x1F || state == 0x20) {
+        partyChgRunMode(pParty, 0xD);
+    } else {
+        partyChgPose(pParty, partyChgPoseId(pParty, 1));
+        partyChgRunMode(pParty, 2);
+        partyChgMot(pParty, 0);
+    }
+}
+
+
+#pragma no_register_save_helpers on
+#pragma use_lmw_stmw off
+void N_cloud_use(void* pParty) {
+    extern void* memset(void* ptr, s32 value, u32 size);
+    extern void marioChgPose(char* pose);
+    extern void partyUpdateKeyData(void* party);
+    extern void* hitCheckFilter(f32 x, f32 y, f32 z, f32 dirX, f32 dirY, f32 dirZ, s32 flags,
+                                void* outA, void* outB, void* outC, void* outD, void* outE, void* outF, void* outG);
+    extern void getHitBreatheout2(void* party, f32 angle);
+    extern s32 marioKeyOffChk(void);
+    extern u8 vec3_802f89c0[];
+    extern f32 float_neg90_8042432c;
+    extern f32 float_3p3_80424330;
+    extern f32 float_2_80424340;
+    extern f32 float_neg45_80424344;
+    extern char str_M_A_2A_802f89d8[];
+    extern char str_PWD_A_5_802f89e0[];
+    extern char str_PWD_A_6_802f89e8[];
+    void* player = *(void**)((s32)pParty + 0x160);
+    void* use;
+    s32 state;
+    f32 dir;
+    void* hit;
+    f32 moveX;
+    f32 moveZ;
+    f32 trigDirA;
+    f32 trigDirB;
+    f32 trigSpreadA;
+    f32 trigSpreadB;
+    f32 hitDist;
+    s32 hitOut0;
+    s32 hitOut1;
+    s32 hitOut2;
+    s32 hitOut3;
+    s32 hitOut4;
+    s32 hitOut5;
+    s32 breathIndex;
+
+    if ((*(u32*)((s32)pParty + 8) & 8) != 0) {
+        *(u32*)((s32)pParty + 8) &= ~8;
+        *(s32*)((s32)pParty + 0x17C) = 0;
+        *(s32*)((s32)pParty + 0x180) = 0;
+        marioAdjustMoveDir();
+        *(u8*)((s32)pParty + 0x39) = 0;
+        use = __memAlloc(0, 0x48);
+        *(void**)((s32)pParty + 0x170) = use;
+        memset(use, 0, 0x48);
+        *(f32*)((s32)use + 0x00) = 100.0f;
+        *(f32*)((s32)use + 0x0C) = 120.0f;
+        *(f32*)((s32)use + 0x10) = 0.0f;
+        *(s32*)((s32)use + 0x14) = 0;
+        *(f32*)((s32)use + 0x18) = 0.0f;
+        *(s32*)((s32)use + 0x1C) = 1;
+        *(void**)((s32)pParty + 0x178) = 0;
+        if (use != 0) {
+            *(s32*)((s32)use + 0x34) = -1;
+        }
+        if ((*(u32*)pParty & 1) != 0) {
+            *(s32*)((s32)use + 0x30) = sysMsec2Frame(*(s32*)((s32)pParty + 0x16C));
+        }
+    }
+    use = *(void**)((s32)pParty + 0x170);
+    state = *(u8*)((s32)pParty + 0x39);
+    switch (state) {
+        case 0:
+            *(u32*)((s32)player + 4) |= 0x100;
+            *(s32*)((s32)pParty + 0x24) = 4;
+            *(u8*)((s32)pParty + 0x39) = 1;
+        case 1:
+            *(f32*)((s32)pParty + 0x94) = *(f32*)((s32)player + 0x8C);
+            *(f32*)((s32)pParty + 0x98) = *(f32*)((s32)player + 0x90);
+            *(f32*)((s32)pParty + 0x9C) = *(f32*)((s32)player + 0x94);
+            dir = *(f32*)((s32)player + 0x1B0);
+            if (dir < 90.0f || dir >= 270.0f) {
+                dir += -90.0f;
+            } else {
+                dir += 90.0f;
+            }
+            dir = toMovedir(dir);
+            movePos((f32*)((s32)pParty + 0x94), (f32*)((s32)pParty + 0x9C), 3.3f, dir);
+            *(f32*)((s32)pParty + 0x98) += 10.0f;
+            *(f32*)((s32)pParty + 0x58) +=
+                (*(f32*)((s32)pParty + 0x94) - *(f32*)((s32)pParty + 0x58)) /
+                (f32)*(s32*)((s32)pParty + 0x24);
+            *(f32*)((s32)pParty + 0x5C) +=
+                (*(f32*)((s32)pParty + 0x98) - *(f32*)((s32)pParty + 0x5C)) /
+                (f32)*(s32*)((s32)pParty + 0x24);
+            *(f32*)((s32)pParty + 0x60) +=
+                (*(f32*)((s32)pParty + 0x9C) - *(f32*)((s32)pParty + 0x60)) /
+                (f32)*(s32*)((s32)pParty + 0x24);
+            if (--*(s32*)((s32)pParty + 0x24) < 1) {
+                *(u8*)((s32)pParty + 0x39) = 10;
+            }
+            break;
+        case 10:
+            *(f32*)((s32)pParty + 0x94) = *(f32*)((s32)player + 0x8C);
+            *(f32*)((s32)pParty + 0x98) = *(f32*)((s32)player + 0x90);
+            *(f32*)((s32)pParty + 0x9C) = *(f32*)((s32)player + 0x94);
+            dir = *(f32*)((s32)player + 0x1B0);
+            if (dir < 90.0f || dir >= 270.0f) {
+                dir += -90.0f;
+            } else {
+                dir += 90.0f;
+            }
+            dir = toMovedir(dir);
+            movePos((f32*)((s32)pParty + 0x94), (f32*)((s32)pParty + 0x9C), 3.3f, dir);
+            *(f32*)((s32)pParty + 0x98) += 10.0f;
+            *(f32*)((s32)pParty + 0x58) = *(f32*)((s32)pParty + 0x94);
+            *(f32*)((s32)pParty + 0x5C) = *(f32*)((s32)pParty + 0x98);
+            *(f32*)((s32)pParty + 0x60) = *(f32*)((s32)pParty + 0x9C);
+            marioChgMot(0x1B);
+            marioChgPose(str_M_A_2A_802f89d8);
+            partyChgPose(pParty, str_PWD_A_5_802f89e0);
+            *(s32*)((s32)pParty + 0x24) = 0x10;
+            *(u8*)((s32)pParty + 0x39) = 0x0B;
+            *(u32*)((s32)player + 4) |= 0x104;
+            *(u32*)((s32)pParty + 4) |= 0x10;
+            *(f32*)((s32)use + 8) = 0.0f;
+            *(f32*)((s32)use + 4) = *(f32*)((s32)player + 0x1AC);
+            break;
+        case 11:
+            *(f32*)((s32)pParty + 0x94) = *(f32*)((s32)player + 0x8C);
+            *(f32*)((s32)pParty + 0x98) = *(f32*)((s32)player + 0x90);
+            *(f32*)((s32)pParty + 0x9C) = *(f32*)((s32)player + 0x94);
+            dir = *(f32*)((s32)player + 0x1B0);
+            if (dir < 90.0f || dir >= 270.0f) {
+                dir += -90.0f;
+            } else {
+                dir += 90.0f;
+            }
+            dir = toMovedir(dir);
+            movePos((f32*)((s32)pParty + 0x94), (f32*)((s32)pParty + 0x9C), 3.3f, dir);
+            *(f32*)((s32)pParty + 0x98) += 10.0f;
+            *(f32*)((s32)pParty + 0x58) = *(f32*)((s32)pParty + 0x94);
+            *(f32*)((s32)pParty + 0x5C) = *(f32*)((s32)pParty + 0x98);
+            *(f32*)((s32)pParty + 0x60) = *(f32*)((s32)pParty + 0x9C);
+            if (--*(s32*)((s32)pParty + 0x24) < 1) {
+                partyChgPose(pParty, str_PWD_A_6_802f89e8);
+                *(u8*)((s32)pParty + 0x39) = 12;
+            }
+            break;
+        case 12:
+            *(f32*)((s32)pParty + 0x94) = *(f32*)((s32)player + 0x8C);
+            *(f32*)((s32)pParty + 0x98) = *(f32*)((s32)player + 0x90);
+            *(f32*)((s32)pParty + 0x9C) = *(f32*)((s32)player + 0x94);
+            dir = *(f32*)((s32)player + 0x1B0);
+            if (dir < float_90_80424304 || dir >= float_270_80424308) {
+                dir += float_neg90_8042432c;
+            } else {
+                dir += float_90_80424304;
+            }
+            dir = toMovedir(dir);
+            movePos((f32*)((s32)pParty + 0x94), (f32*)((s32)pParty + 0x9C), float_3p3_80424330, dir);
+            *(f32*)((s32)pParty + 0x98) += float_10_80424334;
+            *(f32*)((s32)pParty + 0x58) = *(f32*)((s32)pParty + 0x94);
+            *(f32*)((s32)pParty + 0x5C) = *(f32*)((s32)pParty + 0x98);
+            *(f32*)((s32)pParty + 0x60) = *(f32*)((s32)pParty + 0x9C);
+            partyUpdateKeyData(pParty);
+
+            *(f32*)((s32)player + 0x1AC) = *(f32*)((s32)use + 4);
+            *(f32*)((s32)player + 0x1B0) = *(f32*)((s32)use + 4);
+            *(f32*)((s32)pParty + 0x10C) = *(f32*)((s32)use + 4);
+            *(f32*)((s32)pParty + 0x110) = *(f32*)((s32)use + 4);
+
+            moveX = *(f32*)((s32)player + 0x8C);
+            moveZ = *(f32*)((s32)player + 0x94);
+            dir = *(f32*)((s32)player + 0x1AC);
+            if (dir < float_90_80424304 || dir >= float_270_80424308) {
+                dir += float_neg90_8042432c;
+            } else {
+                dir += float_90_80424304;
+            }
+            dir = toMovedir(dir);
+            movePos(&moveX, &moveZ, float_3p3_80424330, dir);
+            *(f32*)((s32)pParty + 0x58) = moveX;
+            *(f32*)((s32)pParty + 0x60) = moveZ;
+            *(f32*)((s32)pParty + 0x5C) = *(f32*)((s32)player + 0x90) + float_10_80424334;
+
+            *(u32*)((s32)pParty + 0x7C) = *(u32*)(vec3_802f89c0 + 0);
+            *(u32*)((s32)pParty + 0x80) = *(u32*)(vec3_802f89c0 + 4);
+            *(u32*)((s32)pParty + 0x84) = *(u32*)(vec3_802f89c0 + 8);
+
+            *(f32*)((s32)use + 8) += float_2_80424340;
+            if (*(f32*)((s32)use + 8) >= *(f32*)((s32)use + 0xC)) {
+                *(f32*)((s32)use + 8) = *(f32*)((s32)use + 0xC);
+            }
+
+            dir = toMovedir(*(f32*)((s32)use + 4));
+            sincosf(dir, &trigDirA, &trigDirB);
+            sincosf(float_neg45_80424344, &trigSpreadA, &trigSpreadB);
+            hitDist = *(f32*)((s32)use + 8);
+            hit = hitCheckFilter(
+                *(f32*)((s32)pParty + 0x58),
+                *(f32*)((s32)player + 0x90) + float_18_804242fc,
+                *(f32*)((s32)pParty + 0x60),
+                trigDirA, trigSpreadA, trigDirB, 0,
+                &hitOut0, &hitOut1, &hitOut2, &hitDist, &hitOut3, &hitOut4, &hitOut5);
+            if (hit != 0 && (hitGetAttr(hit) & 4) != 0) {
+                hit = 0;
+            }
+            *(void**)((s32)use + 0x24) = hit;
+            getHitBreatheout2(pParty, float_0_804242e0);
+
+            breathIndex = *(s16*)((s32)use + 0x38) + 1;
+            *(s16*)((s32)use + 0x38) = breathIndex;
+            if ((s16)breathIndex > 2) {
+                *(s16*)((s32)use + 0x38) = 0;
+            }
+
+            if ((*(u32*)pParty & 0x80000000) == 0) {
+                if ((*(u16*)((s32)pParty + 0x150) & 0x400) != 0 && marioKeyOffChk() == 0) {
+                    break;
+                }
+            } else {
+                if (--*(s32*)((s32)use + 0x30) > 0) {
+                    break;
+                }
+            }
+
+            *(s32*)((s32)use + 0x20) = 0;
+            *(s32*)((s32)use + 0x24) = 0;
+            *(s32*)((s32)use + 0x28) = 0;
+            *(s32*)((s32)use + 0x2C) = 0;
+            *(s32*)((s32)pParty + 0x24) = sysMsec2Frame(200);
+            *(u8*)((s32)pParty + 0x39) = 13;
+            if ((*(u32*)pParty & 0x80000000) != 0) {
+                *(u8*)((s32)pParty + 0x39) = 20;
+            }
+            if (use != 0 && (u32)(*(s32*)((s32)use + 0x34) + 0x10000) != 0xFFFF) {
+                psndSFXOff(*(s32*)((s32)use + 0x34));
+                *(s32*)((s32)use + 0x34) = -1;
+            }
+            break;
+        case 13:
+            *(f32*)((s32)pParty + 0x94) = *(f32*)((s32)player + 0x8C);
+            *(f32*)((s32)pParty + 0x98) = *(f32*)((s32)player + 0x90);
+            *(f32*)((s32)pParty + 0x9C) = *(f32*)((s32)player + 0x94);
+            dir = *(f32*)((s32)player + 0x1B0);
+            if (dir < 90.0f || dir >= 270.0f) {
+                dir += -90.0f;
+            } else {
+                dir += 90.0f;
+            }
+            dir = toMovedir(dir);
+            movePos((f32*)((s32)pParty + 0x94), (f32*)((s32)pParty + 0x9C), 3.3f, dir);
+            *(f32*)((s32)pParty + 0x98) += 10.0f;
+            *(f32*)((s32)pParty + 0x58) = *(f32*)((s32)pParty + 0x94);
+            *(f32*)((s32)pParty + 0x5C) = *(f32*)((s32)pParty + 0x98);
+            *(f32*)((s32)pParty + 0x60) = *(f32*)((s32)pParty + 0x9C);
+            partyUpdateKeyData(pParty);
+            partyChgPose(pParty, str_PWD_A_6_802f89e8);
+            if ((*(u16*)((s32)pParty + 0x152) & 0x400) != 0) {
+                *(u8*)((s32)pParty + 0x39) = 10;
+            }
+            if (--*(s32*)((s32)pParty + 0x24) < 1 ||
+                *(s8*)((s32)pParty + 0x158) != 0 ||
+                *(s8*)((s32)pParty + 0x159) != 0) {
+                *(u8*)((s32)pParty + 0x39) = 20;
+            }
+            break;
+        case 20:
+            if (use != 0 && *(s32*)((s32)use + 0x34) != -1) {
+                psndSFXOff(*(s32*)((s32)use + 0x34));
+                *(s32*)((s32)use + 0x34) = -1;
+            }
+            if (*(void**)((s32)pParty + 0x178) != 0) {
+                effSoftDelete(*(void**)((s32)pParty + 0x178));
+                *(void**)((s32)pParty + 0x178) = 0;
+            }
+            *(f32*)((s32)pParty + 0x94) = *(f32*)((s32)player + 0x8C);
+            *(f32*)((s32)pParty + 0x98) = *(f32*)((s32)player + 0x90);
+            *(f32*)((s32)pParty + 0x9C) = *(f32*)((s32)player + 0x94);
+            dir = *(f32*)((s32)player + 0x1B0);
+            if (dir < 90.0f || dir >= 270.0f) {
+                dir += -90.0f;
+            } else {
+                dir += 90.0f;
+            }
+            dir = toMovedir(dir);
+            movePos((f32*)((s32)pParty + 0x94), (f32*)((s32)pParty + 0x9C), 3.3f, dir);
+            *(f32*)((s32)pParty + 0x98) += 10.0f;
+            *(f32*)((s32)pParty + 0x58) = *(f32*)((s32)pParty + 0x94);
+            *(f32*)((s32)pParty + 0x5C) = *(f32*)((s32)pParty + 0x98);
+            *(f32*)((s32)pParty + 0x60) = *(f32*)((s32)pParty + 0x9C);
+            *(u32*)((s32)pParty + 4) &= ~0x10;
+            marioAdjustMoveDir();
+            partyChgRunMode(pParty, 2);
+            partyChgMoveMode(pParty, 2);
+            partyChgMot(pParty, 1);
+            if (use != 0) {
+                __memFree(0, use);
+                *(void**)((s32)pParty + 0x170) = 0;
+            }
+            break;
+    }
+}
+
+#pragma no_register_save_helpers off
+#pragma use_lmw_stmw on
+
+#pragma no_register_save_helpers on
+#pragma use_lmw_stmw off
+u8 cloud_exit(void* pParty) {
+    void* work;
+    void* mario;
+    s32 soundId;
+    f32 zero;
+    f32 small;
+
+    work = *(void**)((s32)pParty + 0x170);
+    mario = *(void**)((s32)pParty + 0x160);
+    if (work != 0) {
+        soundId = *(s32*)((s32)work + 0x34);
+        if ((u32)(soundId + 0x10000) != 0xFFFF) {
+            psndSFXOff(soundId);
+            *(s32*)((s32)*(void**)((s32)pParty + 0x170) + 0x34) = -1;
+        }
+    }
+    if (*(void**)((s32)pParty + 0x178) != 0) {
+        effSoftDelete(*(void**)((s32)pParty + 0x178));
+        *(s32*)((s32)pParty + 0x178) = 0;
+    }
+    if (*(void**)((s32)pParty + 0x170) != 0) {
+        __memFree(0, *(void**)((s32)pParty + 0x170));
+        *(s32*)((s32)pParty + 0x170) = 0;
+    }
+    *(u32*)((s32)mario + 4) &= ~0x100;
+    *(u32*)((s32)mario + 4) &= ~4;
+    marioAdjustMoveDir();
+    marioChgMot(0);
+    small = float_0p01_80424320;
+    zero = float_0_804242e0;
+    *(f32*)((s32)mario + 0x150) = small;
+    *(f32*)((s32)mario + 0x138) = zero;
+}
+#pragma no_register_save_helpers off
+#pragma use_lmw_stmw on
+
+
+#pragma no_register_save_helpers on
+#pragma use_lmw_stmw off
+void getHitBreatheout2(void* pParty, f32 angle) {
+    extern void sincosf(f32 angle, f32* sinOut, f32* cosOut);
+    extern f32 toMovedir(f32 angle);
+    extern void* hitCheckFilter(f32 x, f32 y, f32 z, f32 dirX, f32 dirY, f32 dirZ, s32 flags,
+                                void* outA, void* outB, void* outC, void* outD, void* outE, void* outF, void* outG);
+    extern u32 hitGetAttr(void* hit);
+    extern f32 float_0_804242e0;
+    extern f32 float_1_80424314;
+    extern f32 float_8_804242ec;
+    extern f32 float_18_804242fc;
+    extern f32 float_20_804242f0;
+    extern f32 float_24_804242f8;
+    extern f32 float_40_804242f4;
+    extern f32 float_neg25_8042430c;
+    extern f32 float_neg1_80424318;
+    extern f32 float_neg20_8042431c;
+    extern f32 float_0p6_80424300;
+    extern f32 float_205_80424310;
+
+    void* work;
+    void* mario;
+    void* hit;
+    f32 height;
+    f32 sinA;
+    f32 cosA;
+    f32 dir;
+    f32 sinD;
+    f32 cosD;
+    f32 dist;
+    f32 moveX;
+    f32 moveZ;
+    f32 side;
+    s32 tmpA;
+    s32 tmpB;
+    s32 tmpC;
+    s32 tmpD;
+    s32 tmpE;
+    s32 tmpF;
+    s32 tmpG;
+
+    work = *(void**)((s32)pParty + 0x170);
+    mario = *(void**)((s32)pParty + 0x160);
+
+    switch (*(s16*)((s32)work + 0x38)) {
+        case 0:
+            height = float_8_804242ec;
+            break;
+        case 1:
+            height = float_20_804242f0;
+            break;
+        case 2:
+            height = float_40_804242f4;
+            break;
+    }
+
+    if (*(f32*)((s32)work + 0x8) >= *(f32*)((s32)work + 0xC)) {
+        *(f32*)((s32)work + 0x8) = *(f32*)((s32)work + 0xC);
+    }
+
+    sincosf(angle, &cosA, &sinA);
+    dir = toMovedir(*(f32*)((s32)work + 0x4));
+    sincosf(dir, &sinD, &cosD);
+    dist = *(f32*)((s32)work + 0x8);
+    hit = hitCheckFilter(*(f32*)((s32)pParty + 0x58),
+                         *(f32*)((s32)mario + 0x90) + height,
+                         *(f32*)((s32)pParty + 0x60),
+                         sinD, cosA, cosD, 0,
+                         &tmpG, &tmpF, &tmpE, &dist, &tmpD, &tmpC, &tmpB);
+    if (hit != 0 && (hitGetAttr(hit) & 4) != 0) {
+        hit = 0;
+    }
+    *(void**)((s32)work + 0x20) = hit;
+
+    moveX = float_0_804242e0;
+    moveZ = moveX;
+    if (*(void**)((s32)pParty + 0x178) != 0) {
+        movePos(&moveX, &moveZ, float_24_804242f8, dir);
+        *(f32*)(*(s32*)(*(s32*)((s32)pParty + 0x178) + 0xC) + 4) = *(f32*)((s32)pParty + 0x58) + moveX;
+        *(f32*)(*(s32*)(*(s32*)((s32)pParty + 0x178) + 0xC) + 8) = *(f32*)((s32)pParty + 0x5C) + float_18_804242fc;
+        *(f32*)(*(s32*)(*(s32*)((s32)pParty + 0x178) + 0xC) + 0xC) = *(f32*)((s32)pParty + 0x60) + moveZ;
+        *(f32*)(*(s32*)(*(s32*)((s32)pParty + 0x178) + 0xC) + 0x5C) =
+            float_0p6_80424300 * (*(f32*)((s32)work + 0x8) / *(f32*)((s32)work + 0xC));
+        if (*(f32*)((s32)work + 4) < float_90_80424304 || *(f32*)((s32)work + 4) > float_270_80424308) {
+            *(f32*)(*(s32*)(*(s32*)((s32)pParty + 0x178) + 0xC) + 0x58) = float_205_80424310;
+        } else {
+            *(f32*)(*(s32*)(*(s32*)((s32)pParty + 0x178) + 0xC) + 0x58) = float_neg25_8042430c;
+        }
+    }
+
+    work = *(void**)((s32)pParty + 0x170);
+    side = float_neg1_80424318;
+    if (*(f32*)((s32)work + 4) >= float_90_80424304 && *(f32*)((s32)work + 4) <= float_270_80424308) {
+        side = float_1_80424314;
+    }
+
+    if (*(s32*)((s32)work + 0x14) == 0) {
+        *(f32*)((s32)work + 0x10) += float_1_80424314;
+        if (*(f32*)((s32)work + 0x10) >= float_20_804242f0) {
+            *(f32*)((s32)work + 0x10) = float_20_804242f0;
+            *(s32*)((s32)work + 0x14) = 1;
+        }
+    } else {
+        *(f32*)((s32)work + 0x10) -= float_1_80424314;
+        if (*(f32*)((s32)work + 0x10) <= float_neg20_8042431c) {
+            *(f32*)((s32)work + 0x10) = float_neg20_8042431c;
+            *(s32*)((s32)work + 0x14) = 0;
+        }
+    }
+
+    dir = toMovedir(*(f32*)((s32)work + 0x10) * side + *(f32*)((s32)work + 4));
+    sincosf(dir, &sinD, &cosD);
+    dist = *(f32*)((s32)work + 0x8);
+    hit = hitCheckFilter(*(f32*)((s32)pParty + 0x58),
+                         *(f32*)((s32)mario + 0x90) + height,
+                         *(f32*)((s32)pParty + 0x60),
+                         sinD, cosA, cosD, 0,
+                         &tmpG, &tmpF, &tmpE, &dist, &tmpD, &tmpC, &tmpB);
+    if (hit != 0 && (hitGetAttr(hit) & 4) != 0) {
+        hit = 0;
+    }
+    *(void**)((s32)work + 0x28) = hit;
+
+    if (*(s32*)((s32)work + 0x1C) == 0) {
+        *(f32*)((s32)work + 0x18) += float_1_80424314;
+        if (*(f32*)((s32)work + 0x18) >= float_20_804242f0) {
+            *(f32*)((s32)work + 0x18) = float_20_804242f0;
+            *(s32*)((s32)work + 0x1C) = 1;
+        }
+    } else {
+        *(f32*)((s32)work + 0x18) -= float_1_80424314;
+        if (*(f32*)((s32)work + 0x18) <= float_neg20_8042431c) {
+            *(f32*)((s32)work + 0x18) = float_neg20_8042431c;
+            *(s32*)((s32)work + 0x1C) = 0;
+        }
+    }
+
+    dir = toMovedir(*(f32*)((s32)work + 0x18) * side + *(f32*)((s32)work + 4));
+    sincosf(dir, &sinD, &cosD);
+    dist = *(f32*)((s32)work + 0x8);
+    hit = hitCheckFilter(*(f32*)((s32)pParty + 0x58),
+                         *(f32*)((s32)mario + 0x90) + height,
+                         *(f32*)((s32)pParty + 0x60),
+                         sinD, cosA, cosD, 0,
+                         &tmpG, &tmpF, &tmpE, &dist, &tmpD, &tmpC, &tmpB);
+    if (hit != 0 && (hitGetAttr(hit) & 4) != 0) {
+        hit = 0;
+    }
+    *(void**)((s32)work + 0x2C) = hit;
+}
+#pragma no_register_save_helpers off
+#pragma use_lmw_stmw on
+
+
+#pragma no_register_save_helpers on
+#pragma use_lmw_stmw off
+u8 cloudGetAt(void* param_1) {
+    void* mario;
+    void* party;
+    void* cam;
+
+    mario = marioGetPtr();
+    party = partyGetPtr(marioGetPartyId());
+    if (party == 0) {
+        return;
+    }
+    if (*(s8*)((s32)party + 0x31) == 5) {
+        if (*(u32*)party & 0x100) {
+            goto check_mario;
+        }
+        goto done;
+    }
+check_mario:
+    if (*(u32*)((s32)mario + 4) & 0x100000) {
+        goto done;
+    }
+    cam = camGetPtr(4);
+    if (*(u16*)((s32)cam + 4) == 0) {
+        *(s32*)&cloud_at[0] = *(s32*)param_1;
+        *(s32*)&cloud_at[1] = *(s32*)((s32)param_1 + 4);
+        *(s32*)&cloud_at[2] = *(s32*)((s32)param_1 + 8);
+    } else {
+        *(s32*)param_1 = *(s32*)&cloud_at[0];
+        *(s32*)((s32)param_1 + 4) = *(s32*)&cloud_at[1];
+        *(s32*)((s32)param_1 + 8) = *(s32*)&cloud_at[2];
+    }
+done:
+    ;
+}
+#pragma no_register_save_helpers off
+#pragma use_lmw_stmw on

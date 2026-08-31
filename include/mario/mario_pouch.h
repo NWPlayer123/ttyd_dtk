@@ -367,17 +367,105 @@ typedef struct PouchPartyData {
 
 typedef struct PouchData {
     PouchPartyData partyData[8]; //0x0
-    s16 currentHP;               //0x70
-    s16 maxHP;                   //0x72
-    s16 currentFP;               //0x74
-    s16 maxFP;                   //0x76
-    u8 unk78[0x8A - 0x78];       //0x78
-    s16 level;                   //0x8A
-    u8 unk8C[0x8E - 0x8C];       //0x8C
-    s16 baseMaxHP;               //0x8E
-    s16 baseMaxFP;               //0x90
-    u8 unk92[0x5D4 - 0x92];      //0x92
+
+    s16 currentHP;                //0x70
+    s16 maxHP;                    //0x72
+    s16 currentFP;                //0x74
+    s16 maxFP;                    //0x76
+    s16 mCoins;                   //0x78
+    s16 currentSP;                //0x7A
+    s16 maxSP;                    //0x7C
+    u8 unk7E[0x84 - 0x7E];        //0x7E
+    f32 lastAudienceCount;        //0x84
+    u8 unk88[0x8A - 0x88];        //0x88
+    s16 level;                    //0x8A
+    u8 unk8C[0x8E - 0x8C];        //0x8C
+   s16 baseMaxHP;                 //0x8E
+    s16 baseMaxFP;                //0x90
+    s16 availableBP;              //0x92
+    s16 totalBP;                  //0x94
+    s16 starPoints;               //0x96
+    s8 jumpLevel;                 //0x98
+    s8 hammerLevel;               //0x99
+    s16 mStarPieceCount;          //0x9A
+    s16 mShineSpriteCount;        //0x9C
+    u8 unk9E[0xA0 - 0x9E];        //0x9E
+    s16 mKeyItems[0x79];          //0xA0
+    s16 mItems[20];               //0x192
+    s16 mStoredItems[32];         //0x1BA
+    s16 mBadges[200];             //0x1FA
+    s16 mEquippedBadges[200];     //0x38A
+    u8 unk51A[0x5D4 - 0x51A];     //0x51A
 } PouchData;
+
 STATIC_ASSERT_SIZEOF(PouchData, 0x5D4);
 
 PouchData* pouchGetPtr(void);
+void pouchInit(void);
+s16 pouchKeyItem(s32 index);
+s16 pouchHaveItem(s32 index);
+s16 pouchKeepItem(s32 index);
+s16 pouchHaveBadge(s32 index);
+s32 pouchGetHaveItemCnt(void);
+int pouchGetKeepItemCnt(void);
+s32 pouchGetHaveBadgeCnt(void);
+s32 pouchGetEquipBadgeCnt(void);
+s32 pouchGetEmptyHaveItemCnt(void);
+int pouchGetEmptyKeepItemCnt(void);
+s32 pouchGetItem(s32 itemNo);
+s32 pouchCheckItem(s32 itemId);
+s32 pouchRemoveItem(s32 item);
+s32 pouchRemoveItemIndex(u32 itemType, int itemIndex);
+void unk_800d48b0(u16* src, u16* dst);
+void pouchSortItem(u32 sortType);
+s32 pouchGetCoin(void);
+s32 pouchAddCoin(s16 coins);
+s32 pouchSetCoin(s16 value);
+s32 pouchGetSuperCoin(void);
+s16 pouchSetSuperCoin(s16 newCount);
+s32 pouchGetStarPiece(void);
+s32 pouchAddStarPiece(s16 amount);
+s32 pouchAddHP(s32 amount);
+s32 pouchGetHP(void);
+s32 pouchGetMaxHP(void);
+void pouchSetHP(s16 hp);
+void pouchSetMaxHP(s16 maxHP);
+s32 pouchGetPartyHP(s32 partyId);
+void pouchSetPartyHP(s32 partyId, s16 hp);
+s32 pouchGetFP(void);
+s32 pouchGetMaxFP(void);
+void pouchSetFP(s16 fp);
+void pouchSetMaxFP(s16 maxFP);
+s32 pouchGetAP(void);
+void pouchAddAP(s16 amount);
+void pouchSetAP(s16 sp);
+s32 pouchGetMaxAP(void);
+f32 pouchGetAudienceNum(void);
+void pouchSetAudienceNum(f32 audienceNum);
+s32 pouchGetJumpLv(void);
+s32 pouchGetHammerLv(void);
+s32 pouchGetPartyAttackLv(s32 partyId);
+s32 pouchAddKeepItem(s16 item);
+s32 pouchRemoveKeepItem(s32 item, s32 index);
+void pouchReviseMarioParam(void);
+void pouchRevisePartyParam(void);
+s32 pouchGetStarPoint(void);
+s32 pouchEquipBadgeIndex(s32 index);
+s32 pouchUnEquipBadgeIndex(s32 index);
+s32 pouchEquipCheckBadge(s32 itemId);
+u32 pouchEquipCheckBadgeIndex(s32 index);
+s32 pouchEquipBadgeID(s32 itemId);
+s32 N_pouchUnEquipBadgeID(s32 badgeID);
+void pouchArriveBadge(s32 badge);
+void pouchMajinaiInit(s32 value);
+s32 pouchAddKpaCoin(s32 value);
+void pouchAddKpaScore(s32 value);
+void pouchGetStarStone(s32 id);
+int pouchReceiveMailCount(void);
+void pouchReceiveMail(s32 mail);
+void pouchOpenMail(s32 mail);
+s32 pouchCheckMail(s32 mail);
+s32 pouchGetPartyColor(s32 partyId);
+void pouchSetPartyColor(int partyId, int color);
+void pouchSetYoshiName(char* name);
+char* pouchGetYoshiName(void);

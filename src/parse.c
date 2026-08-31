@@ -1,1 +1,292 @@
 #include "parse.h"
+
+char parse[88];
+char buf_405[128];
+
+u8 parseInit(s32 param_1, s32 param_2) {
+    *(s32*)(parse + 0) = param_1;
+    *(s32*)(parse + 0x54) = 0;
+    *(s32*)(parse + 4) = 0;
+    *(s32*)(parse + 0x2C) = param_2;
+}
+
+u32 parsePush(char* tagName) {
+    extern char buf_405[128];
+    extern s32 strcmp(const char*, const char*);
+    s32 depth = *(s32*)(parse + 0x54);
+    char* input = *(char**)parse;
+    s32* starts = (s32*)(parse + 4);
+    s32* ends = (s32*)(parse + 0x2C);
+    s32 begin = starts[depth];
+    s32 end = ends[depth];
+    s32 nesting = 0;
+    s32 state = 0;
+    s32 childStart = 0;
+    s32 childEnd = 0;
+    s32 i;
+
+    for (i = begin; i < end; i++) {
+        char* scan = input + i;
+        if (*scan == '<') {
+            if (scan[1] == '/') {
+                nesting--;
+                if (state == 1 && nesting == 0) {
+                    s32 remain = end - i;
+                    childEnd = i;
+                    if (i < end) {
+                        do {
+                            if (*scan == '>') {
+                                childEnd = i + 1;
+                                break;
+                            }
+                            i++;
+                            scan++;
+                            remain--;
+                        } while (remain != 0);
+                    }
+                    state = 2;
+                    break;
+                }
+            } else {
+                if (state == 0 && nesting == 0) {
+                    s32 remain = end - i;
+                    char* dst = buf_405;
+                    s32 length = 0;
+                    if (i < end) {
+                        do {
+                            s8 c = (s8)*scan;
+                            if (c != ' ' && c != '\t' && c != '\n' && c != '\r') {
+                                *dst++ = c;
+                                length++;
+                            }
+                            if (length >= 0x7F || *scan == '>') {
+                                break;
+                            }
+                            scan++;
+                            remain--;
+                        } while (remain != 0);
+                    }
+                    buf_405[length] = 0;
+                    if (strcmp(buf_405, tagName) == 0) {
+                        remain = end - i;
+                        scan = input + i;
+                        if (i < end) {
+                            do {
+                                if (*scan == '>') {
+                                    break;
+                                }
+                                i++;
+                                scan++;
+                                remain--;
+                            } while (remain != 0);
+                        }
+                        state = 1;
+                        childStart = i + 1;
+                    }
+                }
+                nesting++;
+            }
+        }
+    }
+    if (state == 2) {
+        depth++;
+        *(s32*)(parse + 0x54) = depth;
+        starts[depth] = childStart;
+        ends[depth] = childEnd;
+    }
+    return state == 2;
+}
+
+void parsePop(void) {
+    s32 count;
+
+    count = *(s32*)(parse + 0x54);
+    *(s32*)(parse + 0x54) = count - 1;
+}
+void parsePopNext(void) {
+    char* base;
+    s32 index;
+
+    base = parse;
+    index = *(s32*)(base + 0x54) - 1;
+    *(s32*)(base + 0x54) = index;
+    *(s32*)(base + index * 4 + 4) = *(s32*)(base + index * 4 + 0x30);
+}
+
+
+#pragma no_register_save_helpers on
+#pragma use_lmw_stmw off
+s32 parseGet1Next(s32 type, char* out, s32 unused, s32 tokenStart) {
+    extern s32 sscanf(char*, char*, ...);
+    extern const char str_PCTd_804207a0[3];
+    extern const char str_PCTf_804207a4[3];
+    char* input;
+    char* scan;
+    char* src;
+    char* dst;
+    char* dstNext;
+    s32* position;
+    s32 result;
+    s32 start;
+    s32 end;
+    s32 found;
+    s32 tokenEnd;
+    s32 count;
+    s32 remain;
+    s32 i;
+    u8 raw;
+    s8 c;
+
+    (void)unused;
+    (void)tokenStart;
+
+    result = 1;
+    switch (type) {
+        case 3:
+            goto vector;
+        default:
+            goto scalar;
+    }
+
+vector:
+    result *= ((s32 (*)())parseGet1Next)(2, out);
+    result *= ((s32 (*)())parseGet1Next)(2, out + 4);
+    result *= ((s32 (*)())parseGet1Next)(2, out + 8);
+    return result;
+
+scalar:
+    found = 0;
+    input = *(char**)parse;
+    position = (s32*)(parse + (*(s32*)(parse + 0x54) << 2));
+    start = *(s32*)((s32)position + 4);
+    end = *(s32*)((s32)position + 0x2C);
+    position = (s32*)((s32)position + 4);
+
+    for (i = start; i < end; i++) {
+        scan = input + i;
+        raw = (u8)*scan;
+
+        if (raw == '/' && (u8)scan[1] == '/') {
+            remain = end - i;
+            if (i < end) {
+                do {
+                    if ((u32)(s8)*scan == '/n') {
+                        break;
+                    }
+                    i++;
+                    scan++;
+                    remain--;
+                } while (remain != 0);
+            }
+        } else {
+            c = (s8)raw;
+            if (c != ' ' && c != '\t' && c != '\n' && c != '\r') {
+                tokenStart = i;
+                i++;
+                remain = end - i;
+                found = 1;
+
+                if (i < end) {
+                    do {
+                        raw = (u8)input[i];
+                        c = (s8)raw;
+
+                        if (c == ' ' ||
+                            (u8)(raw - (u8)'\t') <= 1 ||
+                            c == '\r' ||
+                            (c == '/' && (u8)input[i + 1] == '/')) {
+                            tokenEnd = i;
+                            found = 2;
+                            break;
+                        }
+
+                        i++;
+                        remain--;
+                    } while (remain != 0);
+                }
+                break;
+            }
+        }
+    }
+
+    if (found < 2) {
+        return 0;
+    }
+
+    switch (type) {
+        case 0:
+            i = tokenStart;
+            dst = out;
+            scan = input + tokenStart;
+            count = 0;
+
+            for (; i < end; i++) {
+                dstNext = dst;
+
+                if (*scan == '"') {
+                    i++;
+                    remain = end - i;
+                    src = input + i;
+                    scan++;
+
+                    if (i < end) {
+                        do {
+                            if (*src == '"') {
+                                break;
+                            }
+
+                            *dst = *src;
+                            dst++;
+                            dstNext++;
+                            count++;
+                            i++;
+                            scan++;
+                            src++;
+                            remain--;
+                        } while (remain != 0);
+                    }
+                }
+
+                scan++;
+                dst = dstNext;
+            }
+
+            out[count] = '\0';
+            *position = i;
+            break;
+
+        case 1:
+            sscanf(input + tokenStart, (char*)str_PCTd_804207a0, out);
+            *position = tokenEnd;
+            break;
+
+        case 2:
+            sscanf(input + tokenStart, (char*)str_PCTf_804207a4, out);
+            *position = tokenEnd;
+            break;
+    }
+
+    return 1;
+}
+#pragma no_register_save_helpers reset
+#pragma use_lmw_stmw reset
+
+#pragma no_register_save_helpers on
+#pragma use_lmw_stmw off
+int parseTagGet1(char* param_1, int param_2, char* param_3, int param_4) {
+    int ret;
+
+    if ((int)parsePush(param_1) != 0) {
+        ret = ((int (*)())parseGet1Next)(param_2, param_3);
+        *(s32*)(parse + 0x54) = *(s32*)(parse + 0x54) - 1;
+    } else {
+        ret = 0;
+    }
+
+    return ret;
+}
+#pragma no_register_save_helpers off
+#pragma use_lmw_stmw on
+
+const char str_PCTd_804207a0[] = "%d";
+const char str_PCTf_804207a4[] = "%f";

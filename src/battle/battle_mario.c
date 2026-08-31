@@ -1,1 +1,627 @@
 #include "battle/battle_mario.h"
+#include "battle/battle_audience.h"
+#include "effect/eff_energy.h"
+#include "effect/eff_fire.h"
+#include "effect/eff_majinai.h"
+#include "effect/n64/eff_kameki_tornade_n64.h"
+extern void* _battleWorkPointer;
+
+extern s32 evtGetValue(void* evt, s32 value);
+extern void evtSetValue(void* evt, s32 var, s32 value);
+
+extern s32 BattleTransID(void* evt, s32 id);
+extern void* BattleGetUnitPtr(void* battleWork, s32 unitId);
+extern void* BattleGetMarioPtr(void* battleWork);
+extern void* BattleGetUnitPartsPtr(s32 unitId, s32 partsId);
+extern void animPoseSetMaterialLightFlagOff(void* animPose, s32 flag);
+extern s32 irand(s32 max);
+extern void BtlUnit_GetPos(void* unit, f32* x, f32* y, f32* z);
+extern void* BtlUnit_GetPartsPtr(void* unit, s32 partsId);
+extern void BtlUnit_GetPartsPos(void* part, f32* x, f32* y, f32* z);
+extern s32 BtlUnit_GetHeight(void* unit);
+extern void BtlUnit_SetPos(void* unit, f32 x, f32 y, f32 z);
+extern void effDelete(void* eff);
+extern void* effWhirlwindN64Entry(f32 height, s32 flip, s32 unk, s32 duration);
+extern void* effHibashiraEntry(f32 x1, f32 y1, f32 z1, f32 x2, f32 y2, f32 z2, f32 scale, s32 unk0, s32 unk1, s32 duration);
+extern void effSetName(void* eff, const char* name);
+extern void* effNameToPtr(const char* name);
+
+extern void* pouchGetPtr(void);
+
+extern void BattleMajinaiDone(void);
+extern void BattleMajinaiEndCheck(void);
+extern const f32 vec3_802ef5d8[3];
+extern const char str_mjef_coinup_802ef624[];
+
+s32 _get_mario_hammer_lv(void* evt) {
+    s32* args;
+    s32 dst;
+    u8 value;
+
+    args = *(s32**)((s32)evt + 0x18);
+    dst = args[0];
+
+    value = *(u8*)((s32)pouchGetPtr() + 0x99);
+
+    evtSetValue(evt, dst, (s8)value);
+
+    return 2;
+}
+
+
+s32 _whirlwind_effect(void* evt) {
+    s32* args;
+    void* battleWork;
+    s32 type;
+    s32 duration;
+    void* unit;
+    void* eff;
+    f32 z;
+    f32 y;
+    f32 x;
+    s32 direction;
+
+    args = *(s32**)((s32)evt + 0x18);
+    battleWork = _battleWorkPointer;
+    type = evtGetValue(evt, args[0]);
+    duration = evtGetValue(evt, args[1]);
+    unit = BattleGetUnitPtr(battleWork, BattleTransID(evt, type));
+    BtlUnit_GetPos(unit, &x, &y, &z);
+    direction = *(s8*)((s32)unit + 0x189);
+    eff = effWhirlwindN64Entry(*(f32*)((s32)unit + 0x114), (u32)direction >> 31, 0, duration);
+    *(f32*)((s32)*(void**)((s32)eff + 0xC) + 8) = x;
+    *(f32*)((s32)*(void**)((s32)eff + 0xC) + 0xC) = y;
+    *(f32*)((s32)*(void**)((s32)eff + 0xC) + 0x10) = z;
+
+    return 2;
+}
+
+s32 _jump_star_effect(void* evt, s32 first) {
+    extern const f32 float_neg10_804223c4;
+    extern const f32 float_10_804223d0;
+    extern const f32 float_0p1_804223dc;
+    extern const f32 float_0p05_804223e4;
+    extern const f32 float_0p8_804223f4;
+    extern const f32 float_2_804223f8;
+    s32* args;
+    void* battleWork;
+    void* unit;
+    s32 type;
+    s32 effectType;
+    s32 timer;
+    s32 step;
+    s32 rise;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 left;
+    f32 right;
+    f32 scale;
+
+    args = *(s32**)((s32)evt + 0x18);
+    battleWork = _battleWorkPointer;
+    type = evtGetValue(evt, args[0]);
+    effectType = evtGetValue(evt, args[1]);
+    unit = BattleGetUnitPtr(battleWork, BattleTransID(evt, type));
+
+    if (first != 0) {
+        *(s32*)((s32)evt + 0x78) = 0;
+    }
+
+    timer = *(s32*)((s32)evt + 0x78);
+    step = timer / 4;
+    if ((timer % 4) == 0) {
+        if ((s8)*(u8*)((s32)unit + 0x189) >= 0) {
+            left = float_10_804223d0;
+            right = float_neg10_804223c4;
+        } else {
+            left = float_neg10_804223c4;
+            right = float_10_804223d0;
+        }
+
+        BtlUnit_GetPos(unit, &x, &y, &z);
+        rise = (step * 8) / 10;
+        x += right * *(f32*)((s32)unit + 0x114);
+        y += (f32)rise;
+        scale = float_0p8_804223f4 + (float_0p1_804223dc * (f32)step);
+        if (scale > float_2_804223f8) {
+            scale = float_2_804223f8;
+        }
+        effEnergyEntry(effectType, 0x32, x, y, x, scale, left, float_0p05_804223e4);
+    }
+
+    if (*(s32*)((s32)evt + 0x78) <= 0x18) {
+        *(s32*)((s32)evt + 0x78) += 1;
+        return 0;
+    }
+    return 2;
+}
+
+s32 _bgset_iron_frame_check(void* evt) {
+    s32* args;
+    void* battleWork;
+    s32 dst;
+    u8 flags;
+
+    battleWork = _battleWorkPointer;
+    args = *(s32**)((s32)evt + 0x18);
+
+    flags = *(u8*)((s32)battleWork + 0x180F8);
+    dst = args[0];
+
+    if (flags & 0x20) {
+        evtSetValue(evt, dst, 0);
+    } else {
+        evtSetValue(evt, dst, 1);
+    }
+
+    return 2;
+}
+
+
+s32 _wait_jyabara_hit_iron_frame(void* evt) {
+    extern const f32 float_130_804223f0;
+    s32* args;
+    s32 type;
+    void* unit;
+    f32 z;
+    f32 y;
+    f32 x;
+    f32 height;
+
+    args = *(s32**)((s32)evt + 0x18);
+    type = evtGetValue(evt, args[0]);
+    unit = BattleGetUnitPtr(_battleWorkPointer, BattleTransID(evt, type));
+    BtlUnit_GetPos(unit, &x, &y, &z);
+    height = (f32)BtlUnit_GetHeight(unit);
+    if (y + height < float_130_804223f0) {
+        return 0;
+    }
+
+    BtlUnit_SetPos(unit, x, (f32)(130 - BtlUnit_GetHeight(unit)), z);
+    return 2;
+}
+
+
+s32 _tatsumaki_effect(void* evt, s32 first) {
+    extern f32 intplGetValue(s32 type, s32 current, s32 total, f32 start, f32 end);
+    extern f32 sinfd(f32 angle);
+    extern f32 cosfd(f32 angle);
+    extern s32 psndSFXOn(const char* name);
+    extern void psndSFX_pos(s32 id, void* pos);
+    extern void psndSFXOff(s32 id);
+    extern const f32 float_0_804223b4;
+    extern const f32 float_3_804223e8;
+    extern const f32 float_80_804223ec;
+    extern const char str_SFX_BTL_JUMP_TATUMAK_802ef638[];
+    s32* args = *(s32**)((s32)evt + 0x18);
+    void* unit = BattleGetUnitPtr(_battleWorkPointer, BattleTransID(evt, evtGetValue(evt, args[0])));
+    s32 state;
+    s32 timer;
+    f32 radius;
+    f32 angle;
+    f32 dx;
+    f32 dz;
+
+    if (first != 0) {
+        *(s32*)((s32)evt + 0x78) = 0;
+    }
+
+    state = *(s32*)((s32)evt + 0x78);
+    switch (state) {
+        case 0: {
+            f32 pos[3];
+
+            *(s32*)((s32)evt + 0x78) = state + 1;
+            *(s32*)((s32)evt + 0x7C) = 0;
+            *(s32*)((s32)evt + 0x80) = (s32)*(f32*)((s32)unit + 0x3C);
+            *(s32*)((s32)evt + 0x84) = (s32)*(f32*)((s32)unit + 0x40) - 40;
+            *(s32*)((s32)evt + 0x88) = (s32)*(f32*)((s32)unit + 0x44);
+            *(void**)((s32)evt + 0x8C) = effKamekiTornadeN64Entry(
+                0,
+                0x5A,
+                (f32)*(s32*)((s32)evt + 0x80),
+                (f32)*(s32*)((s32)evt + 0x84),
+                (f32)*(s32*)((s32)evt + 0x88),
+                float_3_804223e8);
+            *(void**)((s32)evt + 0x90) = effKamekiTornadeN64Entry(
+                0,
+                0x5A,
+                (f32)*(s32*)((s32)evt + 0x80),
+                (f32)*(s32*)((s32)evt + 0x84),
+                (f32)*(s32*)((s32)evt + 0x88),
+                float_3_804223e8);
+            *(s32*)((s32)evt + 0x94) = psndSFXOn(str_SFX_BTL_JUMP_TATUMAK_802ef638);
+            pos[0] = (f32)*(s32*)((s32)evt + 0x80);
+            pos[1] = (f32)*(s32*)((s32)evt + 0x84);
+            pos[2] = (f32)*(s32*)((s32)evt + 0x88);
+            psndSFX_pos(*(s32*)((s32)evt + 0x94), pos);
+            break;
+        }
+        case 1:
+            break;
+        default:
+            return 2;
+    }
+
+    timer = *(s32*)((s32)evt + 0x7C) + 1;
+    *(s32*)((s32)evt + 0x7C) = timer;
+    radius = intplGetValue(5, timer, 0x5A, float_0_804223b4, float_80_804223ec);
+    angle = (f32)(timer * 4);
+    dx = radius * cosfd(angle);
+    dz = radius * sinfd(angle);
+
+    *(f32*)((s32)*(void**)((s32)*(void**)((s32)evt + 0x8C) + 0xC) + 4) = (f32)*(s32*)((s32)evt + 0x80) + dx;
+    *(f32*)((s32)*(void**)((s32)*(void**)((s32)evt + 0x8C) + 0xC) + 8) = (f32)*(s32*)((s32)evt + 0x84);
+    *(f32*)((s32)*(void**)((s32)*(void**)((s32)evt + 0x8C) + 0xC) + 0xC) = (f32)*(s32*)((s32)evt + 0x88) + dz;
+    *(f32*)((s32)*(void**)((s32)*(void**)((s32)evt + 0x90) + 0xC) + 4) = (f32)*(s32*)((s32)evt + 0x80) - dx;
+    *(f32*)((s32)*(void**)((s32)*(void**)((s32)evt + 0x90) + 0xC) + 8) = (f32)*(s32*)((s32)evt + 0x84);
+    *(f32*)((s32)*(void**)((s32)*(void**)((s32)evt + 0x90) + 0xC) + 0xC) = (f32)*(s32*)((s32)evt + 0x88) - dz;
+
+    if (*(s32*)((s32)evt + 0x7C) >= 0x5A) {
+        psndSFXOff(*(s32*)((s32)evt + 0x94));
+        return 2;
+    }
+    return 0;
+}
+
+s32 _record_renzoku_count(void* evt) {
+    s32* args;
+    s32 count;
+    void* battleWorkBase;
+    void* pouch;
+
+    args = *(s32**)((s32)evt + 0x18);
+    count = evtGetValue(evt, args[0]);
+
+    battleWorkBase = (void*)((s32)_battleWorkPointer + 0x10000);
+    pouch = pouchGetPtr();
+
+    if (count > *(u8*)((s32)battleWorkBase + 0x6F40)) {
+        if (count > *(u16*)((s32)pouch + 0x9E)) {
+            *(u16*)((s32)pouch + 0x9E) = count;
+            BattleAudience_Case_JumpNewRecord();
+        }
+
+        if (count > 100) {
+            count = 100;
+        }
+
+        *(u8*)((s32)battleWorkBase + 0x6F40) = count;
+    }
+
+    return 2;
+}
+
+s32 mario_get_renzoku_count_max(void* evt) {
+    s32* args;
+    s32 type;
+    s32 count;
+    s32 dst;
+    void* battleWork;
+    void* unit;
+    void* part;
+    s32 max;
+
+    args = *(s32**)((s32)evt + 0x18);
+    type = evtGetValue(evt, args[0]);
+    count = evtGetValue(evt, args[1]);
+    dst = args[2];
+    battleWork = _battleWorkPointer;
+    unit = BattleGetUnitPtr(battleWork, BattleTransID(evt, type));
+    if (unit == 0) {
+        evtSetValue(evt, dst, 0);
+        return 2;
+    }
+
+    part = *(void**)((s32)unit + 0x10);
+    max = *(u16*)((s32)part + 0x14);
+    if (count < max) {
+        evtSetValue(evt, dst, max);
+        return 2;
+    }
+
+    if (count >= max * 2) {
+        evtSetValue(evt, dst, count);
+        return 2;
+    }
+
+    if (irand(100) < 33) {
+        evtSetValue(evt, dst, count + 1);
+    } else {
+        evtSetValue(evt, dst, count);
+    }
+
+    return 2;
+}
+
+s32 _hammer_star_effect(void* evt, s32 first) {
+    extern f32 intplGetValue(s32 type, s32 current, s32 total, f32 start, f32 end);
+    extern f32 sinfd(f32 angle);
+    extern f32 cosfd(f32 angle);
+    extern const f32 float_210_804223bc;
+    extern const f32 float_420_804223c0;
+    extern const f32 float_neg10_804223c4;
+    extern const f32 float_150_804223c8;
+    extern const f32 float_neg60_804223cc;
+    extern const f32 float_10_804223d0;
+    extern const f32 float_0p85_804223d4;
+    extern const f32 float_26_804223d8;
+    extern const f32 float_0p1_804223dc;
+    extern const f32 float_0p08_804223e0;
+    extern const f32 float_0p05_804223e4;
+    s32* args;
+    void* battleWork;
+    void* unit;
+    s32 type;
+    s32 effectType;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 angle;
+    f32 side;
+    f32 scale;
+
+    args = *(s32**)((s32)evt + 0x18);
+    battleWork = _battleWorkPointer;
+    type = evtGetValue(evt, args[0]);
+    effectType = evtGetValue(evt, args[1]);
+    unit = BattleGetUnitPtr(battleWork, BattleTransID(evt, type));
+
+    if (first != 0) {
+        *(s32*)((s32)evt + 0x78) = 0;
+    }
+
+    if ((s8)*(u8*)((s32)unit + 0x189) >= 0) {
+        angle = intplGetValue(1, *(s32*)((s32)evt + 0x78), 0xC, float_210_804223bc, float_420_804223c0);
+        side = float_neg10_804223c4;
+    } else {
+        angle = intplGetValue(1, *(s32*)((s32)evt + 0x78), 0xC, float_150_804223c8, float_neg60_804223cc);
+        side = float_10_804223d0;
+    }
+
+    BtlUnit_GetPos(unit, &x, &y, &z);
+    y += *(f32*)((s32)unit + 0x114) * (float_0p85_804223d4 * (f32)BtlUnit_GetHeight(unit));
+    x += *(f32*)((s32)unit + 0x114) * (float_26_804223d8 * -sinfd(angle));
+    y += *(f32*)((s32)unit + 0x114) * (float_26_804223d8 * cosfd(angle));
+
+    scale = float_0p1_804223dc + (float_0p08_804223e0 * (f32)*(s32*)((s32)evt + 0x78));
+    effEnergyEntry(effectType, 0x1E, x, y, z, scale, side, float_0p05_804223e4);
+
+    if (*(s32*)((s32)evt + 0x78) < 0xC) {
+        *(s32*)((s32)evt + 0x78) += 1;
+        return 0;
+    }
+    return 2;
+}
+
+s32 _kaiten_hammer_acrobat_rotate(void* evt, s32 first) {
+    extern f32 reviseAngle(f32 angle);
+    extern void BtlUnit_GetRotate(void* unit, f32* x, f32* y, f32* z);
+    extern void BtlUnit_AddRotate(void* unit, f32 x, f32 y, f32 z);
+    extern void BtlUnit_SetRotate(void* unit, f32 x, f32 y, f32 z);
+    extern void BtlUnit_SetAnim(void* part, s32 anim);
+    extern const f32 float_360_804223b8;
+    extern const f32 float_0_804223b4;
+    s32* args;
+    void* battleWork;
+    void* unit;
+    void* part;
+    s32 type;
+    s32 partsId;
+    s32 frames;
+    s32 anim;
+    f32 x;
+    f32 y;
+    f32 z;
+    s32 angle;
+
+    args = *(s32**)((s32)evt + 0x18);
+    battleWork = _battleWorkPointer;
+
+    type = evtGetValue(evt, args[0]);
+    unit = BattleGetUnitPtr(battleWork, BattleTransID(evt, type));
+    partsId = evtGetValue(evt, args[1]);
+    part = BtlUnit_GetPartsPtr(unit, partsId);
+    frames = evtGetValue(evt, args[2]);
+    anim = evtGetValue(evt, args[3]);
+
+    if (first != 0) {
+        BtlUnit_GetRotate(unit, &x, &y, &z);
+        *(s32*)((s32)evt + 0x78) = frames;
+        if ((s8)*(u8*)((s32)unit + 0x189) >= 0) {
+            angle = (s32)(float_360_804223b8 + (float_360_804223b8 - reviseAngle(y)));
+        } else {
+            angle = (s32)(float_360_804223b8 + reviseAngle(y));
+        }
+        *(s32*)((s32)evt + 0x7C) = angle;
+        *(s32*)((s32)evt + 0x80) = ((s8)*(u8*)((s32)unit + 0x189) * angle) / frames;
+        *(s32*)((s32)evt + 0x84) = 0;
+    }
+
+    BtlUnit_AddRotate(unit, float_0_804223b4, (f32)*(s32*)((s32)evt + 0x80), float_0_804223b4);
+
+    *(s32*)((s32)evt + 0x78) -= 1;
+    if (*(s32*)((s32)evt + 0x84) == 0) {
+        *(s32*)((s32)evt + 0x7C) -= *(s32*)((s32)evt + 0x80);
+        if (*(s32*)((s32)evt + 0x7C) <= 0x10E) {
+            *(s32*)((s32)evt + 0x84) = 1;
+            BtlUnit_SetAnim(part, anim);
+        }
+    }
+
+    if (*(s32*)((s32)evt + 0x78) > 0) {
+        return 0;
+    }
+
+    BtlUnit_SetRotate(unit, float_0_804223b4, float_0_804223b4, float_0_804223b4);
+    return 2;
+}
+
+s32 _mario_fire_ball_controll(void* evt, s32 first) {
+    s32* args;
+    void* battleWork;
+    s32 type;
+    s32 partsId;
+    void* unit;
+    void* part;
+    void* eff;
+    void* effPart;
+
+    args = *(s32**)((s32)evt + 0x18);
+    battleWork = _battleWorkPointer;
+    type = evtGetValue(evt, args[0]);
+    partsId = evtGetValue(evt, args[1]);
+    unit = BattleGetUnitPtr(battleWork, BattleTransID(evt, type));
+    part = BtlUnit_GetPartsPtr(unit, partsId);
+    if (first != 0) {
+        *(s32*)((s32)evt + 0x78) = 0;
+        *(void**)((s32)evt + 0x7C) = effFireEntry(0.0f, 0.0f, 0.0f, 1.0f, 5, 1000);
+    }
+
+    eff = *(void**)((s32)evt + 0x7C);
+    if (*(s32*)((s32)part + 0x130) == 0) {
+        effDelete(eff);
+        return 2;
+    }
+
+    effPart = *(void**)((s32)eff + 0xC);
+    BtlUnit_GetPartsPos(part,
+                        (f32*)((s32)effPart + 4),
+                        (f32*)((s32)effPart + 8),
+                        (f32*)((s32)effPart + 0xC));
+    return 0;
+}
+
+s32 _fire_wave(void* evt, s32 first) {
+    extern const f32 float_0p6_804223b0;
+    s32* args;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 scale;
+
+    args = *(s32**)((s32)evt + 0x18);
+    x = (f32)evtGetValue(evt, args[0]);
+    y = (f32)evtGetValue(evt, args[1]);
+    z = (f32)evtGetValue(evt, args[2]);
+    scale = (f32)evtGetValue(evt, args[3]) * float_0p6_804223b0;
+    if (first != 0) {
+        *(void**)((s32)evt + 0x78) = effHibashiraEntry(x, y, z, x, y, z, scale, 0, 1, 0x5A);
+    }
+
+    return 2;
+}
+
+s32 _majinai_powerup_check(void* evt) {
+    s32* args;
+    void* battleWork;
+    s32 dst;
+    void* pouch;
+
+    args = *(s32**)((s32)evt + 0x18);
+    battleWork = _battleWorkPointer;
+    dst = args[0];
+
+    pouch = pouchGetPtr();
+
+    if (*(u8*)((s32)pouch + 0x5BA) != 1) {
+        evtSetValue(evt, dst, 0);
+    } else {
+        evtSetValue(evt, dst, 1);
+        *(u8*)((s32)battleWork + 0x18FF9) = 1;
+        BattleMajinaiDone();
+        BattleMajinaiEndCheck();
+    }
+
+    return 2;
+}
+
+
+s32 _battle_majinai_effect(void* evt, s32 first) {
+    f32 pos[3];
+
+    BattleGetMarioPtr(_battleWorkPointer);
+    if (first != 0) {
+        ((s32*)pos)[0] = ((s32*)vec3_802ef5d8)[0];
+        ((s32*)pos)[1] = ((s32*)vec3_802ef5d8)[1];
+        ((s32*)pos)[2] = ((s32*)vec3_802ef5d8)[2];
+        *(void**)((s32)evt + 0x78) = effMajinaiEntry(pos[0], pos[1], pos[2], 0);
+        effSetName(*(void**)((s32)evt + 0x78), str_mjef_coinup_802ef624);
+    }
+
+    if (*(s32*)((s32)evt + 0x78) != 0 &&
+        effNameToPtr(str_mjef_coinup_802ef624) != 0) {
+        return 0;
+    }
+
+    return 2;
+}
+
+s32 _paper_light_off(void* evt) {
+    s32* args;
+    s32 unitId;
+    s32 partsId;
+    void* parts;
+
+    args = *(s32**)((s32)evt + 0x18);
+
+    unitId = evtGetValue(evt, args[0]);
+    unitId = BattleTransID(evt, unitId);
+
+    partsId = evtGetValue(evt, args[1]);
+
+    parts = BattleGetUnitPartsPtr(unitId, partsId);
+    animPoseSetMaterialLightFlagOff(*(void**)((s32)parts + 0x1C0), 1);
+
+    return 2;
+}
+
+const f32 vec3_802ef5d8[3] = { 0.0f, 10.0f, 0.0f };
+const char str_btl_msg_mj_power_up_802ef5e4[] = "btl_msg_mj_power_up";
+const char str_btl_msg_mj_defence_u_802ef5f8[] = "btl_msg_mj_defence_up";
+const char str_btl_msg_mj_exp_up_802ef610[] = "btl_msg_mj_exp_up";
+const char str_mjef_coinup_802ef624[] = "mjef_coinup";
+const f64 double_to_int_802ef630 = 4503601774854144.0;
+const char str_SFX_BTL_JUMP_TATUMAK_802ef638[] = "SFX_BTL_JUMP_TATUMAKI2";
+
+const char str_M_A_5_80422310[] = "M_A_5";
+const char str_M_D_2_80422318[] = "M_D_2";
+const char str_M_W_1_80422320[] = "M_W_1";
+const char str_M_N_7_80422328[] = "M_N_7";
+const char str_M_U_3_80422330[] = "M_U_3";
+const char str_M_S_1_80422338[] = "M_S_1";
+const char str_M_I_S_80422340[] = "M_I_S";
+const char str_M_B_2_80422348[] = "M_B_2";
+const char str_M_I_Y_80422350[] = "M_I_Y";
+const char str_M_B_1_80422358[] = "M_B_1";
+const char str_M_A_4_80422360[] = "M_A_4";
+const char str_M_A_6_80422368[] = "M_A_6";
+const char str_M_Z_1_80422370[] = "M_Z_1";
+const char str_M_C_3_80422378[] = "M_C_3";
+const char str_M_V_2_80422380[] = "M_V_2";
+const char str_M_H_7_80422388[] = "M_H_7";
+const char str_M_H_8_80422390[] = "M_H_8";
+const char str_M_H_3_80422398[] = "M_H_3";
+const char str_M_H_4_804223a0[] = "M_H_4";
+const u8 zero_804223a8 = 0;
+const f32 float_1_804223ac = 1.0f;
+const f32 float_0p6_804223b0 = 0.6f;
+const f32 float_0_804223b4 = 0.0f;
+const f32 float_360_804223b8 = 360.0f;
+const f32 float_210_804223bc = 210.0f;
+const f32 float_420_804223c0 = 420.0f;
+const f32 float_neg10_804223c4 = -10.0f;
+const f32 float_150_804223c8 = 150.0f;
+const f32 float_neg60_804223cc = -60.0f;
+const f32 float_10_804223d0 = 10.0f;
+const f32 float_0p85_804223d4 = 0.85f;
+const f32 float_26_804223d8 = 26.0f;
+const f32 float_0p1_804223dc = 0.1f;
+const f32 float_0p08_804223e0 = 0.08f;
+const f32 float_0p05_804223e4 = 0.05f;
+const f32 float_3_804223e8 = 3.0f;
+const f32 float_80_804223ec = 80.0f;
+const f32 float_130_804223f0 = 130.0f;
+const f32 float_0p8_804223f4 = 0.8f;
+const f32 float_2_804223f8 = 2.0f;

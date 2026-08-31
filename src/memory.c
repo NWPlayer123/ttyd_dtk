@@ -2,14 +2,27 @@
 
 #include <dolphin/os.h>
 
+void* mapalloc_base_ptr;
+void* R_battlemapalloc_base_ptr;
+s32 g_bFirstSmartAlloc;
+u32 R_battlemapalloc_size;
+extern void sysWaitDrawSync(void);
+
+void _mapFree(void* base, void* ptr);
+void GXInitTexObjData(void* texObj, void* data);
+void OSFreeToHeap(OSHeapHandle heap, void* ptr);
+
 //.sdata
-s32 size_table[6][2] = {
+s32 size_table[5][2] = {
 	{1, 0x1C84}, //0x721000, 7300 KiB/7.13 MiB
 	{1, 0xD90}, //0x364000, 3472 KiB/3.39 MiB
 	{1, 0xE0}, //0x38000, 224 KiB
 	{1, 0x80}, //0x20000, 128 KiB
 	{0, 0x64}
 };
+
+u32 smartWork[0x3807];
+u32* wp = smartWork;
 
 //.sbss
 u32 mapalloc_size;
@@ -19,161 +32,644 @@ OSHeapHandle heapHandle[5];
 
 #pragma optimize_for_size off
 void memInit(void) {
-    s32(*var_r27)[2];
-    s32 temp_r0_2;
-    s32 temp_r24;
-    s32 temp_r31;
-    s32 temp_r3_3;
-    s32 temp_r3_6;
-    s32 temp_r4_3;
-    s32 temp_r6;
-    s32 temp_r6_2;
-    s32 temp_r6_3;
-    s32 temp_r6_4;
-    s32 temp_r7;
-    s32 var_r22;
-    s32 var_r23;
-    s32 var_r24;
-    s32 var_r29_2;
-    s32* temp_r3_4;
-    s32* temp_r3_5;
-    s32* var_r27_2;
-    s32* var_r28;
-    u32 temp_r23;
-    u32 temp_r4_4;
-    void* temp_r0;
-    void* lo;
-    void* hi;
-    void* alloc;
-    void* temp_r3_7;
-    void** temp_r4;
-    void** temp_r4_2;
-    void** temp_r5;
-    void** temp_r5_2;
-    void** var_r22_2;
-    void** var_r23_2;
-    void** var_r25;
-    void** var_r26;
-    void** var_r29;
-    void** var_r30;
-
+    void* entry;
+    void* arenaLo;
+    void* arenaHi;
+    u32 remaining;
+    s32 i;
+    s32 size;
     u32 address;
-    int i;
 
-    lo = OSGetArenaLo();
-    hi = OSGetArenaHi();
-    alloc = OSInitAlloc(lo, hi, 5);
-    OSSetArenaLo(alloc);
-    address = OSRoundUp32B(alloc);
+    arenaLo = OSGetArenaLo();
+    arenaHi = OSGetArenaHi();
+    arenaLo = OSInitAlloc(arenaLo, arenaHi, 5);
+    OSSetArenaLo(arenaLo);
+    arenaLo = (void*)(((u32)arenaLo + 0x1F) & ~0x1F);
+    arenaHi = (void*)((u32)arenaHi & ~0x1F);
+    address = (u32)arenaLo;
 
     for (i = 0; i < 5; i++) {
         if (size_table[i][0] == 1) {
             heapStart[i] = (void*)address;
-            heapEnd[i] = (void*)(address + (size_table[i][1] << 10));
-            address += (size_table[i][1] << 10);
+            size = size_table[i][1] << 10;
+            heapEnd[i] = (void*)(address + size);
+            address += size;
         }
     }
-    /*var_r27 = size_table;
-    temp_r3_3 = (s32)(alloc + 0x1F) & 0xFFFFFFE0;
-    var_r22 = temp_r3_3;
-    temp_r24 = (s32)hi & 0xFFFFFFE0;
-    var_r26 = heapStart;
-    var_r25 = heapEnd;
-    if ((s32)size_table[0][0] == 1) {
-        heapStart[0] = (void*)temp_r3_3;
-        temp_r0 = temp_r3_3 + (size_table[0][1] << 0xA);
-        heapEnd[0] = temp_r0;
-        var_r22 = (s32)temp_r0;
-    }
-    if ((s32)size_table[1][0] == 1) {
-        heapStart[1] = (void*)var_r22;
-        temp_r6 = size_table[1][0].unk4 << 0xA;
-        heapEnd[1] = var_r22 + temp_r6;
-        var_r22 += temp_r6;
-    }
-    temp_r3_4 = size_table[1] + 8;
-    temp_r4 = &heapStart[1] + 4;
-    temp_r5 = &heapEnd[1] + 4;
-    if ((s32)size_table[2][0] == 1) {
-        *temp_r4 = (void*)var_r22;
-        temp_r6_2 = temp_r3_4->unk4 << 0xA;
-        *temp_r5 = var_r22 + temp_r6_2;
-        var_r22 += temp_r6_2;
-    }
-    temp_r3_5 = temp_r3_4 + 8;
-    temp_r4_2 = temp_r4 + 4;
-    temp_r5_2 = temp_r5 + 4;
-    if ((s32)size_table[3][0] == 1) {
-        *temp_r4_2 = (void*)var_r22;
-        temp_r6_3 = temp_r3_5->unk4 << 0xA;
-        *temp_r5_2 = var_r22 + temp_r6_3;
-        var_r22 += temp_r6_3;
-    }
-    if ((s32)size_table[4][0] == 1) {
-        *(temp_r4_2 + 4) = (void*)var_r22;
-        temp_r6_4 = (temp_r3_5 + 8)->unk4 << 0xA;
-        *(temp_r5_2 + 4) = var_r22 + temp_r6_4;
-        var_r22 += temp_r6_4;
-    }*/
 
-
-    /*var_r23 = 0;
-    var_r30 = heapStart;
-    var_r29 = heapEnd;
-    temp_r31 = temp_r24 - var_r22;
-    do {
-        if ((s32)var_r27[0][0] == 0) {
-            temp_r4_3 = var_r27[0][1];
-            temp_r7 = temp_r4_3 >> 0x1F;
-            temp_r4_4 = (u32)__div2u(MULTU_HI(temp_r31, temp_r4_3) + (0 * temp_r4_3) + (temp_r31 * temp_r7),
-                                     temp_r31 * temp_r4_3, 0, 0x64, temp_r7);
-            temp_r0_2 = temp_r4_4 & 0x1F;
-            *var_r30 = (void*)var_r22;
-            temp_r3_6 = temp_r4_4 - temp_r0_2;
-            *var_r29 = var_r22 + temp_r3_6;
-            var_r22 += temp_r3_6;
+    remaining = (u32)arenaHi - address;
+    for (i = 0; i < 5; i++) {
+        if (size_table[i][0] == 0) {
+            size = (size_table[i][1] * (u64)remaining) / 100ULL;
+            heapStart[i] = (void*)address;
+            size -= size & 0x1F;
+            heapEnd[i] = (void*)(address + size);
+            address += size;
         }
-        var_r23 += 1;
-        var_r30 += 4;
-        var_r29 += 4;
-        var_r27 += 8;
     }
-    while (var_r23 < 5);
-    var_r27_2 = heapHandle;
-    var_r22_2 = heapEnd;
-    var_r23_2 = heapStart;
-    var_r29_2 = 0;
-    var_r28 = heapHandle;
-    do {
-        var_r29_2 += 1;
-        *var_r28 = OSCreateHeap(*var_r23_2, *var_r22_2);
-        var_r22_2 += 4;
-        var_r23_2 += 4;
-        var_r28 += 4;
+
+    for (i = 0; i < 5; i++) {
+        heapHandle[i] = OSCreateHeap(heapStart[i], heapEnd[i]);
     }
-    while (var_r29_2 < 5);
-    OSSetArenaLo((void*)temp_r24);
-    var_r24 = 0;
-    do {
-        OSDestroyHeap(*var_r27_2);
-        OSCreateHeap(*var_r26, *var_r25);
-        if (var_r24 == 1) {
-            temp_r23 = (heapEnd[1] - heapStart[1]) - 0x20;
-            mapalloc_size = temp_r23;
-            temp_r3_7 = OSAllocFromHeap(heapHandle[1], temp_r23);
-            if (temp_r3_7 != NULL) {
-                memset(temp_r3_7, 0, temp_r23);
-                DCFlushRange(temp_r3_7, temp_r23);
+    OSSetArenaLo(arenaHi);
+    for (i = 0; i < 5; i++) {
+        OSDestroyHeap(heapHandle[i]);
+        OSCreateHeap(heapStart[i], heapEnd[i]);
+        if (i == 1) {
+            size = (u32)heapEnd[1] - (u32)heapStart[1] - 0x20;
+            entry = OSAllocFromHeap(heapHandle[1], size);
+            if (entry != 0) {
+                memset(entry, 0, size);
+                DCFlushRange(entry, size);
             }
-            mapalloc_base_ptr = temp_r3_7;
-            temp_r3_7->unk0 = 0;
-            temp_r3_7->unk4 = (s32)(mapalloc_size - 0x20);
-            temp_r3_7->unk8 = 0;
+            *(u32*)entry = 0;
+            *(u32*)((u32)entry + 4) = size - 0x20;
+            *(u16*)((u32)entry + 8) = 0;
+            mapalloc_base_ptr = entry;
+            mapalloc_size = size;
         }
-        var_r24 += 1;
-        var_r25 += 4;
-        var_r26 += 4;
-        var_r27_2 += 4;
     }
-    while (var_r24 < 5);*/
+}
+
+void memClear(s32 heap) {
+    u32 size;
+    void* ptr;
+
+    OSDestroyHeap(heapHandle[heap]);
+    OSCreateHeap(heapStart[heap], heapEnd[heap]);
+
+    if (heap == 1) {
+        size = (u32)heapEnd[1] - (u32)heapStart[1] - 0x20;
+        mapalloc_size = size;
+        ptr = OSAllocFromHeap(heapHandle[1], size);
+        if (ptr != NULL) {
+            memset(ptr, 0, size);
+            DCFlushRange(ptr, size);
+        }
+        mapalloc_base_ptr = ptr;
+        *(s32*)ptr = 0;
+        *(u32*)((s32)ptr + 4) = mapalloc_size - 0x20;
+        *(u16*)((s32)ptr + 8) = 0;
+    }
+}
+
+void* __memAlloc(s32 heap, u32 size) {
+    void* ptr;
+
+    ptr = OSAllocFromHeap(heapHandle[heap], size);
+    if (ptr != NULL) {
+        memset(ptr, 0, size);
+        DCFlushRange(ptr, size);
+    }
+    return ptr;
+}
+
+void __memFree(s32 heap, void* ptr) {
+    OSFreeToHeap(heapHandle[heap], ptr);
+}
+
+void N_battleMapAlloc(void) {
+    extern void* _mapAlloc(void*, unsigned int);
+    void* ptr;
+    unsigned int size;
+    unsigned int zero;
+
+    R_battlemapalloc_size = 0x64000;
+    ptr = _mapAlloc(mapalloc_base_ptr, R_battlemapalloc_size);
+    size = R_battlemapalloc_size;
+    zero = 0;
+    R_battlemapalloc_base_ptr = ptr;
+    *(unsigned int*)ptr = zero;
+    *(unsigned int*)((int)ptr + 4) = size - 0x20;
+    *(unsigned short*)((int)ptr + 8) = (unsigned short)zero;
+}
+
+void N_battleMapFree(void) {
+    _mapFree(mapalloc_base_ptr, R_battlemapalloc_base_ptr);
+    R_battlemapalloc_base_ptr = 0;
+}
+
+void* _mapAlloc(void* base, u32 size) {
+    u32 aligned;
+    u32 need;
+    u32 bestSize;
+    void* next;
+    void* bestNext;
+    void* best;
+    void* result;
+    u32 remain;
+
+    aligned = (size + 0x1F) & ~0x1F;
+    if (aligned == 0) {
+        return 0;
+    }
+
+    need = aligned + 0x20;
+    bestSize = 0;
+    bestNext = 0;
+    best = 0;
+
+    while (base != 0) {
+        if (*(u16*)((s32)base + 8) == 0 && *(u32*)((s32)base + 4) >= need) {
+            if (bestSize >= *(u32*)((s32)base + 4) || bestSize == 0) {
+                bestNext = *(void**)base;
+                best = base;
+                bestSize = *(u32*)((s32)base + 4);
+            }
+        }
+        base = *(void**)base;
+    }
+
+    if (bestSize == 0) {
+        return 0;
+    }
+
+    *(void**)best = (void*)((s32)best + need);
+    result = (void*)((s32)best + 0x20);
+    remain = bestSize - need;
+    *(u32*)((s32)best + 4) = aligned;
+    *(u16*)((s32)best + 8) = 1;
+    **(void***)best = bestNext;
+    *(u32*)(*(s32*)best + 4) = remain;
+    *(u16*)(*(s32*)best + 8) = 0;
+    memset(result, 0, aligned);
+    DCFlushRange(result, aligned);
+    return result;
+}
+
+void* _mapAllocTail(void* base, u32 size) {
+    u32 aligned;
+    u32 need;
+    u32 bestSize;
+    void* bestNext;
+    void* best;
+    void* block;
+    void* result;
+    u32 remain;
+
+    aligned = (size + 0x1F) & ~0x1F;
+    if (aligned == 0) {
+        return 0;
+    }
+
+    need = aligned + 0x20;
+    bestSize = 0;
+    bestNext = 0;
+    best = 0;
+
+    while (base != 0) {
+        if (*(u16*)((s32)base + 8) == 0 && *(u32*)((s32)base + 4) >= need) {
+            bestNext = *(void**)base;
+            best = base;
+            bestSize = *(u32*)((s32)base + 4);
+        }
+        base = *(void**)base;
+    }
+
+    if (bestSize == 0) {
+        return 0;
+    }
+
+    memset(best, 0, need);
+    DCFlushRange(best, need);
+    remain = bestSize - need;
+    block = (void*)((s32)best + remain);
+    *(void**)best = block;
+    *(u32*)((s32)best + 4) = remain;
+    *(u16*)((s32)best + 8) = 0;
+    *(void**)block = bestNext;
+    result = (void*)((s32)block + 0x20);
+    *(u32*)((s32)block + 4) = aligned;
+    *(u16*)((s32)block + 8) = 1;
+    memset(result, 0, aligned);
+    DCFlushRange(result, aligned);
+    return result;
+}
+
+void _mapFree(void* base, void* ptr) {
+    void* block;
+    void* next;
+    u32 size;
+
+    if (ptr == 0) {
+        return;
+    }
+
+    block = (void*)((s32)ptr - 0x20);
+    if (*(u16*)((s32)ptr - 0x18) == 0) {
+        return;
+    }
+
+    next = *(void**)block;
+    size = *(u32*)((s32)block + 4);
+    if (next != 0 && *(u16*)((s32)next + 8) == 0) {
+        size += *(u32*)((s32)next + 4) + 0x20;
+        next = *(void**)next;
+    }
+
+    while (1) {
+        if (*(void**)base == block) {
+            if (*(u16*)((s32)base + 8) == 0) {
+                block = base;
+                size += *(u32*)((s32)base + 4) + 0x20;
+            }
+            break;
+        }
+        if (base > block || *(void**)base == 0) {
+            break;
+        }
+        base = *(void**)base;
+    }
+
+    *(void**)block = next;
+    *(u32*)((s32)block + 4) = size;
+    *(u16*)((s32)block + 8) = 0;
+}
+
+void smartInit(void) {
+    u32 size;
+    u32* alloc;
+    u32* p;
+    s32 i;
+
+    size = (u32)heapEnd[4] - (u32)heapStart[4] - 0x20;
+    alloc = OSAllocFromHeap(heapHandle[4], size);
+    if (alloc != 0) {
+        memset(alloc, 0, size);
+        DCFlushRange(alloc, size);
+    }
+    wp[0] = (u32)alloc;
+    wp[0x3802] = 0;
+    wp[0x3803] = 0;
+    wp[0x3801] = (u32)heapEnd[4] - (u32)heapStart[4] - 0x20;
+    memset((void*)wp[0], 0, (u32)heapEnd[4] - (u32)heapStart[4] - 0x20);
+    memset(wp + 1, 0, 0xE000);
+    p = wp + 1;
+    i = 0x100;
+    do {
+        p[5] = (u32)(p + 7);
+        p[6] = (u32)(p - 7);
+        p[0xC] = (u32)(p + 0xE);
+        p[0xD] = (u32)p;
+        p[0x13] = (u32)(p + 0x15);
+        p[0x14] = (u32)(p + 7);
+        p[0x1A] = (u32)(p + 0x1C);
+        p[0x1B] = (u32)(p + 0xE);
+        p[0x21] = (u32)(p + 0x23);
+        p[0x22] = (u32)(p + 0x15);
+        p[0x28] = (u32)(p + 0x2A);
+        p[0x29] = (u32)(p + 0x1C);
+        p[0x2F] = (u32)(p + 0x31);
+        p[0x30] = (u32)(p + 0x23);
+        p[0x36] = (u32)(p + 0x38);
+        p[0x37] = (u32)(p + 0x2A);
+        p += 0x38;
+        i--;
+    } while (i != 0);
+    wp[0x3804] = (u32)(wp + 1);
+    *(u32*)(wp[0x3804] + 0x18) = 0;
+    wp[0x3805] = (u32)(wp + 0x37FA);
+    *(u32*)(wp[0x3805] + 0x14) = 0;
+    wp[0x3806] = 0;
+    g_bFirstSmartAlloc = 0;
+}
+#pragma no_register_save_helpers off
+#pragma use_lmw_stmw on
+
+#pragma no_register_save_helpers off
+#pragma use_lmw_stmw on
+
+#pragma no_register_save_helpers off
+#pragma use_lmw_stmw on
+
+void L_smartReInit(void) {
+    u32* p;
+    s32 i;
+
+    wp[0x3802] = 0;
+    wp[0x3803] = 0;
+    wp[0x3801] = (u32)heapEnd[4] - (u32)heapStart[4] - 0x20;
+    memset((void*)wp[0], 0, (u32)heapEnd[4] - (u32)heapStart[4] - 0x20);
+    memset(wp + 1, 0, 0xE000);
+
+    p = wp + 1;
+    i = 0x100;
+    do {
+        p[5] = (u32)(p + 7);
+        p[6] = (u32)(p - 7);
+        p[0xC] = (u32)(p + 0xE);
+        p[0xD] = (u32)p;
+        p[0x13] = (u32)(p + 0x15);
+        p[0x14] = (u32)(p + 7);
+        p[0x1A] = (u32)(p + 0x1C);
+        p[0x1B] = (u32)(p + 0xE);
+        p[0x21] = (u32)(p + 0x23);
+        p[0x22] = (u32)(p + 0x15);
+        p[0x28] = (u32)(p + 0x2A);
+        p[0x29] = (u32)(p + 0x1C);
+        p[0x2F] = (u32)(p + 0x31);
+        p[0x30] = (u32)(p + 0x23);
+        p[0x36] = (u32)(p + 0x38);
+        p[0x37] = (u32)(p + 0x2A);
+        p += 0x38;
+        i--;
+    } while (i != 0);
+
+    wp[0x3804] = (u32)(wp + 1);
+    *(u32*)(wp[0x3804] + 0x18) = 0;
+    wp[0x3805] = (u32)(wp + 0x37FA);
+    *(u32*)(wp[0x3805] + 0x14) = 0;
+    g_bFirstSmartAlloc = 0;
+}
+
+
+void smartAutoFree(s32 kind) {
+    extern void smartFree(void*);
+    void* entry;
+    void* next;
+    u16 id;
+
+    id = kind;
+    entry = (void*)wp[0x3802];
+    while (entry != 0) {
+        next = *(void**)((s32)entry + 0x14);
+        if (*(u8*)((s32)entry + 0x0E) == id) {
+            smartFree(entry);
+        }
+        entry = next;
+    }
+
+    if (kind == 3) {
+        entry = (void*)wp[0x3802];
+        while (entry != 0) {
+            next = *(void**)((s32)entry + 0x14);
+            if (*(u8*)((s32)entry + 0x0E) == 4) {
+                smartFree(entry);
+            }
+            entry = next;
+        }
+    }
+}
+
+void smartFree(void* entry) {
+    void* prev;
+    void* next;
+    u32 size;
+
+    if (*(u8*)((s32)entry + 0x0E) == 4) {
+        *(u8*)((s32)entry + 0x0E) = 3;
+        return;
+    }
+
+    prev = *(void**)((s32)entry + 0x18);
+    if (prev == 0) {
+        wp[0x3802] = *(u32*)((s32)entry + 0x14);
+        prev = (void*)wp[0x3802];
+        if (prev != 0) {
+            *(u32*)((s32)prev + 0x18) = 0;
+        }
+    } else {
+        *(u32*)((s32)prev + 0x14) = *(u32*)((s32)entry + 0x14);
+    }
+
+    next = *(void**)((s32)entry + 0x14);
+    if (next == 0) {
+        wp[0x3803] = *(u32*)((s32)entry + 0x18);
+        next = (void*)wp[0x3803];
+        if (next != 0) {
+            *(u32*)((s32)next + 0x14) = 0;
+        }
+    } else {
+        *(u32*)((s32)next + 0x18) = *(u32*)((s32)entry + 0x18);
+    }
+
+    prev = *(void**)((s32)entry + 0x18);
+    size = *(u32*)((s32)entry + 4) + *(u32*)((s32)entry + 0x10);
+    if (prev != 0) {
+        *(u32*)((s32)prev + 0x10) += size;
+    } else {
+        wp[0x3801] += size;
+    }
+
+    if (wp[0x3804] == 0) {
+        wp[0x3804] = (u32)entry;
+        *(u32*)((s32)entry + 0x18) = 0;
+    } else {
+        *(u32*)(wp[0x3805] + 0x14) = (u32)entry;
+        *(u32*)((s32)entry + 0x18) = wp[0x3805];
+    }
+
+    *(u16*)((s32)entry + 0x0C) = 0;
+    *(u32*)((s32)entry + 0x14) = 0;
+    *(u32*)((s32)entry + 4) = 0;
+    *(u32*)((s32)entry + 0x10) = 0;
+    *(u32*)((s32)entry + 8) = 0;
+    wp[0x3805] = (u32)entry;
+    wp[0x3806]++;
+}
+
+
+void* smartAlloc(u32 param_1, u8 param_2) {
+    typedef struct SmartAllocationData {
+        void* pMemory;
+        u32 usedSize;
+        void* pFileInfo;
+        u16 bUsed;
+        u8 group;
+        u8 pad_f;
+        u32 unusedSize;
+        struct SmartAllocationData* pNext;
+        struct SmartAllocationData* pPrev;
+    } SmartAllocationData;
+    extern void smartAutoFree(s32 kind);
+    extern void _fileGarbage(s32 kind);
+    extern void smartGarbage(void);
+    SmartAllocationData* entry;
+    SmartAllocationData* scan;
+    s32 i;
+
+    if (g_bFirstSmartAlloc == 0) {
+        g_bFirstSmartAlloc = 1;
+        smartAutoFree(3);
+    }
+    if (wp[0x3806] != 0) {
+        sysWaitDrawSync();
+        wp[0x3806] = 0;
+    }
+
+    entry = (SmartAllocationData*)wp[0x3804];
+    if (entry->pPrev == 0) {
+        wp[0x3804] = (u32)entry->pNext;
+        if (wp[0x3804] != 0) {
+            *(u32*)(wp[0x3804] + 0x18) = 0;
+        }
+    } else {
+        entry->pPrev->pNext = entry->pNext;
+    }
+    if (entry->pNext == 0) {
+        wp[0x3805] = (u32)entry->pPrev;
+        if (wp[0x3805] != 0) {
+            *(u32*)(wp[0x3805] + 0x14) = 0;
+        }
+    } else {
+        entry->pNext->pPrev = entry->pPrev;
+    }
+
+    if ((param_1 & 0x1F) != 0) {
+        param_1 += 0x20 - (param_1 & 0x1F);
+    }
+    entry->bUsed = 1;
+    entry->group = param_2;
+    entry->usedSize = param_1;
+    entry->pFileInfo = 0;
+
+    if (wp[0x3801] >= param_1) {
+        entry->pMemory = (void*)wp[0];
+        entry->unusedSize = wp[0x3801] - param_1;
+        entry->pNext = (SmartAllocationData*)wp[0x3802];
+        entry->pPrev = 0;
+        wp[0x3801] = 0;
+        if (wp[0x3802] != 0) {
+            *(u32*)(wp[0x3802] + 0x18) = (u32)entry;
+        }
+        wp[0x3802] = (u32)entry;
+        if (entry->pNext == 0) {
+            entry->unusedSize = (((u32)heapEnd[4] - (u32)heapStart[4]) + wp[0] - 0x20) - (u32)entry->pMemory - entry->usedSize;
+            wp[0x3803] = (u32)entry;
+        }
+        return entry;
+    }
+
+    scan = (SmartAllocationData*)wp[0x3802];
+    while (scan != 0) {
+        if (param_1 <= scan->unusedSize) {
+            entry->pMemory = (void*)((s32)scan->pMemory + scan->usedSize);
+            entry->unusedSize = scan->unusedSize - param_1;
+            entry->pNext = scan->pNext;
+            entry->pPrev = scan;
+            scan->unusedSize = 0;
+            if (scan->pNext == 0) {
+                wp[0x3803] = (u32)entry;
+            } else {
+                scan->pNext->pPrev = entry;
+            }
+            scan->pNext = entry;
+            return entry;
+        }
+        scan = scan->pNext;
+    }
+
+    i = 0;
+    while (i < 3) {
+        if (i == 1) {
+            _fileGarbage(1);
+        } else if (i > 0 && i < 3) {
+            _fileGarbage(0);
+        }
+        smartGarbage();
+        scan = (SmartAllocationData*)wp[0x3803];
+        if (param_1 <= scan->unusedSize) {
+            entry->pMemory = (void*)((s32)scan->pMemory + scan->usedSize);
+            entry->unusedSize = scan->unusedSize - param_1;
+            entry->pNext = scan->pNext;
+            entry->pPrev = scan;
+            scan->unusedSize = 0;
+            if (scan->pNext == 0) {
+                wp[0x3803] = (u32)entry;
+            } else {
+                scan->pNext->pPrev = entry;
+            }
+            scan->pNext = entry;
+            return entry;
+        }
+        i++;
+    }
+    return 0;
+}
+
+#pragma no_register_save_helpers on
+#pragma use_lmw_stmw off
+
+#pragma no_register_save_helpers on
+#pragma use_lmw_stmw off
+
+#pragma no_register_save_helpers on
+#pragma use_lmw_stmw off
+
+#pragma no_register_save_helpers on
+#pragma use_lmw_stmw off
+
+void smartGarbage(void) {
+    extern void* OSGetCurrentThread(void);
+    extern void* memmove(void* dst, void* src, u32 size);
+    extern void fileGarbageMoveMem(void* dst, char* file);
+    extern u8 dvdmgr_thread[];
+    void* src;
+    void* dst;
+    u32* entry;
+    u32* prev;
+
+    sysWaitDrawSync();
+    if (wp[0x3802] != 0) {
+        wp[0x3801] = 0;
+    } else {
+        wp[0x3801] = (u32)heapEnd[4] - (u32)heapStart[4] - 0x20;
+    }
+
+    dst = (void*)wp[0];
+    prev = 0;
+    entry = (u32*)wp[0x3802];
+    while (entry != 0) {
+        src = (void*)entry[0];
+        if (src == dst) {
+            goto moved;
+        }
+        if (entry[2] != 0) {
+            if (*(u8*)entry[2] != 3) {
+                fileGarbageMoveMem(dst, (char*)entry[2]);
+                goto moved;
+            }
+            if (*(u32*)(entry[2] + 0xAC) == 0) {
+                fileGarbageMoveMem(dst, (char*)entry[2]);
+                goto moved;
+            }
+            if (OSGetCurrentThread() == dvdmgr_thread) {
+                fileGarbageMoveMem(dst, (char*)entry[2]);
+                goto moved;
+            }
+            if (prev != 0) {
+                prev[4] = (u32)src - (u32)dst;
+            } else {
+                wp[0x3801] = (u32)src - (u32)dst;
+            }
+            entry[4] = 0;
+            dst = (void*)(entry[0] + entry[1]);
+            goto next;
+        }
+        memmove(dst, src, entry[1]);
+        entry[0] = (u32)dst;
+moved:
+        entry[4] = 0;
+        dst = (void*)(entry[0] + entry[1]);
+next:
+        prev = entry;
+        entry = (u32*)entry[5];
+    }
+
+    prev = (u32*)wp[0x3803];
+    if (prev != 0) {
+        prev[4] = (((u32)heapEnd[4] - (u32)heapStart[4]) + wp[0] - 0x20) - prev[0] - prev[1];
+    }
+    DCFlushRange((void*)wp[0], (u32)heapEnd[4] - (u32)heapStart[4] - 0x20);
+}
+
+#pragma no_register_save_helpers off
+#pragma use_lmw_stmw on
+
+
+void* smartTexObj(void* texObj, void** data) {
+    if (data != 0) {
+        GXInitTexObjData(texObj, *data);
+    }
+    return texObj;
 }
